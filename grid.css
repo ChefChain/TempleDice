@@ -85,12 +85,33 @@ body, html {
 }
 
 .video-container {
-  grid-area: video;
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* Aspect ratio for 16:9 (720p 1280x720) */
-  background-color: #000000;
+  max-width: 1280px;
+  aspect-ratio: 16/9; /* Keep the correct video ratio for Twitch */
+  background-color: black; /* Set the background to black to prevent white flash */
   overflow: hidden;
+}
+
+.video-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black; /* Placeholder background to prevent flash */
+  z-index: 1;
+}
+
+iframe#twitch-video {
+  position: relative;
+  z-index: 2; /* Place iframe above the placeholder */
+  background-color: black; /* Ensure iframe background is black while loading */
+}
+
+/* Hide the placeholder once iframe has loaded */
+iframe#twitch-video:load + .video-placeholder {
+  display: none; /* Hide placeholder when iframe is loaded */
 }
 
 .video {
