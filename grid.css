@@ -87,17 +87,24 @@ body, html {
 .video-container {
   grid-area: video;
   position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* Aspect ratio for 16:9 (720p 1280x720) */
   background-color: #e74c3c;
   overflow: hidden;
 }
 
 .video {
-  height: 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .video iframe {
   width: 100%;
   height: 100%;
+  border: none;
 }
 
 .game-pot {
@@ -151,7 +158,7 @@ body, html {
   background-color: #131215; /* Match other containers */
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 8px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   justify-content: space-between;
@@ -564,6 +571,9 @@ body, html {
     max-width: 100%;
   }
 }
+
+
+
 
 /* ... (Include media queries and responsive adjustments as needed) ... */
 
