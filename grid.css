@@ -150,6 +150,7 @@ body, html {
   background-color: #17171b;
 }
 
+
 /* Include all other styles from your original style.css here, adjusting selectors as needed */
 
 
@@ -163,6 +164,13 @@ body, html {
   border-top-right-radius: 10px;
   justify-content: space-between;
 }
+.section1 {
+  position: sticky; /* Make it stick to the top of the containing div */
+  top: 0; /* Stick to the top of the container */
+  z-index: 20; /* Make sure it stays above other elements when scrolling */
+  background-color: #131215; /* Ensure background color so it doesn’t blend with content beneath */
+}
+
 
 .section1.no-more-bets {
   background-color: #ff4444; /* Red background */
