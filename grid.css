@@ -326,19 +326,25 @@ body, html {
 .dice-container {
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
-  gap: 20px;
-  margin-top: 10px;
+  align-items: center; /* Center align dice vertically */
+  gap: 5px; /* Reduced gap to tighten spacing between dice */
+  margin: 0; /* Remove margin to save space */
+  padding: 0; /* Remove padding for a tighter container */
   background-color: #131215;
   border-radius: 10px;
-  padding: 0px 15px;
-  padding-bottom: 5px;
 }
 
 .dice-container .dice {
-  font-size: 120px;
-  font-weight: bold;
+  font-size: 100px; /* Adjust font size as needed */
+  line-height: 1; /* Remove extra spacing caused by line height */
+  vertical-align: middle; /* Align the dice vertically */
+  margin: 0; /* Remove any margin around the dice */
+  padding: 0; /* Remove any padding around the dice */
+  display: inline-flex; /* Use inline-flex for more control over alignment */
+  align-items: center; /* Center align text inside the dice */
+  justify-content: center; /* Center align text inside the dice */
   cursor: pointer;
+  height: 1em; /* Set height to match the font size to eliminate extra space */
 }
 
 .dice-container.disabled .dice {
@@ -352,6 +358,7 @@ body, html {
 .dice-container.greyed-out {
   opacity: 0.5;
 }
+
 
 .refresh-btn {
   position: absolute;
@@ -520,9 +527,12 @@ body, html {
 
 .footer {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 10px;
+  justify-content: space-evenly; /* Updated to distribute items evenly across the footer */
+  align-items: center; /* Vertically center the items */
+  padding: 10px;
   font-size: 20px;
+  background-color: #34495e;
+  color: white;
 }
 
 .footer .items {
@@ -533,6 +543,7 @@ body, html {
   border-radius: 8px;
   height: 60px;
   width: 60px;
+  margin: 0 10px; /* Add some margin between items for better visual spacing */
 }
 
 @media (max-width: 600px) {
@@ -541,6 +552,7 @@ body, html {
     width: 40px;
   }
 }
+
 
 .footer .items.active {
   border: 1px solid white;
@@ -555,7 +567,7 @@ body, html {
   justify-content: space-between;
   padding: 10px 10px;
   font-size: 20px;
-  background-color: #34495e;
+  background-color: #171519;
   color: white;
 }
 
