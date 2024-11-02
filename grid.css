@@ -456,7 +456,7 @@ body, html {
 
 .confirmedbet-main .price {
   text-align: center;
-  width: 50%;
+  width: 40%;
 }
 
 .confirmedbet-main .price .amount {
@@ -473,7 +473,7 @@ body, html {
 }
 
 .confirmedbet-main .button {
-  width: 50%;
+  width: 60%;
   padding: 15px 15px;
   border-radius: 4px;
   display: flex;
