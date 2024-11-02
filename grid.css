@@ -268,9 +268,20 @@ body, html {
   font-size: 20px;
 }
 
+
+.price {
+  display: flex;
+  align-items: center; /* Vertically center align the content */
+  justify-content: center; /* Optionally center the content horizontally */
+  height: 100%; /* Ensure the div takes up the full height of its parent */
+}
+
 .amount {
-  font-size: 24px;
+  font-size: 24px; /* Adjust the size as needed */
   font-weight: 600;
+  line-height: 1; /* Set line-height to remove any extra spacing */
+  margin: 0; /* Remove default margin */
+  padding: 15px; /* Remove default padding */
 }
 
 .wheel {
@@ -428,7 +439,7 @@ body, html {
   50% { border-color: #ff4444; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
   .confirmedbet-main {
     flex-direction: column;
     gap: 10px;
@@ -503,7 +514,7 @@ body, html {
   50% { opacity: 0.5; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
   .confirmedbet-main {
     flex-direction: column;
     gap: 10px;
@@ -588,6 +599,7 @@ body, html {
     max-width: 100%;
   }
 }
+
 
 
 
