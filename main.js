@@ -28,10 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let startY = 0;
     let previousBetAmount = betAmount; // Initialize previousBetAmount
 
+    const mainContent = document.querySelector('.main');
+
     wheel.addEventListener('mousedown', function(event) {
         isDragging = true;
         startY = event.clientY;
         event.preventDefault();
+
+        // Disable scrolling
+        mainContent.style.overflowY = 'hidden';
     });
 
     document.addEventListener('mousemove', function(event) {
@@ -58,6 +63,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('mouseup', function(event) {
         isDragging = false;
+
+        // Re-enable scrolling
+        mainContent.style.overflowY = 'auto';
+    });
+
+    // Handle touch events for mobile devices
+    wheel.addEventListener('touchstart', function(event) {
+        isDragging = true;
+        startY = event.touches[0].clientY;
+        event.preventDefault();
+
+        // Disable scrolling
+        mainContent.style.overflowY = 'hidden';
+    });
+
+    document.addEventListener('touchmove', function(event) {
+        if (isDragging) {
+            let deltaY = startY - event.touches[0].clientY;
+            let change = Math.floor(deltaY / 10); // Adjust sensitivity
+            if (change !== 0) {
+                let newBetAmount = betAmount + change;
+                newBetAmount = Math.max(minBet, Math.min(newBetAmount, maxBet));
+                if (newBetAmount !== betAmount) {
+                    betAmount = newBetAmount;
+                    betAmountSpan.textContent = '$' + betAmount;
+                    startY = event.touches[0].clientY; // Reset startY to current position
+
+                    if (betAmount > previousBetAmount) {
+                        playSound(scrollWheelSound);
+                    }
+
+                    previousBetAmount = betAmount;
+                }
+            }
+        }
+    });
+
+    document.addEventListener('touchend', function(event) {
+        isDragging = false;
+
+        // Re-enable scrolling
+        mainContent.style.overflowY = 'auto';
     });
 
     // Adjust buttons functionality
@@ -127,18 +174,24 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset section1 background
         section1.classList.remove('no-more-bets');
 
+        const secondDiceContainer = document.querySelector('.dice-container.disabled');
+
         if (betState === 0) {
             betButton.querySelector('span').textContent = 'PLACE BET';
             // Enable dice container
             enableDiceContainer();
             // Reset alert text
             resetAlertText();
+            // Hide the second dice container
+            secondDiceContainer.style.display = 'none';
         } else if (betState === 1) {
             betButton.querySelector('span').textContent = 'CONFIRM BET';
             // Enable dice container
             enableDiceContainer();
             // Reset alert text
             resetAlertText();
+            // Keep the second dice container hidden
+            secondDiceContainer.style.display = 'none';
         } else if (betState === 2) {
             betButton.querySelector('span').textContent = 'BET CONFIRMED';
             confirmedBetMain.classList.add('blink-border');
@@ -146,6 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
             enableDiceContainer();
             // Reset alert text
             resetAlertText();
+            // Show the second dice container
+            secondDiceContainer.style.display = 'flex';
         } else if (betState === 3) {
             betButton.querySelector('span').textContent = 'NO MORE BETS';
             confirmedBetMain.classList.add('blink-border-red');
@@ -155,6 +210,8 @@ document.addEventListener('DOMContentLoaded', function() {
             setAlertText('NO MORE BETS');
             // Add red flashing background to section1
             section1.classList.add('no-more-bets');
+            // Hide the second dice container
+            secondDiceContainer.style.display = 'none';
         }
     }
 
@@ -404,4 +461,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 5000); // change message every 5 seconds
 
+    // Wallet toggle functionality
+    const walletToggleButton = document.querySelector('.wallet-toggle');
+    const infoBlockDiv = document.querySelector('.info-block');
+    let isInfoBlockVisible = false;
+
+    walletToggleButton.addEventListener('click', function() {
+        isInfoBlockVisible = !isInfoBlockVisible;
+        if (isInfoBlockVisible) {
+            infoBlockDiv.style.display = 'flex'; // or 'block' if you prefer
+        } else {
+            infoBlockDiv.style.display = 'none';
+        }
+    });
 });

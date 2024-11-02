@@ -407,7 +407,7 @@ body, html {
   background-color: #131215;
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
+  margin: 10px 30px;
   padding: 10px 10px;
   border-radius: 10px;
   border: 2px solid rgb(89, 104, 89); /* Initial border color */
@@ -591,15 +591,6 @@ body, html {
     max-width: 100%;
   }
 }
-
-
-
-
-/* ... (Include media queries and responsive adjustments as needed) ... */
-
-
-
-
 
 
 
