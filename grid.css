@@ -269,7 +269,7 @@ body, html {
 }
 
 .amount {
-  font-size: 35px;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -450,11 +450,11 @@ body, html {
 
 .confirmedbet-main .price .amount {
   color: rgb(133, 216, 133);
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .confirmedbet-main .price .amount span {
-  font-size: 45px;
+  font-size: 24px;
 }
 
 .confirmedbet-main .price .label {
@@ -469,7 +469,7 @@ body, html {
   justify-content: center;
   align-items: center;
   font-weight: 600;
-  font-size: 25px;
+  font-size: 18px;
   cursor: pointer;
 }
 
