@@ -89,7 +89,7 @@ body, html {
   position: relative;
   width: 100%;
   padding-top: 56.25%; /* Aspect ratio for 16:9 (720p 1280x720) */
-  background-color: #e74c3c;
+  background-color: #000000;
   overflow: hidden;
 }
 
