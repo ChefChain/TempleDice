@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Alert text rotation
     const alertMessages = [
-        '<span>Place your bets now, round </span><span style="color: #ff4444;">starts soon</span>',
+        '<span>Place your bets now, round </span><span style="color: #ff4444;">starting</span>',
         '<span style="font-weight: bold;">Big win last round!</span>',
         '<span>New players </span><span style="color: #ff4444;">joining the game</span>',
         '<span style="color: #ff4444;">Hurry up!</span><span> Time is running out</span>',
