@@ -159,9 +159,7 @@ body, html {
   background-color: #131215; /* Match other containers */
   display: flex;
   align-items: center;
-  padding: 8px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  padding: 12px;
   justify-content: space-between;
 }
 .section1 {
@@ -183,8 +181,6 @@ body, html {
 }
 
 .alert-text {
-  padding: 10px;
-  border-radius: 5px;
   text-align: center;
   font-size: 18px;
 }
@@ -217,7 +213,7 @@ body, html {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: 10px;
+  margin: 12px 12px 0;
   gap: 10px;
 }
 
@@ -328,7 +324,7 @@ body, html {
   justify-content: space-evenly;
   align-items: center; /* Center align dice vertically */
   gap: 5px; /* Reduced gap to tighten spacing between dice */
-  margin: 0; /* Remove margin to save space */
+  margin: 12px; /* Remove margin to save space */
   padding: 0; /* Remove padding for a tighter container */
   background-color: #131215;
   border-radius: 10px;
@@ -379,7 +375,7 @@ body, html {
   background-color: #131215;
   border-radius: 35px;
   padding: 10px 20px;
-  margin-top: 10px;
+  margin: 0 12px;
 }
 
 .scrolling-bar .bet {
@@ -407,7 +403,7 @@ body, html {
   background-color: #131215;
   display: flex;
   flex-direction: row;
-  margin: 10px 30px;
+  margin: 12px;
   padding: 10px 10px;
   border-radius: 10px;
   border: 2px solid rgb(89, 104, 89); /* Initial border color */
