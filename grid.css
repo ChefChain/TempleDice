@@ -84,12 +84,12 @@ body, html {
   margin-left: 5px;
 }
 
+/* Video Section */
 .video-container {
   grid-area: video;
   position: relative;
   width: 100%;
   aspect-ratio: 16/9; /* Keep the correct video ratio for Twitch */
-  
   background-color: #000000;
   overflow: hidden;
 }
@@ -147,32 +147,23 @@ body, html {
 }
 
 .wager-settings {
-  /* Include styles from your original CSS */
   background-color: #17171b;
 }
 
-
-/* Include all other styles from your original style.css here, adjusting selectors as needed */
-
-
 /* Section1 */
 .section1 {
-  background-color: #131215; /* Match other containers */
+  background-color: #131215;
   display: flex;
   align-items: center;
   padding: 12px;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
-.section1 {
-  position: sticky; /* Make it stick to the top of the containing div */
-  top: 0; /* Stick to the top of the container */
-  z-index: 20; /* Make sure it stays above other elements when scrolling */
-  background-color: #131215; /* Ensure background color so it doesn’t blend with content beneath */
-}
-
 
 .section1.no-more-bets {
-  background-color: #ff4444; /* Red background */
+  background-color: #ff4444;
   animation: blink-section 1s infinite;
 }
 
@@ -192,12 +183,12 @@ body, html {
 
 @keyframes fadeInDown {
   from {
-      opacity: 0;
-      transform: translateY(-20px);
+    opacity: 0;
+    transform: translateY(-20px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -224,9 +215,8 @@ body, html {
   }
 }
 
-
 .info-block {
-  width: 100%; /* Stretches info-block to 100% width */
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -235,8 +225,6 @@ body, html {
   border-radius: 5px;
   margin: 0;
 }
-
-
 
 .info-first {
   display: flex;
@@ -268,20 +256,19 @@ body, html {
   font-size: 20px;
 }
 
-
 .price {
   display: flex;
-  align-items: center; /* Vertically center align the content */
-  justify-content: center; /* Optionally center the content horizontally */
-  height: 100%; /* Ensure the div takes up the full height of its parent */
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .amount {
-  font-size: 24px; /* Adjust the size as needed */
+  font-size: 24px;
   font-weight: 600;
-  line-height: 1; /* Set line-height to remove any extra spacing */
-  margin: 0; /* Remove default margin */
-  padding: 15px; /* Remove default padding */
+  line-height: 1;
+  margin: 0;
+  padding: 15px;
 }
 
 .wheel {
@@ -296,35 +283,21 @@ body, html {
 .wheel img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensure full image is visible without resizing */
+  object-fit: contain;
 }
+
 .block {
-  width: auto; /* Prevent it from taking too much width */
-  max-width: 30%; /* Make the block size smaller to 30% of its original size */
-  margin-left: auto; /* Push it as far right as possible */
-  display: flex; 
-  justify-content: flex-end; /* Make sure content inside aligns to the right */
+  width: auto;
+  max-width: 30%;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .block img {
-  width: 100%; /* Adjust the image to take up the available width of the block */
-  height: auto; /* Maintain aspect ratio */
-  object-fit: contain; /* Prevent any cropping */
-}
-
-
-.info-block2 {
-  background-color: #131215;
-  padding: 15px;
-  border-radius: 5px;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.info-block2 img {
-  border-radius: 100%;
-  width: 80%;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .dice-main {
@@ -334,25 +307,25 @@ body, html {
 .dice-container {
   display: flex;
   justify-content: space-evenly;
-  align-items: center; /* Center align dice vertically */
-  gap: 5px; /* Reduced gap to tighten spacing between dice */
-  margin: 12px; /* Remove margin to save space */
-  padding: 0; /* Remove padding for a tighter container */
+  align-items: center;
+  gap: 5px;
+  margin: 12px;
+  padding: 0;
   background-color: #131215;
   border-radius: 10px;
 }
 
 .dice-container .dice {
-  font-size: 100px; /* Adjust font size as needed */
-  line-height: 1; /* Remove extra spacing caused by line height */
-  vertical-align: middle; /* Align the dice vertically */
-  margin: 0; /* Remove any margin around the dice */
-  padding: 0; /* Remove any padding around the dice */
-  display: inline-flex; /* Use inline-flex for more control over alignment */
-  align-items: center; /* Center align text inside the dice */
-  justify-content: center; /* Center align text inside the dice */
+  font-size: 100px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  height: 1em; /* Set height to match the font size to eliminate extra space */
+  height: 1em;
 }
 
 .dice-container.disabled .dice {
@@ -366,7 +339,6 @@ body, html {
 .dice-container.greyed-out {
   opacity: 0.5;
 }
-
 
 .refresh-btn {
   position: absolute;
@@ -418,7 +390,7 @@ body, html {
   margin: 12px;
   padding: 10px 10px;
   border-radius: 10px;
-  border: 2px solid rgb(89, 104, 89); /* Initial border color */
+  border: 2px solid rgb(89, 104, 89);
 }
 
 .confirmedbet-main.blink-border {
@@ -484,7 +456,6 @@ body, html {
   cursor: pointer;
 }
 
-/* Bet Button States */
 .bet-button.state-0 {
   background-color: #1a1a1a;
   color: white;
@@ -498,13 +469,25 @@ body, html {
 }
 
 .bet-button.state-2 {
-  background-color: rgb(133, 216, 133); /* Use consistent green color */
+  background-color: rgb(133, 216, 133);
   color: white;
   animation: flashing 1s infinite;
 }
 
 .bet-button.state-3 {
-  background-color: #ff4444; /* Red background for NO MORE BETS */
+  background-color: #ff4444;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-4 {
+  background-color: #f1c40f; /* Yellow for DICE ROLLING */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-5 {
+  background-color: #3498db; /* Blue for RESULTS */
   color: white;
   animation: flashing 1s infinite;
 }
@@ -514,32 +497,18 @@ body, html {
   50% { opacity: 0.5; }
 }
 
-@media (max-width: 400px) {
-  .confirmedbet-main {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .confirmedbet-main .price {
-    width: 100%;
-  }
-
-  .confirmedbet-main .button {
-    width: 100%;
-  }
-}
-
 .confirmedbet-main .button i {
   margin-left: 10px;
 }
 
 .footer {
+  grid-area: footer;
   display: flex;
-  justify-content: space-evenly; /* Updated to distribute items evenly across the footer */
-  align-items: center; /* Vertically center the items */
+  justify-content: space-evenly;
+  align-items: center;
   padding: 10px;
   font-size: 20px;
-  background-color: #34495e;
+  background-color: #171519;
   color: white;
 }
 
@@ -551,7 +520,7 @@ body, html {
   border-radius: 8px;
   height: 60px;
   width: 60px;
-  margin: 0 10px; /* Add some margin between items for better visual spacing */
+  margin: 0 10px;
 }
 
 @media (max-width: 600px) {
@@ -561,22 +530,8 @@ body, html {
   }
 }
 
-
 .footer .items.active {
   border: 1px solid white;
-}
-
-
-
-/* Footer */
-.footer {
-  grid-area: footer;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 10px;
-  font-size: 20px;
-  background-color: #171519;
-  color: white;
 }
 
 /* Grid adjustments for wider screens */
@@ -587,22 +542,83 @@ body, html {
     grid-template-areas:
       "header main"
       "video main"
-      "video footer";
+      "footer footer";
   }
 
   .video-container {
+    grid-area: video;
     height: 100%;
   }
 
-  .video-container video {
-    height: auto;
-    max-width: 100%;
+  .main {
+    grid-area: main;
+  }
+
+  .footer {
+    grid-area: footer;
   }
 }
 
+/* Winning dice animation */
+.dice.winning-dice {
+    animation: blink-winning 0.5s infinite;
+}
 
+@keyframes blink-winning {
+    0%, 100% { color: rgb(133, 216, 133); }
+    50% { color: yellow; }
+}
 
+/* Flashing alert text */
+.alert-text.flash {
+    animation: flash-alert 1s infinite;
+}
 
+@keyframes flash-alert {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
 
+/* Balance increase animation */
+.balance-increase {
+    animation: balance-increase 2s ease-in-out;
+}
 
+@keyframes balance-increase {
+    0% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+    50% {
+        transform: scale(1.2);
+        color: rgb(133, 216, 133);
+    }
+    100% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+}
 
+/* Style for dice display on the button */
+.bet-button .dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Style for dice inside the button */
+.bet-button .dice-display .dice {
+    font-size: 24px; /* Adjust size as needed */
+    color: white;
+}
+
+/* Animation for matching dice */
+.bet-button .dice-display .dice.matching-dice {
+    animation: flash-matching 1s infinite;
+}
+
+@keyframes flash-matching {
+    0%, 100% { color: white; }
+    50% { color: rgb(133, 216, 133); }
+}
