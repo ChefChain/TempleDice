@@ -1,8 +1,9 @@
 # server.py
 import requests
 import os
-from flask import Flask, request, redirect, jsonify
 from dotenv import load_dotenv
+from http.server import BaseHTTPRequestHandler
+import json
 
 # Load environment variables
 load_dotenv()
@@ -16,7 +17,6 @@ if not TITLE_ID or not SECRET_KEY:
 
 # Set PlayFab API URLs
 TITLE_ID = TITLE_ID.upper()
-SERVER_URL = f'https://{TITLE_ID}.playfabapi.com/Server'
 AUTH_URL = f'https://{TITLE_ID}.playfabapi.com/Client/LoginWithCustomID'
 
 # Set headers for PlayFab API requests
@@ -25,34 +25,50 @@ HEADERS = {
     'X-SecretKey': SECRET_KEY
 }
 
-# Flask app setup
-app = Flask(__name__)
+class handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        if self.path == '/api/login':
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            request_data = json.loads(post_data)
+            custom_id = request_data.get('custom_id')
+            
+            if not custom_id:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "custom_id is required"}).encode())
+                return
 
-@app.route('/login', methods=['POST'])
-def login():
-    """Handles login using PlayFab's LoginWithCustomID API"""
-    custom_id = request.json.get('custom_id')
-    if not custom_id:
-        return jsonify({"error": "custom_id is required"}), 400
+            payload = {
+                "TitleId": TITLE_ID,
+                "CustomId": custom_id,
+                "CreateAccount": True
+            }
 
-    payload = {
-        "TitleId": TITLE_ID,
-        "CustomId": custom_id,
-        "CreateAccount": True
-    }
-
-    try:
-        response = requests.post(AUTH_URL, headers=HEADERS, json=payload)
-        response.raise_for_status()
-        data = response.json()
-        if data.get('code') == 200:
-            session_ticket = data.get('data', {}).get('SessionTicket')
-            playfab_id = data.get('data', {}).get('PlayFabId')
-            return jsonify({"playfab_id": playfab_id, "session_ticket": session_ticket})
+            try:
+                response = requests.post(AUTH_URL, headers=HEADERS, json=payload)
+                response.raise_for_status()
+                data = response.json()
+                if data.get('code') == 200:
+                    session_ticket = data.get('data', {}).get('SessionTicket')
+                    playfab_id = data.get('data', {}).get('PlayFabId')
+                    self.send_response(200)
+                    self.send_header('Content-type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"playfab_id": playfab_id, "session_ticket": session_ticket}).encode())
+                else:
+                    self.send_response(400)
+                    self.send_header('Content-type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"error": data.get('errorMessage', 'Unknown error')}).encode())
+            except requests.exceptions.RequestException as e:
+                self.send_response(500)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode())
         else:
-            return jsonify({"error": data.get('errorMessage', 'Unknown error')}), 400
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": str(e)}), 500
+            self.send_response(404)
+            self.end_headers()
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Test endpoint example: https://templedice.vercel.app/api/login
