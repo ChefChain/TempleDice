@@ -1,4 +1,4 @@
-# api/login.py
+# server.py
 import requests
 import os
 from dotenv import load_dotenv
@@ -30,6 +30,10 @@ class handler(BaseHTTPRequestHandler):
         if self.path == '/api/login':
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
+            
+            # Debugging: Print received post_data
+            print("[DEBUG] Received post data:", post_data)
+
             try:
                 request_data = json.loads(post_data)
             except json.JSONDecodeError:
@@ -54,8 +58,16 @@ class handler(BaseHTTPRequestHandler):
                 "CreateAccount": True
             }
 
+            # Debugging: Print payload
+            print("[DEBUG] Payload for PlayFab request:", payload)
+
             try:
                 response = requests.post(AUTH_URL, headers=HEADERS, json=payload)
+                
+                # Debugging: Print response status and content
+                print("[DEBUG] PlayFab response status code:", response.status_code)
+                print("[DEBUG] PlayFab response content:", response.text)
+                
                 response.raise_for_status()
                 data = response.json()
                 if data.get('code') == 200:
@@ -71,6 +83,9 @@ class handler(BaseHTTPRequestHandler):
                     self.end_headers()
                     self.wfile.write(json.dumps({"error": data.get('errorMessage', 'Unknown error')}).encode())
             except requests.exceptions.RequestException as e:
+                # Debugging: Print error details
+                print("[ERROR] Request to PlayFab failed:", str(e))
+                
                 self.send_response(500)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
