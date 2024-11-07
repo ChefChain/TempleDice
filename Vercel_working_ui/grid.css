@@ -351,21 +351,40 @@ body, html {
   cursor: pointer;
 }
 
+/* Scrolling Bar Styles */
 .scrolling-bar {
   display: flex;
   align-items: center;
-  overflow: hidden;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
   white-space: nowrap;
   background-color: #131215;
   border-radius: 35px;
   padding: 10px 20px;
   margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Hide scrollbar for all browsers */
+.scrolling-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrolling-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .scrolling-bar .bet {
   display: inline-flex;
   align-items: center;
-  margin-right: 40px;
+  margin-right: 20px; /* Reduced margin to prevent overflow */
+  padding: 5px 10px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  color: #ffffff;
+  animation: fadeInBet 0.5s ease-in-out; /* Fade-in animation for smooth appearance */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .scrolling-bar .bet span {
@@ -383,6 +402,81 @@ body, html {
   color: red !important;
 }
 
+/* Highlighting Player's Bets */
+.scrolling-bar .player-bet {
+  background-color: #2c2c2e; /* Darker background for player */
+  border: 2px solid rgb(133, 216, 133); /* Green border */
+}
+
+/* Outcome Indication */
+.scrolling-bar .bet .outcome {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.scrolling-bar .bet-won {
+  background-color: #2ecc71; /* Green background for won bets */
+  color: #ffffff;
+}
+
+.scrolling-bar .bet-lost {
+  background-color: #e74c3c; /* Red background for lost bets */
+  color: #ffffff;
+}
+
+/* Animation for bet entries */
+@keyframes fadeInBet {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style for big winners */
+.scrolling-bar .big-winner {
+  background-color: #f39c12; /* Orange background for big winners */
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 20px;
+  animation: highlight-big-winner 3s ease-in-out infinite;
+}
+
+@keyframes highlight-big-winner {
+  0%, 100% { background-color: #f39c12; }
+  50% { background-color: #d35400; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Responsive Design Enhancements for Scrolling Bar */
+@media (max-width: 600px) {
+  .scrolling-bar {
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .scrolling-bar .bet {
+    margin-right: 20px;
+    padding: 3px 6px;
+    font-size: 14px;
+  }
+
+  .scrolling-bar .dice {
+    font-size: 20px;
+  }
+
+  .scrolling-bar .big-winner {
+    padding: 5px 8px;
+    font-size: 16px;
+  }
+}
+
+/* Confirmed Bet Main Section */
 .confirmedbet-main {
   background-color: #131215;
   display: flex;
@@ -621,4 +715,3121 @@ body, html {
 @keyframes flash-matching {
     0%, 100% { color: white; }
     50% { color: rgb(133, 216, 133); }
+}
+
+/* New Styles Added Below */
+
+/* Smooth Scrolling without Glitches */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Ensure smooth appearance of new bets */
+.scrolling-bar .bet {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Highlight the player's bet upon win or loss */
+.scrolling-bar .player-bet.bet-won {
+  animation: highlight-win 2s ease-in-out;
+}
+
+.scrolling-bar .player-bet.bet-lost {
+  animation: highlight-loss 2s ease-in-out;
+}
+
+@keyframes highlight-win {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #2ecc71; }
+  100% { background-color: #2c2c2e; }
+}
+
+@keyframes highlight-loss {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #e74c3c; }
+  100% { background-color: #2c2c2e; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General Styles */
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #1c1c1e;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.container {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "video"
+    "main"
+    "footer";
+  width: 100%;
+  margin: 0;
+  background-color: #171519;
+  overflow: hidden;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo img {
+  height: 30px;
+  width: 40px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+}
+
+.logo-text .bold {
+  font-weight: 700;
+}
+
+.logo-text .dot {
+  font-size: 1.5rem;
+  color: red;
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes blink-dot {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.header-icons {
+  border: 1px solid grey;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-icons .icon {
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+/* Video Section */
+.video-container {
+  grid-area: video;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9; /* Keep the correct video ratio for Twitch */
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.game-pot {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.game-pot .live {
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.rightdiv {
+  display: flex;
+  align-items: center;
+  background-color: #2c2c2e;
+  opacity: 0.9;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.rightdiv i {
+  position: absolute;
+  right: 0;
+}
+
+.main {
+  grid-area: main;
+  background-color: #17171b;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.wager-settings {
+  background-color: #17171b;
+}
+
+/* Section1 */
+.section1 {
+  background-color: #131215;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.section1.no-more-bets {
+  background-color: #ff4444;
+  animation: blink-section 1s infinite;
+}
+
+@keyframes blink-section {
+  0%, 100% { background-color: #ff4444; }
+  50% { background-color: #990000; }
+}
+
+.alert-text {
+  text-align: center;
+  font-size: 18px;
+}
+
+.alert-text.fade-in {
+  animation: fadeInDown 1s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 12px 12px 0;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .balance-info {
+    flex-direction: column;
+  }
+}
+
+.info-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: #151417;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.info-first {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-second {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.info-second span {
+  background-color: #2c2c2e;
+  padding: 10px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.info-second .active {
+  background-color: rgb(133, 216, 133);
+}
+
+.info-block p {
+  font-size: 20px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.amount {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding: 15px;
+}
+
+.wheel {
+  width: 50px;
+  height: 150px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.wheel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.block {
+  width: auto;
+  max-width: 30%;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.block img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.dice-main {
+  position: relative;
+}
+
+.dice-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+  margin: 12px;
+  padding: 0;
+  background-color: #131215;
+  border-radius: 10px;
+}
+
+.dice-container .dice {
+  font-size: 100px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 1em;
+}
+
+.dice-container.disabled .dice {
+  cursor: default;
+}
+
+.dice-container .red-dice {
+  color: red;
+}
+
+.dice-container.greyed-out {
+  opacity: 0.5;
+}
+
+.refresh-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Scrolling Bar Styles */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Hide scrollbar for all browsers */
+.scrolling-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrolling-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrolling-bar .bet {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px; /* Reduced margin to prevent overflow */
+  padding: 5px 10px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  color: #ffffff;
+  animation: fadeInBet 0.5s ease-in-out; /* Fade-in animation for smooth appearance */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.scrolling-bar .bet span {
+  color: rgb(133, 216, 133);
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.scrolling-bar .dice {
+  color: white !important;
+  font-size: 30px;
+}
+
+.scrolling-bar .dice.red-dice {
+  color: red !important;
+}
+
+/* Highlighting Player's Bets */
+.scrolling-bar .player-bet {
+  background-color: #2c2c2e; /* Darker background for player */
+  border: 2px solid rgb(133, 216, 133); /* Green border */
+}
+
+/* Outcome Indication */
+.scrolling-bar .bet .outcome {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.scrolling-bar .bet-won {
+  background-color: #2ecc71; /* Green background for won bets */
+  color: #ffffff;
+}
+
+.scrolling-bar .bet-lost {
+  background-color: #e74c3c; /* Red background for lost bets */
+  color: #ffffff;
+}
+
+/* Animation for bet entries */
+@keyframes fadeInBet {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style for big winners */
+.scrolling-bar .big-winner {
+  background-color: #f39c12; /* Orange background for big winners */
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 20px;
+  animation: highlight-big-winner 3s ease-in-out infinite;
+}
+
+@keyframes highlight-big-winner {
+  0%, 100% { background-color: #f39c12; }
+  50% { background-color: #d35400; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Responsive Design Enhancements for Scrolling Bar */
+@media (max-width: 600px) {
+  .scrolling-bar {
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .scrolling-bar .bet {
+    margin-right: 20px;
+    padding: 3px 6px;
+    font-size: 14px;
+  }
+
+  .scrolling-bar .dice {
+    font-size: 20px;
+  }
+
+  .scrolling-bar .big-winner {
+    padding: 5px 8px;
+    font-size: 16px;
+  }
+}
+
+/* Confirmed Bet Main Section */
+.confirmedbet-main {
+  background-color: #131215;
+  display: flex;
+  flex-direction: row;
+  margin: 12px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 2px solid rgb(89, 104, 89);
+}
+
+.confirmedbet-main.blink-border {
+  animation: blink-border 1s infinite;
+}
+
+.confirmedbet-main.blink-border-red {
+  animation: blink-border-red 1s infinite;
+}
+
+@keyframes blink-border {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: rgb(133, 216, 133); }
+}
+
+@keyframes blink-border-red {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: #ff4444; }
+}
+
+@media (max-width: 400px) {
+  .confirmedbet-main {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirmedbet-main .price {
+    width: 100%;
+  }
+
+  .confirmedbet-main .button {
+    width: 100%;
+  }
+}
+
+.confirmedbet-main .price {
+  text-align: center;
+  width: 40%;
+}
+
+.confirmedbet-main .price .amount {
+  color: rgb(133, 216, 133);
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .amount span {
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .label {
+  font-size: 14px;
+}
+
+.confirmedbet-main .button {
+  width: 60%;
+  padding: 15px 15px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.bet-button.state-0 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-1 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-2 {
+  background-color: rgb(133, 216, 133);
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-3 {
+  background-color: #ff4444;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-4 {
+  background-color: #f1c40f; /* Yellow for DICE ROLLING */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-5 {
+  background-color: #3498db; /* Blue for RESULTS */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.confirmedbet-main .button i {
+  margin-left: 10px;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #171519;
+  color: white;
+}
+
+.footer .items {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 60px;
+  width: 60px;
+  margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .footer .items {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.footer .items.active {
+  border: 1px solid white;
+}
+
+/* Grid adjustments for wider screens */
+@media (min-aspect-ratio: 1/1) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header main"
+      "video main"
+      "footer footer";
+  }
+
+  .video-container {
+    grid-area: video;
+    height: 100%;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .footer {
+    grid-area: footer;
+  }
+}
+
+/* Winning dice animation */
+.dice.winning-dice {
+    animation: blink-winning 0.5s infinite;
+}
+
+@keyframes blink-winning {
+    0%, 100% { color: rgb(133, 216, 133); }
+    50% { color: yellow; }
+}
+
+/* Flashing alert text */
+.alert-text.flash {
+    animation: flash-alert 1s infinite;
+}
+
+@keyframes flash-alert {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Balance increase animation */
+.balance-increase {
+    animation: balance-increase 2s ease-in-out;
+}
+
+@keyframes balance-increase {
+    0% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+    50% {
+        transform: scale(1.2);
+        color: rgb(133, 216, 133);
+    }
+    100% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+}
+
+/* Style for dice display on the button */
+.bet-button .dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Style for dice inside the button */
+.bet-button .dice-display .dice {
+    font-size: 30px; /* Adjust size as needed */
+    color: white;
+}
+
+/* Animation for matching dice */
+.bet-button .dice-display .dice.matching-dice {
+    animation: flash-matching 1s infinite;
+}
+
+@keyframes flash-matching {
+    0%, 100% { color: white; }
+    50% { color: rgb(133, 216, 133); }
+}
+
+/* New Styles Added Below */
+
+/* Smooth Scrolling without Glitches */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Ensure smooth appearance of new bets */
+.scrolling-bar .bet {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Highlight the player's bet upon win or loss */
+.scrolling-bar .player-bet.bet-won {
+  animation: highlight-win 2s ease-in-out;
+}
+
+.scrolling-bar .player-bet.bet-lost {
+  animation: highlight-loss 2s ease-in-out;
+}
+
+@keyframes highlight-win {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #2ecc71; }
+  100% { background-color: #2c2c2e; }
+}
+
+@keyframes highlight-loss {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #e74c3c; }
+  100% { background-color: #2c2c2e; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General Styles */
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #1c1c1e;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.container {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "video"
+    "main"
+    "footer";
+  width: 100%;
+  margin: 0;
+  background-color: #171519;
+  overflow: hidden;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo img {
+  height: 30px;
+  width: 40px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+}
+
+.logo-text .bold {
+  font-weight: 700;
+}
+
+.logo-text .dot {
+  font-size: 1.5rem;
+  color: red;
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes blink-dot {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.header-icons {
+  border: 1px solid grey;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-icons .icon {
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+/* Video Section */
+.video-container {
+  grid-area: video;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9; /* Keep the correct video ratio for Twitch */
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.game-pot {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.game-pot .live {
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.rightdiv {
+  display: flex;
+  align-items: center;
+  background-color: #2c2c2e;
+  opacity: 0.9;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.rightdiv i {
+  position: absolute;
+  right: 0;
+}
+
+.main {
+  grid-area: main;
+  background-color: #17171b;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.wager-settings {
+  background-color: #17171b;
+}
+
+/* Section1 */
+.section1 {
+  background-color: #131215;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.section1.no-more-bets {
+  background-color: #ff4444;
+  animation: blink-section 1s infinite;
+}
+
+@keyframes blink-section {
+  0%, 100% { background-color: #ff4444; }
+  50% { background-color: #990000; }
+}
+
+.alert-text {
+  text-align: center;
+  font-size: 18px;
+}
+
+.alert-text.fade-in {
+  animation: fadeInDown 1s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 12px 12px 0;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .balance-info {
+    flex-direction: column;
+  }
+}
+
+.info-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: #151417;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.info-first {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-second {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.info-second span {
+  background-color: #2c2c2e;
+  padding: 10px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.info-second .active {
+  background-color: rgb(133, 216, 133);
+}
+
+.info-block p {
+  font-size: 20px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.amount {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding: 15px;
+}
+
+.wheel {
+  width: 50px;
+  height: 150px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.wheel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.block {
+  width: auto;
+  max-width: 30%;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.block img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.dice-main {
+  position: relative;
+}
+
+.dice-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+  margin: 12px;
+  padding: 0;
+  background-color: #131215;
+  border-radius: 10px;
+}
+
+.dice-container .dice {
+  font-size: 100px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 1em;
+}
+
+.dice-container.disabled .dice {
+  cursor: default;
+}
+
+.dice-container .red-dice {
+  color: red;
+}
+
+.dice-container.greyed-out {
+  opacity: 0.5;
+}
+
+.refresh-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Scrolling Bar Styles */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Hide scrollbar for all browsers */
+.scrolling-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrolling-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrolling-bar .bet {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px; /* Reduced margin to prevent overflow */
+  padding: 5px 10px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  color: #ffffff;
+  animation: fadeInBet 0.5s ease-in-out; /* Fade-in animation for smooth appearance */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.scrolling-bar .bet span {
+  color: rgb(133, 216, 133);
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.scrolling-bar .dice {
+  color: white !important;
+  font-size: 30px;
+}
+
+.scrolling-bar .dice.red-dice {
+  color: red !important;
+}
+
+/* Highlighting Player's Bets */
+.scrolling-bar .player-bet {
+  background-color: #2c2c2e; /* Darker background for player */
+  border: 2px solid rgb(133, 216, 133); /* Green border */
+}
+
+/* Outcome Indication */
+.scrolling-bar .bet .outcome {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.scrolling-bar .bet-won {
+  background-color: #2ecc71; /* Green background for won bets */
+  color: #ffffff;
+}
+
+.scrolling-bar .bet-lost {
+  background-color: #e74c3c; /* Red background for lost bets */
+  color: #ffffff;
+}
+
+/* Animation for bet entries */
+@keyframes fadeInBet {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style for big winners */
+.scrolling-bar .big-winner {
+  background-color: #f39c12; /* Orange background for big winners */
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 20px;
+  animation: highlight-big-winner 3s ease-in-out infinite;
+}
+
+@keyframes highlight-big-winner {
+  0%, 100% { background-color: #f39c12; }
+  50% { background-color: #d35400; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Responsive Design Enhancements for Scrolling Bar */
+@media (max-width: 600px) {
+  .scrolling-bar {
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .scrolling-bar .bet {
+    margin-right: 20px;
+    padding: 3px 6px;
+    font-size: 14px;
+  }
+
+  .scrolling-bar .dice {
+    font-size: 20px;
+  }
+
+  .scrolling-bar .big-winner {
+    padding: 5px 8px;
+    font-size: 16px;
+  }
+}
+
+/* Confirmed Bet Main Section */
+.confirmedbet-main {
+  background-color: #131215;
+  display: flex;
+  flex-direction: row;
+  margin: 12px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 2px solid rgb(89, 104, 89);
+}
+
+.confirmedbet-main.blink-border {
+  animation: blink-border 1s infinite;
+}
+
+.confirmedbet-main.blink-border-red {
+  animation: blink-border-red 1s infinite;
+}
+
+@keyframes blink-border {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: rgb(133, 216, 133); }
+}
+
+@keyframes blink-border-red {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: #ff4444; }
+}
+
+@media (max-width: 400px) {
+  .confirmedbet-main {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirmedbet-main .price {
+    width: 100%;
+  }
+
+  .confirmedbet-main .button {
+    width: 100%;
+  }
+}
+
+.confirmedbet-main .price {
+  text-align: center;
+  width: 40%;
+}
+
+.confirmedbet-main .price .amount {
+  color: rgb(133, 216, 133);
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .amount span {
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .label {
+  font-size: 14px;
+}
+
+.confirmedbet-main .button {
+  width: 60%;
+  padding: 15px 15px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.bet-button.state-0 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-1 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-2 {
+  background-color: rgb(133, 216, 133);
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-3 {
+  background-color: #ff4444;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-4 {
+  background-color: #f1c40f; /* Yellow for DICE ROLLING */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-5 {
+  background-color: #3498db; /* Blue for RESULTS */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.confirmedbet-main .button i {
+  margin-left: 10px;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #171519;
+  color: white;
+}
+
+.footer .items {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 60px;
+  width: 60px;
+  margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .footer .items {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.footer .items.active {
+  border: 1px solid white;
+}
+
+/* Grid adjustments for wider screens */
+@media (min-aspect-ratio: 1/1) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header main"
+      "video main"
+      "footer footer";
+  }
+
+  .video-container {
+    grid-area: video;
+    height: 100%;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .footer {
+    grid-area: footer;
+  }
+}
+
+/* Winning dice animation */
+.dice.winning-dice {
+    animation: blink-winning 0.5s infinite;
+}
+
+@keyframes blink-winning {
+    0%, 100% { color: rgb(133, 216, 133); }
+    50% { color: yellow; }
+}
+
+/* Flashing alert text */
+.alert-text.flash {
+    animation: flash-alert 1s infinite;
+}
+
+@keyframes flash-alert {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Balance increase animation */
+.balance-increase {
+    animation: balance-increase 2s ease-in-out;
+}
+
+@keyframes balance-increase {
+    0% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+    50% {
+        transform: scale(1.2);
+        color: rgb(133, 216, 133);
+    }
+    100% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+}
+
+/* Style for dice display on the button */
+.bet-button .dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Style for dice inside the button */
+.bet-button .dice-display .dice {
+    font-size: 30px; /* Adjust size as needed */
+    color: white;
+}
+
+/* Animation for matching dice */
+.bet-button .dice-display .dice.matching-dice {
+    animation: flash-matching 1s infinite;
+}
+
+@keyframes flash-matching {
+    0%, 100% { color: white; }
+    50% { color: rgb(133, 216, 133); }
+}
+
+/* New Styles Added Below */
+
+/* Smooth Scrolling without Glitches */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Ensure smooth appearance of new bets */
+.scrolling-bar .bet {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Highlight the player's bet upon win or loss */
+.scrolling-bar .player-bet.bet-won {
+  animation: highlight-win 2s ease-in-out;
+}
+
+.scrolling-bar .player-bet.bet-lost {
+  animation: highlight-loss 2s ease-in-out;
+}
+
+@keyframes highlight-win {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #2ecc71; }
+  100% { background-color: #2c2c2e; }
+}
+
+@keyframes highlight-loss {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #e74c3c; }
+  100% { background-color: #2c2c2e; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General Styles */
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #1c1c1e;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.container {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "video"
+    "main"
+    "footer";
+  width: 100%;
+  margin: 0;
+  background-color: #171519;
+  overflow: hidden;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo img {
+  height: 30px;
+  width: 40px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+}
+
+.logo-text .bold {
+  font-weight: 700;
+}
+
+.logo-text .dot {
+  font-size: 1.5rem;
+  color: red;
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes blink-dot {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.header-icons {
+  border: 1px solid grey;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-icons .icon {
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+/* Video Section */
+.video-container {
+  grid-area: video;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9; /* Keep the correct video ratio for Twitch */
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.game-pot {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.game-pot .live {
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.rightdiv {
+  display: flex;
+  align-items: center;
+  background-color: #2c2c2e;
+  opacity: 0.9;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.rightdiv i {
+  position: absolute;
+  right: 0;
+}
+
+.main {
+  grid-area: main;
+  background-color: #17171b;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.wager-settings {
+  background-color: #17171b;
+}
+
+/* Section1 */
+.section1 {
+  background-color: #131215;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.section1.no-more-bets {
+  background-color: #ff4444;
+  animation: blink-section 1s infinite;
+}
+
+@keyframes blink-section {
+  0%, 100% { background-color: #ff4444; }
+  50% { background-color: #990000; }
+}
+
+.alert-text {
+  text-align: center;
+  font-size: 18px;
+}
+
+.alert-text.fade-in {
+  animation: fadeInDown 1s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 12px 12px 0;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .balance-info {
+    flex-direction: column;
+  }
+}
+
+.info-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: #151417;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.info-first {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-second {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.info-second span {
+  background-color: #2c2c2e;
+  padding: 10px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.info-second .active {
+  background-color: rgb(133, 216, 133);
+}
+
+.info-block p {
+  font-size: 20px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.amount {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding: 15px;
+}
+
+.wheel {
+  width: 50px;
+  height: 150px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.wheel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.block {
+  width: auto;
+  max-width: 30%;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.block img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.dice-main {
+  position: relative;
+}
+
+.dice-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+  margin: 12px;
+  padding: 0;
+  background-color: #131215;
+  border-radius: 10px;
+}
+
+.dice-container .dice {
+  font-size: 100px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 1em;
+}
+
+.dice-container.disabled .dice {
+  cursor: default;
+}
+
+.dice-container .red-dice {
+  color: red;
+}
+
+.dice-container.greyed-out {
+  opacity: 0.5;
+}
+
+.refresh-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Scrolling Bar Styles */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Hide scrollbar for all browsers */
+.scrolling-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrolling-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrolling-bar .bet {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px; /* Reduced margin to prevent overflow */
+  padding: 5px 10px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  color: #ffffff;
+  animation: fadeInBet 0.5s ease-in-out; /* Fade-in animation for smooth appearance */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.scrolling-bar .bet span {
+  color: rgb(133, 216, 133);
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.scrolling-bar .dice {
+  color: white !important;
+  font-size: 30px;
+}
+
+.scrolling-bar .dice.red-dice {
+  color: red !important;
+}
+
+/* Highlighting Player's Bets */
+.scrolling-bar .player-bet {
+  background-color: #2c2c2e; /* Darker background for player */
+  border: 2px solid rgb(133, 216, 133); /* Green border */
+}
+
+/* Outcome Indication */
+.scrolling-bar .bet .outcome {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.scrolling-bar .bet-won {
+  background-color: #2ecc71; /* Green background for won bets */
+  color: #ffffff;
+}
+
+.scrolling-bar .bet-lost {
+  background-color: #e74c3c; /* Red background for lost bets */
+  color: #ffffff;
+}
+
+/* Animation for bet entries */
+@keyframes fadeInBet {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style for big winners */
+.scrolling-bar .big-winner {
+  background-color: #f39c12; /* Orange background for big winners */
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 20px;
+  animation: highlight-big-winner 3s ease-in-out infinite;
+}
+
+@keyframes highlight-big-winner {
+  0%, 100% { background-color: #f39c12; }
+  50% { background-color: #d35400; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Responsive Design Enhancements for Scrolling Bar */
+@media (max-width: 600px) {
+  .scrolling-bar {
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .scrolling-bar .bet {
+    margin-right: 20px;
+    padding: 3px 6px;
+    font-size: 14px;
+  }
+
+  .scrolling-bar .dice {
+    font-size: 20px;
+  }
+
+  .scrolling-bar .big-winner {
+    padding: 5px 8px;
+    font-size: 16px;
+  }
+}
+
+/* Confirmed Bet Main Section */
+.confirmedbet-main {
+  background-color: #131215;
+  display: flex;
+  flex-direction: row;
+  margin: 12px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 2px solid rgb(89, 104, 89);
+}
+
+.confirmedbet-main.blink-border {
+  animation: blink-border 1s infinite;
+}
+
+.confirmedbet-main.blink-border-red {
+  animation: blink-border-red 1s infinite;
+}
+
+@keyframes blink-border {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: rgb(133, 216, 133); }
+}
+
+@keyframes blink-border-red {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: #ff4444; }
+}
+
+@media (max-width: 400px) {
+  .confirmedbet-main {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirmedbet-main .price {
+    width: 100%;
+  }
+
+  .confirmedbet-main .button {
+    width: 100%;
+  }
+}
+
+.confirmedbet-main .price {
+  text-align: center;
+  width: 40%;
+}
+
+.confirmedbet-main .price .amount {
+  color: rgb(133, 216, 133);
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .amount span {
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .label {
+  font-size: 14px;
+}
+
+.confirmedbet-main .button {
+  width: 60%;
+  padding: 15px 15px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.bet-button.state-0 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-1 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-2 {
+  background-color: rgb(133, 216, 133);
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-3 {
+  background-color: #ff4444;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-4 {
+  background-color: #f1c40f; /* Yellow for DICE ROLLING */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-5 {
+  background-color: #3498db; /* Blue for RESULTS */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.confirmedbet-main .button i {
+  margin-left: 10px;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #171519;
+  color: white;
+}
+
+.footer .items {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 60px;
+  width: 60px;
+  margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .footer .items {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.footer .items.active {
+  border: 1px solid white;
+}
+
+/* Grid adjustments for wider screens */
+@media (min-aspect-ratio: 1/1) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header main"
+      "video main"
+      "footer footer";
+  }
+
+  .video-container {
+    grid-area: video;
+    height: 100%;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .footer {
+    grid-area: footer;
+  }
+}
+
+/* Winning dice animation */
+.dice.winning-dice {
+    animation: blink-winning 0.5s infinite;
+}
+
+@keyframes blink-winning {
+    0%, 100% { color: rgb(133, 216, 133); }
+    50% { color: yellow; }
+}
+
+/* Flashing alert text */
+.alert-text.flash {
+    animation: flash-alert 1s infinite;
+}
+
+@keyframes flash-alert {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Balance increase animation */
+.balance-increase {
+    animation: balance-increase 2s ease-in-out;
+}
+
+@keyframes balance-increase {
+    0% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+    50% {
+        transform: scale(1.2);
+        color: rgb(133, 216, 133);
+    }
+    100% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+}
+
+/* Style for dice display on the button */
+.bet-button .dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Style for dice inside the button */
+.bet-button .dice-display .dice {
+    font-size: 30px; /* Adjust size as needed */
+    color: white;
+}
+
+/* Animation for matching dice */
+.bet-button .dice-display .dice.matching-dice {
+    animation: flash-matching 1s infinite;
+}
+
+@keyframes flash-matching {
+    0%, 100% { color: white; }
+    50% { color: rgb(133, 216, 133); }
+}
+
+/* New Styles Added Below */
+
+/* Smooth Scrolling without Glitches */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Ensure smooth appearance of new bets */
+.scrolling-bar .bet {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Highlight the player's bet upon win or loss */
+.scrolling-bar .player-bet.bet-won {
+  animation: highlight-win 2s ease-in-out;
+}
+
+.scrolling-bar .player-bet.bet-lost {
+  animation: highlight-loss 2s ease-in-out;
+}
+
+@keyframes highlight-win {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #2ecc71; }
+  100% { background-color: #2c2c2e; }
+}
+
+@keyframes highlight-loss {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #e74c3c; }
+  100% { background-color: #2c2c2e; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General Styles */
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #1c1c1e;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.container {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "video"
+    "main"
+    "footer";
+  width: 100%;
+  margin: 0;
+  background-color: #171519;
+  overflow: hidden;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo img {
+  height: 30px;
+  width: 40px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+}
+
+.logo-text .bold {
+  font-weight: 700;
+}
+
+.logo-text .dot {
+  font-size: 1.5rem;
+  color: red;
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes blink-dot {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.header-icons {
+  border: 1px solid grey;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-icons .icon {
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+/* Video Section */
+.video-container {
+  grid-area: video;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9; /* Keep the correct video ratio for Twitch */
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.game-pot {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.game-pot .live {
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.rightdiv {
+  display: flex;
+  align-items: center;
+  background-color: #2c2c2e;
+  opacity: 0.9;
+  padding: 10px 15px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.rightdiv i {
+  position: absolute;
+  right: 0;
+}
+
+.main {
+  grid-area: main;
+  background-color: #17171b;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.wager-settings {
+  background-color: #17171b;
+}
+
+/* Section1 */
+.section1 {
+  background-color: #131215;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.section1.no-more-bets {
+  background-color: #ff4444;
+  animation: blink-section 1s infinite;
+}
+
+@keyframes blink-section {
+  0%, 100% { background-color: #ff4444; }
+  50% { background-color: #990000; }
+}
+
+.alert-text {
+  text-align: center;
+  font-size: 18px;
+}
+
+.alert-text.fade-in {
+  animation: fadeInDown 1s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 12px 12px 0;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .balance-info {
+    flex-direction: column;
+  }
+}
+
+.info-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: #151417;
+  border-radius: 5px;
+  margin: 0;
+}
+
+.info-first {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info-second {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.info-second span {
+  background-color: #2c2c2e;
+  padding: 10px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.info-second .active {
+  background-color: rgb(133, 216, 133);
+}
+
+.info-block p {
+  font-size: 20px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.amount {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+  padding: 15px;
+}
+
+.wheel {
+  width: 50px;
+  height: 150px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.wheel img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.block {
+  width: auto;
+  max-width: 30%;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.block img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.dice-main {
+  position: relative;
+}
+
+.dice-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+  margin: 12px;
+  padding: 0;
+  background-color: #131215;
+  border-radius: 10px;
+}
+
+.dice-container .dice {
+  font-size: 100px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 1em;
+}
+
+.dice-container.disabled .dice {
+  cursor: default;
+}
+
+.dice-container .red-dice {
+  color: red;
+}
+
+.dice-container.greyed-out {
+  opacity: 0.5;
+}
+
+.refresh-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Scrolling Bar Styles */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Hide scrollbar for all browsers */
+.scrolling-bar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrolling-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrolling-bar .bet {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px; /* Reduced margin to prevent overflow */
+  padding: 5px 10px;
+  background-color: #1a1a1a;
+  border-radius: 20px;
+  color: #ffffff;
+  animation: fadeInBet 0.5s ease-in-out; /* Fade-in animation for smooth appearance */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.scrolling-bar .bet span {
+  color: rgb(133, 216, 133);
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.scrolling-bar .dice {
+  color: white !important;
+  font-size: 30px;
+}
+
+.scrolling-bar .dice.red-dice {
+  color: red !important;
+}
+
+/* Highlighting Player's Bets */
+.scrolling-bar .player-bet {
+  background-color: #2c2c2e; /* Darker background for player */
+  border: 2px solid rgb(133, 216, 133); /* Green border */
+}
+
+/* Outcome Indication */
+.scrolling-bar .bet .outcome {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.scrolling-bar .bet-won {
+  background-color: #2ecc71; /* Green background for won bets */
+  color: #ffffff;
+}
+
+.scrolling-bar .bet-lost {
+  background-color: #e74c3c; /* Red background for lost bets */
+  color: #ffffff;
+}
+
+/* Animation for bet entries */
+@keyframes fadeInBet {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Style for big winners */
+.scrolling-bar .big-winner {
+  background-color: #f39c12; /* Orange background for big winners */
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 20px;
+  animation: highlight-big-winner 3s ease-in-out infinite;
+}
+
+@keyframes highlight-big-winner {
+  0%, 100% { background-color: #f39c12; }
+  50% { background-color: #d35400; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Responsive Design Enhancements for Scrolling Bar */
+@media (max-width: 600px) {
+  .scrolling-bar {
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .scrolling-bar .bet {
+    margin-right: 20px;
+    padding: 3px 6px;
+    font-size: 14px;
+  }
+
+  .scrolling-bar .dice {
+    font-size: 20px;
+  }
+
+  .scrolling-bar .big-winner {
+    padding: 5px 8px;
+    font-size: 16px;
+  }
+}
+
+/* Confirmed Bet Main Section */
+.confirmedbet-main {
+  background-color: #131215;
+  display: flex;
+  flex-direction: row;
+  margin: 12px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 2px solid rgb(89, 104, 89);
+}
+
+.confirmedbet-main.blink-border {
+  animation: blink-border 1s infinite;
+}
+
+.confirmedbet-main.blink-border-red {
+  animation: blink-border-red 1s infinite;
+}
+
+@keyframes blink-border {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: rgb(133, 216, 133); }
+}
+
+@keyframes blink-border-red {
+  0%, 100% { border-color: rgb(89, 104, 89); }
+  50% { border-color: #ff4444; }
+}
+
+@media (max-width: 400px) {
+  .confirmedbet-main {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirmedbet-main .price {
+    width: 100%;
+  }
+
+  .confirmedbet-main .button {
+    width: 100%;
+  }
+}
+
+.confirmedbet-main .price {
+  text-align: center;
+  width: 40%;
+}
+
+.confirmedbet-main .price .amount {
+  color: rgb(133, 216, 133);
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .amount span {
+  font-size: 24px;
+}
+
+.confirmedbet-main .price .label {
+  font-size: 14px;
+}
+
+.confirmedbet-main .button {
+  width: 60%;
+  padding: 15px 15px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.bet-button.state-0 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-1 {
+  background-color: #1a1a1a;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-2 {
+  background-color: rgb(133, 216, 133);
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-3 {
+  background-color: #ff4444;
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-4 {
+  background-color: #f1c40f; /* Yellow for DICE ROLLING */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+.bet-button.state-5 {
+  background-color: #3498db; /* Blue for RESULTS */
+  color: white;
+  animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.confirmedbet-main .button i {
+  margin-left: 10px;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #171519;
+  color: white;
+}
+
+.footer .items {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 60px;
+  width: 60px;
+  margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .footer .items {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.footer .items.active {
+  border: 1px solid white;
+}
+
+/* Grid adjustments for wider screens */
+@media (min-aspect-ratio: 1/1) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header main"
+      "video main"
+      "footer footer";
+  }
+
+  .video-container {
+    grid-area: video;
+    height: 100%;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .footer {
+    grid-area: footer;
+  }
+}
+
+/* Winning dice animation */
+.dice.winning-dice {
+    animation: blink-winning 0.5s infinite;
+}
+
+@keyframes blink-winning {
+    0%, 100% { color: rgb(133, 216, 133); }
+    50% { color: yellow; }
+}
+
+/* Flashing alert text */
+.alert-text.flash {
+    animation: flash-alert 1s infinite;
+}
+
+@keyframes flash-alert {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Balance increase animation */
+.balance-increase {
+    animation: balance-increase 2s ease-in-out;
+}
+
+@keyframes balance-increase {
+    0% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+    50% {
+        transform: scale(1.2);
+        color: rgb(133, 216, 133);
+    }
+    100% {
+        transform: scale(1);
+        color: #ffffff;
+    }
+}
+
+/* Style for dice display on the button */
+.bet-button .dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Style for dice inside the button */
+.bet-button .dice-display .dice {
+    font-size: 30px; /* Adjust size as needed */
+    color: white;
+}
+
+/* Animation for matching dice */
+.bet-button .dice-display .dice.matching-dice {
+    animation: flash-matching 1s infinite;
+}
+
+@keyframes flash-matching {
+    0%, 100% { color: white; }
+    50% { color: rgb(133, 216, 133); }
+}
+
+/* New Styles Added Below */
+
+/* Smooth Scrolling without Glitches */
+.scrolling-bar {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  white-space: nowrap;
+  background-color: #131215;
+  border-radius: 35px;
+  padding: 10px 20px;
+  margin: 0 12px;
+  position: relative;
+  /* Remove any manual scrolling animations to prevent glitches */
+}
+
+/* Ensure smooth appearance of new bets */
+.scrolling-bar .bet {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Highlight the player's bet upon win or loss */
+.scrolling-bar .player-bet.bet-won {
+  animation: highlight-win 2s ease-in-out;
+}
+
+.scrolling-bar .player-bet.bet-lost {
+  animation: highlight-loss 2s ease-in-out;
+}
+
+@keyframes highlight-win {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #2ecc71; }
+  100% { background-color: #2c2c2e; }
+}
+
+@keyframes highlight-loss {
+  0% { background-color: #2c2c2e; }
+  50% { background-color: #e74c3c; }
+  100% { background-color: #2c2c2e; }
+}
+
+/* Ensure that newly added bets do not cause unwanted wrapping */
+.scrolling-bar .bet, .scrolling-bar .big-winner {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
 }
