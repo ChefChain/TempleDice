@@ -97,7 +97,7 @@
     <div id="loginContainer">
         <h2>Login</h2>
         <input type="text" id="username" placeholder="Username or Email" required>
-        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="password" placeholder="Password (min 6 characters)" required>
         <button id="loginButton">Login with PlayFab</button>
     </div>
 
@@ -117,14 +117,20 @@
             const chatContainer = document.getElementById('chatContainer');
 
             // Initialize PlayFab
-            PlayFab.settings.titleId = "E9D61"; // Replace with your PlayFab Title ID
+            PlayFab.settings.titleId = "E9D61"; // *** IMPORTANT: Replace with your actual PlayFab Title ID ***
 
             loginButton.addEventListener('click', function() {
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
 
+                // Basic input validation
                 if (username === "" || password === "") {
                     alert("Please enter both username and password.");
+                    return;
+                }
+
+                if (password.length < 6) {
+                    alert("Password must be at least 6 characters long.");
                     return;
                 }
 
@@ -132,7 +138,7 @@
                 PlayFabClientSDK.LoginWithPlayFab({
                     Username: username,
                     Password: password,
-                    CreateAccount: false
+                    CreateAccount: true // Set to true for testing; set to false in production if desired
                 }, function(result, error) {
                     if (result) {
                         console.log("Login successful:", result);
@@ -144,7 +150,14 @@
                         initializeAgoraChat(result.data.SessionTicket, result.data.PlayFabId);
                     } else if (error) {
                         console.error("Login failed:", error);
-                        alert("Login failed: " + error.errorMessage);
+                        // Provide more detailed error messages based on errorCode
+                        let errorMessage = "Login failed.";
+                        if (error.errorCode === 1000) {
+                            errorMessage = "Invalid input parameters. Please check your username and password.";
+                        } else if (error.errorCode === 1131) {
+                            errorMessage = "Invalid Title ID. Please contact the administrator.";
+                        }
+                        alert(errorMessage);
                     }
                 });
             });
