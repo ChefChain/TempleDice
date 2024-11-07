@@ -85,7 +85,7 @@ function initializeAgoraChat() {
         return;
     }
     const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-    const appID = "32db6cb30a5541869bcb2774afd10fd4";  // Replace with your Agora App ID
+    const appID = "ae86896a6ea84a3880cfa1bb4e8463b0";  // Replace with your Agora App ID
     let channelName = "TempleDice";  // Replace with your desired channel
     const token = null;  // Replace with a valid token if required
 
