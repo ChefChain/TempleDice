@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Dice Game</title>
+    <!-- Include necessary styles and scripts -->
+</head>
+<body>
+    <div id="registerContainer">
+        <h2>Register</h2>
+        <div id="errorMessage"></div>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password (min 6 characters)" required>
+        <button id="registerButton">Register</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerButton = document.getElementById('registerButton');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorMessageDiv = document.getElementById('errorMessage');
+    
+            // Initialize PlayFab
+            PlayFab.settings.titleId = "YOUR_ACTUAL_PLAYFAB_TITLE_ID"; // Replace with your 8-character TitleId
+    
+            registerButton.addEventListener('click', function() {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+    
+                // Clear previous error messages
+                errorMessageDiv.innerText = "";
+    
+                // Basic input validation
+                if (username === "" || password === "") {
+                    errorMessageDiv.innerText = "Please enter both username and password.";
+                    return;
+                }
+    
+                if (password.length < 6) {
+                    errorMessageDiv.innerText = "Password must be at least 6 characters long.";
+                    return;
+                }
+    
+                // Register with PlayFab
+                PlayFabClientSDK.RegisterPlayFabUser({
+                    Username: username,
+                    Password: password,
+                    RequireBothUsernameAndEmail: false // Set to true if you require email
+                }, function(result, error) {
+                    if (result) {
+                        console.log("Registration successful:", result);
+                        // Redirect to login page or automatically log in
+                        window.location.href = "login.html";
+                    } else if (error) {
+                        console.error("Registration failed:", error);
+                        let errorMessage = "Registration failed.";
+                        if (error.errorCode === 1000) {
+                            errorMessage = "Invalid input parameters. Please check your username and password.";
+                        } else if (error.errorCode === 1001) {
+                            errorMessage = "Username already exists. Please choose a different username.";
+                        }
+                        errorMessageDiv.innerText = errorMessage;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
