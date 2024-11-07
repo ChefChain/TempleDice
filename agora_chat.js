@@ -120,12 +120,47 @@ async function initializeAgoraChat() {
     client.join(appID, channelName, token, uid).then((uid) => {
         console.log("User " + uid + " joined the channel successfully");
         
-        // After joining, you can start interacting with the chat here
-        // Example: display a message in the chat container
-        let chatDiv = document.getElementById("chat");
-        chatDiv.innerHTML = `<p>Welcome to the Agora Chat, user ${uid}!</p>`;
+        // Initialize Agora Chat SDK
+        initializeAgoraChatSDK(uid);
     }).catch((err) => {
         console.error("Failed to join channel", err);
         alert("Failed to join channel: " + err.message);
+    });
+}
+
+function initializeAgoraChatSDK(uid) {
+    const appKey = "411225172#1429501";  // Your Agora Chat AppKey
+    const userId = `user_${uid}`;
+    const agoraChatToken = "YOUR_CHAT_USER_TOKEN_HERE";  // Replace with a valid chat user token
+
+    const conn = new WebIM.connection({
+        appKey: appKey,
+        isMultiLoginSessions: true,
+        https: true,
+        isAutoLogin: true,
+        heartBeatWait: 4500,
+        autoReconnectNumMax: 2,
+        autoReconnectInterval: 2,
+        apiUrl: "https://a41.chat.agora.io"
+    });
+
+    conn.open({
+        user: userId,
+        accessToken: agoraChatToken
+    });
+
+    conn.listen({
+        onConnected: function () {
+            console.log("Agora Chat connected successfully");
+            // Show chat UI or initialize chat messages here
+        },
+        onDisconnected: function () {
+            console.log("Agora Chat disconnected");
+        },
+        onTextMessage: function (message) {
+            console.log("New message: ", message);
+            let chatDiv = document.getElementById("chat");
+            chatDiv.innerHTML += `<p>${message.from}: ${message.data}</p>`;
+        }
     });
 }
