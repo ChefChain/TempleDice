@@ -1,4 +1,4 @@
-# server.py
+# api/login.py
 import requests
 import os
 from dotenv import load_dotenv
@@ -30,7 +30,15 @@ class handler(BaseHTTPRequestHandler):
         if self.path == '/api/login':
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
-            request_data = json.loads(post_data)
+            try:
+                request_data = json.loads(post_data)
+            except json.JSONDecodeError:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Invalid JSON"}).encode())
+                return
+
             custom_id = request_data.get('custom_id')
             
             if not custom_id:
