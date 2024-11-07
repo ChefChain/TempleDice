@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Audio files
-    const buttonClickSound = new Audio('button-click.mp3');
-    const diceClickSound = new Audio('dice-click.mp3');
-    const scrollWheelSound = new Audio('scroll-wheel.mp3');
-    const chingSound = new Audio('ching.mp3');
-    const winningSound = new Audio('winning.mp3');
-    const matchSound = new Audio('bing.mp3'); // New sound for matching dice
+    const buttonClickSound = new Audio('/assets/audio/button-click.mp3');
+    const diceClickSound = new Audio('/assets/audio/dice-click.mp3');
+    const scrollWheelSound = new Audio('/assets/audio/scroll-wheel.mp3');
+    const chingSound = new Audio('/assets/audio/ching.mp3');
+    const winningSound = new Audio('/assets/audio/winning.mp3');
+    const matchSound = new Audio('/assets/audio/bing.mp3'); // New sound for matching dice
 
     // Function to play a sound with instant playback
     function playSound(audio) {
