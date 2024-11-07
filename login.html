@@ -83,10 +83,8 @@
     </style>
     
     <!-- PlayFab SDKs -->
-    <!-- PlayFab Core SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/playfab-sdk/3.35.3/js/playfab.min.js"></script>
     <!-- PlayFab Client API SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/playfab-sdk/3.35.3/js/playfab-client-api.min.js"></script>
+    <script type="text/javascript" src="https://download.playfab.com/PlayFabClientApi.js"></script>
     
     <!-- AgoraRTC SDK -->
     <script src="https://cdn.agora.io/sdk/release/AgoraRTC_N.js"></script>
@@ -119,7 +117,7 @@
             const chatContainer = document.getElementById('chatContainer');
 
             // Initialize PlayFab
-            PlayFab.settings.titleId = "E9D61"; // Replace with your PlayFab Title ID
+            PlayFab.settings.titleId = "YOUR_PLAYFAB_TITLE_ID"; // Replace with your PlayFab Title ID
 
             loginButton.addEventListener('click', function() {
                 const username = usernameInput.value.trim();
