@@ -47,7 +47,7 @@ loginButton.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ "custom_id": customId, "CreateAccount": true })
+            body: JSON.stringify({ "custom_id": customId, "CreateAccount": false })
         });
 
         const data = await response.json();
@@ -89,19 +89,13 @@ function initializeAgoraChat() {
     const channelName = "TempleDice";  // Replace with your desired channel
     const token = null;  // Replace with a valid token if required
 
-    client.init(appID, () => {
-        console.log("AgoraRTC client initialized");
-
-        client.join(token, channelName, null, (uid) => {
-            console.log("User " + uid + " join channel successfully");
-            // After joining, you can start interacting with the chat here
-            // Example: display a message in the chat container
-            let chatDiv = document.getElementById("chat");
-            chatDiv.innerHTML = "<p>Welcome to the Agora Chat, user " + uid + "!</p>";
-        }, (err) => {
-            console.error("Failed to join channel", err);
-        });
-    }, (err) => {
-        console.error("AgoraRTC client init failed", err);
+    client.join(appID, token, channelName, null).then((uid) => {
+        console.log("User " + uid + " join channel successfully");
+        // After joining, you can start interacting with the chat here
+        // Example: display a message in the chat container
+        let chatDiv = document.getElementById("chat");
+        chatDiv.innerHTML = "<p>Welcome to the Agora Chat, user " + uid + "!</p>";
+    }).catch((err) => {
+        console.error("Failed to join channel", err);
     });
-}
+} 
