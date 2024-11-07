@@ -80,6 +80,13 @@
             margin-bottom: 10px;
         }
 
+        /* Success Message Styling */
+        #successMessage {
+            color: #2ecc71;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
         /* Responsive Design */
         @media (max-width: 400px) {
             #loginContainer, #chatContainer {
@@ -104,6 +111,7 @@
     <div id="loginContainer">
         <h2>Login</h2>
         <div id="errorMessage"></div>
+        <div id="successMessage"></div>
         <input type="text" id="username" placeholder="Username or Email" required>
         <input type="password" id="password" placeholder="Password (min 6 characters)" required>
         <button id="loginButton">Login with PlayFab</button>
@@ -124,16 +132,18 @@
             const loginContainer = document.getElementById('loginContainer');
             const chatContainer = document.getElementById('chatContainer');
             const errorMessageDiv = document.getElementById('errorMessage');
+            const successMessageDiv = document.getElementById('successMessage');
 
             // Initialize PlayFab
-            PlayFab.settings.titleId = "E9D61"; // *** IMPORTANT: Replace with your actual PlayFab Title ID ***
+            PlayFab.settings.titleId = "E9D61"; // *** IMPORTANT: Replace with your actual 8-character PlayFab Title ID ***
 
             loginButton.addEventListener('click', function() {
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
 
-                // Clear previous error messages
+                // Clear previous messages
                 errorMessageDiv.innerText = "";
+                successMessageDiv.innerText = "";
 
                 // Basic input validation
                 if (username === "" || password === "") {
@@ -154,12 +164,14 @@
                 }, function(result, error) {
                     if (result) {
                         console.log("Login successful:", result);
-                        // Hide login and show chat
-                        loginContainer.style.display = 'none';
-                        chatContainer.style.display = 'flex';
-
-                        // Initialize Agora Chat (assuming bundle.js handles it)
-                        initializeAgoraChat(result.data.SessionTicket, result.data.PlayFabId);
+                        successMessageDiv.innerText = "Login successful! Redirecting to chat...";
+                        // Hide login and show chat after a short delay
+                        setTimeout(() => {
+                            loginContainer.style.display = 'none';
+                            chatContainer.style.display = 'flex';
+                            // Initialize Agora Chat
+                            initializeAgoraChat(result.data.SessionTicket, result.data.PlayFabId);
+                        }, 1000);
                     } else if (error) {
                         console.error("Login failed:", error);
                         // Provide more detailed error messages based on errorCode
@@ -178,7 +190,7 @@
 
             // Function to initialize Agora Chat
             function initializeAgoraChat(sessionTicket, playFabId) {
-                // Assuming bundle.js exposes a global function to initialize the chat
+                // Ensure that AgoraChatIntegration.initChat is defined
                 if (typeof AgoraChatIntegration !== 'undefined' && AgoraChatIntegration.initChat) {
                     AgoraChatIntegration.initChat({
                         sessionTicket: sessionTicket,

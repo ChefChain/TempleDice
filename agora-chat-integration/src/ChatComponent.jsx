@@ -14,40 +14,72 @@ import "agora-chat-uikit/style.css";
 const appKey = "411225172#1429501"; // Your Agora App Key
 const host = "https://msync-api-41.chat.agora.io"; // WebSocket Address
 
-const ChatApp = () => {
+const ChatApp = ({ sessionTicket, playFabId }) => {
   const client = useClient();
 
   useEffect(() => {
-    const userId = prompt("Please input user ID:");
-    const token = "Chat User Temp Token"; // Replace with actual Chat User Temp Token
-
-    if (!userId || !token) {
-      alert("User ID and Token are required to login.");
-      return;
-    }
-
-    client
-      .open({
-        user: userId,
-        agoraToken: token,
-      })
-      .then(() => {
-        console.log("Agora Chat Client opened successfully.");
-
-        // Optionally, add a default conversation
-        // Replace 'another_user_id' and 'Another User' with actual user IDs and names
-        rootStore.conversationStore.addConversation({
-          chatType: "singleChat", // 'singleChat' || 'groupChat'
-          conversationId: "another_user_id", // Target user ID or group ID
-          name: "Another User", // Target user nickname or group name
-          lastMessage: {},
+    // Fetch Agora Chat Token from your server using sessionTicket and playFabId
+    // This step assumes you have a server-side endpoint that generates Agora tokens securely
+    const fetchAgoraToken = async () => {
+      try {
+        const response = await fetch('YOUR_SERVER_ENDPOINT/getAgoraToken', { // *** IMPORTANT: Replace with your actual server endpoint ***
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ sessionTicket, playFabId }),
         });
-      })
-      .catch((error) => {
-        console.error("Error opening Agora Chat Client:", error);
-        alert("Failed to login. Please check your credentials.");
-      });
-  }, [client]);
+
+        const data = await response.json();
+
+        if (data.error) {
+          console.error("Error fetching Agora Token:", data.error);
+          alert("Failed to fetch Agora Token. Please try again.");
+          return;
+        }
+
+        const { userId, agoraToken } = data;
+
+        if (!userId || !agoraToken) {
+          console.error("Invalid Agora Token response:", data);
+          alert("Invalid Agora Token response. Please try again.");
+          return;
+        }
+
+        client
+          .open({
+            user: userId,
+            agoraToken: agoraToken,
+          })
+          .then(() => {
+            console.log("Agora Chat Client opened successfully.");
+
+            // Optionally, add a default conversation
+            // Replace 'another_user_id' and 'Another User' with actual user IDs and names
+            rootStore.conversationStore.addConversation({
+              chatType: "singleChat", // 'singleChat' || 'groupChat'
+              conversationId: "another_user_id", // Target user ID or group ID
+              name: "Another User", // Target user nickname or group name
+              lastMessage: {},
+            });
+          })
+          .catch((error) => {
+            console.error("Error opening Agora Chat Client:", error);
+            alert("Failed to initialize Agora Chat. Please try again.");
+          });
+      } catch (error) {
+        console.error("Error fetching Agora Token:", error);
+        alert("Failed to fetch Agora Token. Please try again.");
+      }
+    };
+
+    if (sessionTicket && playFabId) {
+      fetchAgoraToken();
+    } else {
+      console.error("Missing sessionTicket or playFabId");
+      alert("Missing authentication information. Please log in again.");
+    }
+  }, [client, sessionTicket, playFabId]);
 
   return (
     <div style={styles.chatContainer}>
@@ -61,7 +93,7 @@ const ChatApp = () => {
   );
 };
 
-const App = () => {
+const App = ({ sessionTicket, playFabId }) => {
   return (
     <Provider
       initConfig={{
@@ -69,7 +101,7 @@ const App = () => {
         host: host,
       }}
     >
-      <ChatApp />
+      <ChatApp sessionTicket={sessionTicket} playFabId={playFabId} />
     </Provider>
   );
 };
