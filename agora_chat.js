@@ -103,6 +103,7 @@ async function initializeAgoraChat() {
 
         if (response.ok) {
             token = data.token;
+            console.log("Fetched token:", token);
         } else {
             console.error("Failed to fetch token", data);
             alert("Failed to fetch token: " + data.error);
@@ -132,15 +133,21 @@ function initializeAgoraChatUIKit(uid) {
     const appKey = "411225172#1429501";  // Your Agora Chat AppKey
     const containerId = "chatContainer";
 
-    AgoraChatUIKit.create({
-        appKey: appKey,
-        userId: `user_${uid}`,
-        containerId: containerId,
-        onSuccess: function () {
-            console.log("Agora Chat UIKit initialized successfully");
-        },
-        onError: function (error) {
-            console.error("Failed to initialize Agora Chat UIKit", error);
-        }
-    });
+    try {
+        AgoraChatUIKit.create({
+            appKey: appKey,
+            userId: `user_${uid}`,
+            containerId: containerId,
+            onSuccess: function () {
+                console.log("Agora Chat UIKit initialized successfully");
+            },
+            onError: function (error) {
+                console.error("Failed to initialize Agora Chat UIKit", error);
+                alert("Failed to initialize chat: " + error.message);
+            }
+        });
+    } catch (error) {
+        console.error("Exception occurred during Agora Chat UIKit initialization", error);
+        alert("An error occurred during chat initialization: " + error.message);
+    }
 }
