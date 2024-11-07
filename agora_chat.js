@@ -47,7 +47,7 @@ loginButton.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ "custom_id": customId, "CreateAccount": false })
+            body: JSON.stringify({ "custom_id": customId, "CreateAccount": true })
         });
 
         const data = await response.json();
@@ -85,8 +85,8 @@ function initializeAgoraChat() {
         return;
     }
     const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-    const appID = "YOUR_AGORA_APP_ID";  // Replace with your Agora App ID
-    const channelName = "testChannel";  // Replace with your desired channel
+    const appID = "32db6cb30a5541869bcb2774afd10fd4";  // Replace with your Agora App ID
+    const channelName = "TempleDice";  // Replace with your desired channel
     const token = null;  // Replace with a valid token if required
 
     client.init(appID, () => {
