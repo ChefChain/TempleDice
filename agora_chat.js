@@ -79,33 +79,53 @@ async function sha256(message) {
     return hashHex;
 }
 
-function initializeAgoraChat() {
+async function initializeAgoraChat() {
     if (typeof AgoraRTC === 'undefined') {
         alert("AgoraRTC SDK is not loaded. Please check the script tag for AgoraRTC.");
         return;
     }
-    const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-    const appID = "ae86896a6ea84a3880cfa1bb4e8463b0";  // Replace with your Agora App ID
-    let channelName = "TempleDice";  // Replace with your desired channel
-    const token = null;  // Replace with a valid token if required
 
-    if (!channelName || typeof channelName !== 'string' || channelName.trim() === "") {
-        console.error("Invalid Channel Name: " + channelName);
-        alert("Invalid Channel Name. Please provide a valid channel name.");
+    const appID = "32db6cb30a5541869bcb2774afd10fd4";  // Your Agora App ID
+    const channelName = "TempleDice";  // Replace with your desired channel name
+    const uid = Math.floor(Math.random() * 100000); // Generate a random user ID
+
+    // Fetch the token from your server
+    let token;
+    try {
+        const response = await fetch(`https://templedice.vercel.app/api/getToken?channel=${channelName}&uid=${uid}&role=publisher`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            token = data.token;
+        } else {
+            console.error("Failed to fetch token", data);
+            alert("Failed to fetch token: " + data.error);
+            return;
+        }
+    } catch (error) {
+        console.error("An error occurred while fetching the token", error);
+        alert("An error occurred while fetching the token");
         return;
     }
 
-    channelName = channelName.trim();
+    // Initialize Agora client
+    const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
-    client.join(appID, channelName, token, null).then((uid) => {
-        console.log("User " + uid + " join channel successfully");
+    client.join(appID, channelName, token, uid).then((uid) => {
+        console.log("User " + uid + " joined the channel successfully");
+        
         // After joining, you can start interacting with the chat here
         // Example: display a message in the chat container
         let chatDiv = document.getElementById("chat");
-        chatDiv.innerHTML = "<p>Welcome to the Agora Chat, user " + uid + "!</p>";
+        chatDiv.innerHTML = `<p>Welcome to the Agora Chat, user ${uid}!</p>`;
     }).catch((err) => {
         console.error("Failed to join channel", err);
         alert("Failed to join channel: " + err.message);
     });
 }
-
