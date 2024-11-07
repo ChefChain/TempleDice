@@ -11,7 +11,7 @@ loginButton.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ "custom_id": "uniqueUserId123" })
+            body: JSON.stringify({ "custom_id": "uniqueUserId1dfg23" })
         });
 
         const data = await response.json();
@@ -35,6 +35,10 @@ loginButton.addEventListener("click", async () => {
 });
 
 function initializeAgoraChat() {
+    if (typeof AgoraRTC === 'undefined') {
+        alert("AgoraRTC SDK is not loaded. Please check the script tag for AgoraRTC.");
+        return;
+    }
     const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
     const appID = "YOUR_AGORA_APP_ID";  // Replace with your Agora App ID
     const channelName = "testChannel";  // Replace with your desired channel
