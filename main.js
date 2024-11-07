@@ -17,10 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Sound playback failed:', e);
         });
     }
+	
+	
 
     // Scroller functionality for bet amount
     const wheel = document.querySelector('.wheel');
-    const betAmountSpan = document.querySelector('.bet-amount');
+    const betAmountSpan = document.querySelectorAll('.bet-amount');
     const amountDisplay = document.querySelector('.confirmedbet-main .price .amount span'); // Update the amount displayed in the bet confirmation
     let betAmount = 10; // initial amount
     const minBet = 10;
@@ -44,6 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const adjustButtons = document.querySelectorAll('.adjust-button');
     adjustButtons.forEach(button => {
         button.addEventListener('click', function() {
+            // **Prevent bet adjustments after confirmation or bets closed**
+            if (betState >= 2 || betsClosed) {
+                playSound(buttonClickSound);
+                return; // Do not allow adjustments
+            }
+
             const action = this.getAttribute('data-action');
             if (action === 'half') {
                 betAmount = Math.floor(betAmount / 2);
@@ -53,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 betAmount = playerBalance; // Adjust to player's balance
             }
             betAmount = Math.max(minBet, Math.min(betAmount, playerBalance, maxBet)); // keep within bounds
-            betAmountSpan.textContent = '$' + betAmount;
+            betAmountSpan.forEach(span => span.textContent = betAmount);
             amountDisplay.textContent = betAmount; // Update displayed amount
 
             // Update active class
@@ -67,6 +75,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Scroll wheel functionality
     // Handle mouse events for the wheel
     wheel.addEventListener('mousedown', function(event) {
+        // **Prevent bet adjustments after confirmation or bets closed**
+        if (betState >= 2 || betsClosed) return;
+
         isDragging = true;
         startY = event.clientY;
         event.preventDefault();
@@ -84,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 newBetAmount = Math.max(minBet, Math.min(newBetAmount, maxBet, playerBalance));
                 if (newBetAmount !== betAmount) {
                     betAmount = newBetAmount;
-                    betAmountSpan.textContent = '$' + betAmount;
+                    betAmountSpan.forEach(span => span.textContent = betAmount);
                     amountDisplay.textContent = betAmount; // Update displayed amount
                     startY = event.clientY; // Reset startY to current position
 
@@ -107,6 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle touch events for mobile devices
     wheel.addEventListener('touchstart', function(event) {
+        // **Prevent bet adjustments after confirmation or bets closed**
+        if (betState >= 2 || betsClosed) return;
+
         isDragging = true;
         startY = event.touches[0].clientY;
         event.preventDefault();
@@ -124,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 newBetAmount = Math.max(minBet, Math.min(newBetAmount, maxBet, playerBalance));
                 if (newBetAmount !== betAmount) {
                     betAmount = newBetAmount;
-                    betAmountSpan.textContent = '$' + betAmount;
+                    betAmountSpan.forEach(span => span.textContent = betAmount);
                     amountDisplay.textContent = betAmount; // Update displayed amount
                     startY = event.touches[0].clientY; // Reset startY to current position
 
@@ -146,18 +160,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Pot Value Increment
-    let potValue = 2115.00;
+    let potValue = 0;
     const potValueDisplay = document.getElementById('potValueDisplay');
 
-    function updatePotValue(amount) {
-        amount = amount || 0;
-        potValue += amount;
+    function updatePotValue() {
         potValueDisplay.innerHTML = '<b>$ ' + potValue.toFixed(2) + '</b>';
     }
-
-    setInterval(function() {
-        updatePotValue(100); // increases every 2 seconds
-    }, 2000);
 
     // Bet Button States
     const betButton = document.querySelector('.bet-button');
@@ -169,8 +177,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const alertTextElement = document.querySelector('.alert-text');
 
     // Variables for game timing
-    let roundDuration = 15; // seconds
-    let noMoreBetsDuration = 5; // seconds before the end of the round
+    let roundDuration = 20; // seconds (Adjusted from 15 to 20)
+    let noMoreBetsDuration = 3; // seconds before the end of the round (Adjusted from 5 to 3)
     let roundTimer;
 
     let betsClosed = false; // Indicates whether bets are closed for this round
@@ -180,6 +188,97 @@ document.addEventListener('DOMContentLoaded', function() {
     let playerDiceValues = [1, 1, 1, 1]; // Player's current selected dice values
     let lastBetDiceValues = [1, 1, 1, 1]; // The dice values the player used in their last bet
 
+    // Reference to player's bet entry in scrolling bar
+    let playerBetEntry = null;
+
+    // Unique identifier for bets
+    let betIdCounter = 0;
+
+    // Function to add a bet to the scrolling bar
+    function addBetToScrollingBar(username, amount, isPlayer = false) {
+        const scrollingBar = document.querySelector('.scrolling-bar');
+        const betDiv = document.createElement('div');
+        betDiv.classList.add('bet'); // Changed from 'bet-entry' to 'bet'
+        betDiv.setAttribute('data-username', username);
+        betDiv.setAttribute('data-bet-id', betIdCounter++);
+
+        if (isPlayer) {
+            betDiv.classList.add('player-bet'); // For highlighting
+            betDiv.innerHTML = `<strong>${username}</strong> bet <span>$${amount}</span>`;
+            playerBetEntry = betDiv; // Store reference for later update
+        } else {
+            betDiv.innerHTML = `<strong>${username}</strong> bet <span>$${amount}</span>`;
+        }
+        scrollingBar.appendChild(betDiv);
+
+        // Ensure smooth scrolling to the new bet
+        betDiv.scrollIntoView({ behavior: 'smooth', inline: 'end' });
+
+        // Limit the number of bets displayed to prevent overflow (e.g., max 20 bets)
+        const maxBets = 20;
+        const currentBets = scrollingBar.querySelectorAll('.bet');
+        if (currentBets.length > maxBets) {
+            scrollingBar.removeChild(currentBets[0]);
+        }
+
+        return betDiv;
+    }
+
+    // Function to update the player's bet entry with outcome
+    function updatePlayerBetOutcome(outcome) {
+        if (playerBetEntry) {
+            const outcomeSpan = document.createElement('span');
+            outcomeSpan.classList.add('outcome');
+            outcomeSpan.textContent = ' - ' + outcome;
+            playerBetEntry.appendChild(outcomeSpan);
+            // Add a class to style the outcome
+            if (outcome.startsWith('Won')) {
+                playerBetEntry.classList.add('bet-won');
+            } else if (outcome.startsWith('Lost')) {
+                playerBetEntry.classList.add('bet-lost');
+            }
+            playerBetEntry = null; // Reset the reference
+        }
+    }
+
+    // Function to highlight AI winners
+    function highlightAIWinners(winners) {
+        const scrollingBar = document.querySelector('.scrolling-bar');
+        winners.forEach(winner => {
+            const betDivs = scrollingBar.querySelectorAll('.bet[data-username="' + winner.name + '"]');
+            betDivs.forEach(betDiv => {
+                // Avoid re-adding outcome if already present
+                if (!betDiv.querySelector('.outcome')) {
+                    const outcomeSpan = document.createElement('span');
+                    outcomeSpan.classList.add('outcome');
+                    outcomeSpan.textContent = ' - Won!';
+                    betDiv.appendChild(outcomeSpan);
+                    betDiv.classList.add('bet-won');
+                }
+            });
+        });
+    }
+
+    // Function to simulate AI players placing bets during betting period
+    let aiBetInterval = null;
+    function startAIBets() {
+        const fakePlayers = ['Player1', 'LuckyStar', 'GamblerX', 'HighRoller', 'FortuneFever', 'DiceMaster', 'RollerCoaster', 'BetKing', 'JackpotJoe', 'QueenOfLuck'];
+        aiBetInterval = setInterval(() => {
+            // Randomly select an AI player
+            const randomPlayer = fakePlayers[Math.floor(Math.random() * fakePlayers.length)];
+            // Random bet amount between minBet and maxBet
+            const aiBetAmount = Math.floor(Math.random() * (maxBet - minBet + 1)) + minBet;
+            addBetToScrollingBar(randomPlayer, aiBetAmount, false);
+        }, 2000); // AI places a bet every 2 seconds
+    }
+
+    function stopAIBets() {
+        if (aiBetInterval) {
+            clearInterval(aiBetInterval);
+            aiBetInterval = null;
+        }
+    }
+
     function startGameRound() {
         betsClosed = false;
         betPlaced = false;
@@ -188,11 +287,37 @@ document.addEventListener('DOMContentLoaded', function() {
         resetDice(); // Reset dice as per the logic
         setAlertText('Place your bets now, round starting');
 
+        // Reset pot value
+        potValue = 0;
+        updatePotValue();
+
+        // Generate target pot value between $400 and $1000
+        let targetPotValue = Math.floor(Math.random() * 601) + 400; // Random between 400 and 1000
+
+        // Betting period duration
+        let bettingPeriodDuration = roundDuration - noMoreBetsDuration; // 20 -3 =17 seconds
+
+        // Calculate pot increment per second
+        let potIncrement = targetPotValue / bettingPeriodDuration;
+
+        // Start AI betting simulation
+        startAIBets();
+
         // Start the timer
         let timeLeft = roundDuration;
 
         roundTimer = setInterval(function() {
             timeLeft--;
+
+            if (timeLeft > noMoreBetsDuration) {
+                // Betting period
+                potValue += potIncrement;
+                if (potValue > targetPotValue) {
+                    potValue = targetPotValue;
+                }
+                updatePotValue();
+            }
+
             if (timeLeft === noMoreBetsDuration) {
                 // Close bets
                 betsClosed = true;
@@ -200,9 +325,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateBetButton();
                 disableDiceContainer();
                 setAlertText('NO MORE BETS');
+                stopAIBets(); // Stop AI betting simulation
             }
             if (timeLeft <= 0) {
                 clearInterval(roundTimer);
+                // Ensure potValue reaches targetPotValue
+                potValue = targetPotValue;
+                updatePotValue();
+
                 // Roll the house dice and determine outcome
                 betState = 4; // DICE ROLLING
                 updateBetButton();
@@ -241,7 +371,9 @@ document.addEventListener('DOMContentLoaded', function() {
             lastBetDiceValues = [...playerDiceValues]; // Store the dice values used in the bet
             updateBetButton();
             playSound(chingSound); // Play sound for bet confirmed
-            updatePotValue(betAmount); // Add player's bet to the pot
+
+            // Add player's bet to scrolling bar
+            addBetToScrollingBar('Jhordan604', betAmount, true);
         }
     });
 
@@ -263,7 +395,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show the lock icon unless it's state 5
         if (betState !== 5) {
-            betButton.querySelector('i').style.display = ''; // Restore default display
+            const lockIcon = betButton.querySelector('i');
+            if (lockIcon) lockIcon.style.display = ''; // Restore default display
         }
 
         // Update button text based on state
@@ -302,7 +435,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (betState === 5) {
             // RESULTS
             betButton.querySelector('span').textContent = ''; // Clear the button text
-            betButton.querySelector('i').style.display = 'none'; // Hide the lock icon
+            const lockIcon = betButton.querySelector('i');
+            if (lockIcon) lockIcon.style.display = 'none'; // Hide the lock icon
             displayHouseDiceOnButton(); // Display house dice on the button
             confirmedBetMain.classList.remove('blink-border', 'blink-border-red');
             disableDiceContainer();
@@ -330,8 +464,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 diceSpan.textContent = diceChar;
 
                 // Check for matches with player's dice
-                if (betPlaced && playerDiceValues[diceIndex] === diceValue) {
-                    diceSpan.classList.add('matching-dice'); // Add class for flashing animation
+                // For black dice (indices 0-2), matches can be in any order
+                // For red die (index 3), match must be by position
+                if (betPlaced) {
+                    if (diceIndex < 3) { // Black dice
+                        if (playerDiceValues.slice(0,3).includes(diceValue)) {
+                            diceSpan.classList.add('matching-dice'); // Add class for flashing animation
+                        }
+                    } else { // Red die
+                        if (playerDiceValues[diceIndex] === diceValue) {
+                            diceSpan.classList.add('matching-dice'); // Add class for flashing animation
+                        }
+                    }
                 }
 
                 diceDisplay.appendChild(diceSpan);
@@ -382,21 +526,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Dice click functionality
-    const diceElements = document.querySelectorAll('.dice-container .dice');
-    diceElements.forEach((dice, index) => {
-        dice.addEventListener('click', function() {
-            if (betsClosed || betState === 2) {
-                playSound(buttonClickSound);
-                return;
-            }
-            let diceValue = parseInt(this.getAttribute('data-value')) || 1;
-            diceValue = diceValue % 6 + 1; // Cycle from 1 to 6
-            this.setAttribute('data-value', diceValue);
-            this.textContent = getDiceCharacter(diceValue);
-            playerDiceValues[index] = diceValue; // Update player's selected dice values
-            playSound(diceClickSound);
+    function setupDiceClickHandlers() {
+        const diceElements = document.querySelectorAll('.dice-container .dice');
+        diceElements.forEach((dice, index) => {
+            // Remove existing event listeners to prevent multiple bindings
+            const newDice = dice.cloneNode(true);
+            dice.parentNode.replaceChild(newDice, dice);
+
+            newDice.addEventListener('click', function() {
+                if (betsClosed || betState === 2) {
+                    playSound(buttonClickSound);
+                    return;
+                }
+                let diceValue = parseInt(this.getAttribute('data-value')) || 1;
+                diceValue = diceValue % 6 + 1; // Cycle from 1 to 6
+                this.setAttribute('data-value', diceValue);
+                this.textContent = getDiceCharacter(diceValue);
+                playerDiceValues[index] = diceValue; // Update player's selected dice values
+                playSound(diceClickSound);
+            });
         });
-    });
+    }
+
+    // Initialize dice click handlers
+    setupDiceClickHandlers();
 
     function getDiceCharacter(value) {
         const diceChars = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
@@ -412,15 +565,8 @@ document.addEventListener('DOMContentLoaded', function() {
             diceElements.forEach((dice, index) => {
                 dice.setAttribute('data-value', lastBetDiceValues[index]);
                 dice.textContent = getDiceCharacter(lastBetDiceValues[index]);
-                dice.classList.remove('blink', 'winning-dice');
+                dice.classList.remove('blink', 'winning-dice', 'matching-dice', 'bet-won', 'bet-lost');
                 dice.style.color = '';
-                // Keep the red-dice class as per original state
-                const isRedDice = dice.getAttribute('data-red') === 'true';
-                if (isRedDice) {
-                    dice.classList.add('red-dice');
-                } else {
-                    dice.classList.remove('red-dice');
-                }
             });
             // Update playerDiceValues to match lastBetDiceValues
             playerDiceValues = [...lastBetDiceValues];
@@ -428,17 +574,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // If the player didn't place a bet, leave dice as they are
             // Just remove any animations and styles
             diceElements.forEach((dice, index) => {
-                dice.classList.remove('blink', 'winning-dice');
+                dice.classList.remove('blink', 'winning-dice', 'matching-dice', 'bet-won', 'bet-lost');
                 dice.style.color = '';
-                // Keep the red-dice class as per original state
-                const isRedDice = dice.getAttribute('data-red') === 'true';
-                if (isRedDice) {
-                    dice.classList.add('red-dice');
-                } else {
-                    dice.classList.remove('red-dice');
-                }
             });
         }
+
+        // Re-attach click handlers
+        setupDiceClickHandlers();
     }
 
     // House dice managed internally
@@ -456,53 +598,125 @@ document.addEventListener('DOMContentLoaded', function() {
             updateBetButton();
             return;
         }
-        const playerDice = document.querySelectorAll('.dice-container .dice');
+
+        // Separate player and house dice into black and red
+        const playerBlack = playerDiceValues.slice(0,3);
+        const playerRed = playerDiceValues[3];
+
+        const houseBlack = [...houseDiceValues.slice(0,3)]; // Copy to manipulate
+        const houseRed = houseDiceValues[3];
 
         let matches = 0;
 
-        playerDice.forEach((diceElement, index) => {
-            const playerValue = parseInt(diceElement.getAttribute('data-value'));
-            const houseValue = houseDiceValues[index];
+        // Count black dice matches (order doesn't matter)
+        let blackMatches = 0;
+        let matchedHouseBlackIndices = []; // To avoid double-counting
 
-            if (playerValue === houseValue) {
-                matches++;
-                // Highlight matching dice
+        playerBlack.forEach((pValue, pIndex) => {
+            const houseMatchIndex = houseBlack.findIndex((hValue, hIndex) => hValue === pValue && !matchedHouseBlackIndices.includes(hIndex));
+            if (houseMatchIndex !== -1) {
+                blackMatches++;
+                matchedHouseBlackIndices.push(houseMatchIndex);
+                // Highlight player's black die as matched
+                const diceElement = clickableDiceContainer.querySelectorAll('.dice')[pIndex];
                 diceElement.classList.add('blink');
-                // Set matching dice color to green
                 diceElement.style.color = 'rgb(133, 216, 133)';
-                // Play match sound
                 playSound(matchSound);
             }
         });
 
-        let winnings = 0;
-        if (matches === 4) {
-            winnings = betAmount * 10; // Jackpot
-        } else if (matches === 3) {
-            winnings = betAmount * 5;
-        } else if (matches === 2) {
-            winnings = betAmount * 2;
-        } else if (matches === 1) {
-            winnings = betAmount * 0.5; // Small win
+        matches += blackMatches;
+
+        // Check red die match (must match by position)
+        if (playerRed === houseRed) {
+            matches++;
+            // Highlight red die as matched
+            const redDiceElement = clickableDiceContainer.querySelectorAll('.dice')[3];
+            redDiceElement.classList.add('blink');
+            redDiceElement.style.color = 'rgb(133, 216, 133)';
+            playSound(matchSound);
         }
 
-        if (winnings > 0) {
+        // Generate fake players and their matches
+        let fakePlayers = ['Player1', 'LuckyStar', 'GamblerX', 'HighRoller', 'FortuneFever', 'DiceMaster', 'RollerCoaster', 'BetKing', 'JackpotJoe', 'QueenOfLuck'];
+
+        let fakePlayerMatches = []; // Array to store matches of fake players
+
+        for (let i = 0; i < fakePlayers.length; i++) {
+            let fakePlayerDiceValues = [1, 2, 3, 4].map(() => Math.floor(Math.random() * 6) + 1);
+
+            // Separate fake player's dice into black and red
+            const fakePlayerBlack = fakePlayerDiceValues.slice(0,3);
+            const fakePlayerRed = fakePlayerDiceValues[3];
+
+            let fakePlayerBlackMatches = 0;
+            let matchedHouseFakeBlackIndices = [];
+
+            fakePlayerBlack.forEach((fpValue, fpIndex) => {
+                const houseMatchIndex = houseBlack.findIndex((hValue, hIndex) => hValue === fpValue && !matchedHouseFakeBlackIndices.includes(hIndex));
+                if (houseMatchIndex !== -1) {
+                    fakePlayerBlackMatches++;
+                    matchedHouseFakeBlackIndices.push(houseMatchIndex);
+                }
+            });
+
+            let fakePlayerMatchesCount = fakePlayerBlackMatches;
+
+            // Check red die match
+            if (fakePlayerRed === houseRed) {
+                fakePlayerMatchesCount++;
+            }
+
+            fakePlayerMatches.push({
+                name: fakePlayers[i],
+                matches: fakePlayerMatchesCount
+            });
+        }
+
+        // Add player's matches to the list
+        fakePlayerMatches.push({
+            name: 'Jhordan604',
+            matches: matches
+        });
+
+        // Determine the highest number of matches
+        let maxMatches = Math.max(...fakePlayerMatches.map(fp => fp.matches));
+
+        // Find all winners
+        let winners = fakePlayerMatches.filter(fp => fp.matches === maxMatches);
+
+        // Identify big winners (e.g., matches >= 3)
+        let bigWinners = winners.filter(fp => fp.matches >= 3);
+
+        let playerWon = winners.some(w => w.name === 'Jhordan604');
+
+        if (playerWon) {
+            // Player wins a share of the pot
+            let winnings = potValue / winners.length;
             playerBalance += winnings;
             updateBalanceDisplay();
             setAlertText('You WON $' + winnings.toFixed(2) + '!', 'rgb(133, 216, 133)', true);
             playSound(winningSound);
             triggerWinningAnimation();
             animateBalanceChange();
+
+            // Update player's bet entry with outcome
+            updatePlayerBetOutcome('Won $' + winnings.toFixed(2));
         } else {
             setAlertText('You LOST. Better luck next time!', '#ff4444', true);
             playSound(buttonClickSound);
+
+            // Update player's bet entry with outcome
+            updatePlayerBetOutcome('Lost');
+        }
+
+        // Highlight big winners (both AI and player)
+        if (bigWinners.length > 0) {
+            highlightAIWinners(bigWinners);
         }
 
         betState = 5; // RESULTS
         updateBetButton();
-
-        // Generate fake bets and winners
-        generateFakeBets();
 
         // Reset bet state and dice after some time
         setTimeout(function() {
@@ -526,7 +740,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Show the lock icon again
-        betButton.querySelector('i').style.display = ''; // Restore default display
+        const lockIcon = betButton.querySelector('i');
+        if (lockIcon) lockIcon.style.display = ''; // Restore default display
+
+        // Optional: Remove outcome highlights after resetting
+        const scrollingBar = document.querySelector('.scrolling-bar');
+        const outcomeSpans = scrollingBar.querySelectorAll('.outcome');
+        outcomeSpans.forEach(span => span.remove());
+
+        // Optional: Remove winning classes to reset styles
+        const winningBets = scrollingBar.querySelectorAll('.bet-won, .bet-lost, .big-winner');
+        winningBets.forEach(bet => {
+            bet.classList.remove('bet-won', 'bet-lost', 'big-winner');
+        });
     }
 
     function triggerWinningAnimation() {
@@ -545,31 +771,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2000); // Duration of the animation
     }
 
-    // Generate fake bets and winners
-    function generateFakeBets() {
-        const scrollingBar = document.querySelector('.scrolling-bar');
-        scrollingBar.innerHTML = ''; // Clear existing bets
-
-        const fakePlayers = ['Player1', 'LuckyStar', 'GamblerX', 'HighRoller', 'FortuneFever', 'DiceMaster', 'RollerCoaster', 'BetKing', 'JackpotJoe', 'QueenOfLuck'];
-        for (let i = 0; i < 10; i++) {
-            const betAmount = Math.floor(Math.random() * 100) + 10;
-            const diceValues = [1, 2, 3, 4].map(() => getDiceCharacter(Math.floor(Math.random() * 6) + 1));
-            const betDiv = document.createElement('div');
-            betDiv.classList.add('bet');
-            betDiv.innerHTML = `<strong>${fakePlayers[i]}</strong> bet <span>$${betAmount}</span> ${diceValues.join(' ')}`;
-            scrollingBar.appendChild(betDiv);
-        }
-    }
-
-    // Scrolling bar animation
-    const scrollingBar = document.querySelector('.scrolling-bar');
-    function scrollBets() {
-        scrollingBar.scrollLeft += 1;
-        if (scrollingBar.scrollLeft >= scrollingBar.scrollWidth - scrollingBar.clientWidth) {
-            scrollingBar.scrollLeft = 0;
-        }
-    }
-    setInterval(scrollBets, 50); // Adjust speed as needed
+    // Removed the existing scrolling animation
+    // Instead, rely on smooth scrolling when new bets are added
 
     // Alert text rotation
     const alertMessages = [
@@ -598,7 +801,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const infoBlockDiv = document.querySelector('.info-block');
     let isInfoBlockVisible = false;
 
-    walletToggleButton.addEventListener('click', function() {
+    walletToggleButton && walletToggleButton.addEventListener('click', function() {
         isInfoBlockVisible = !isInfoBlockVisible;
         if (isInfoBlockVisible) {
             infoBlockDiv.style.display = 'flex'; // or 'block' if you prefer
@@ -606,4 +809,7 @@ document.addEventListener('DOMContentLoaded', function() {
             infoBlockDiv.style.display = 'none';
         }
     });
+
+    // Function to highlight big winners (if needed for non-top matches)
+    // Not implemented here as it's already covered by highlightAIWinners
 });
