@@ -1,39 +1,27 @@
-# server.py
-from flask import Flask, request, redirect
-import requests
-
-app = Flask(__name__)
-
-CLIENT_ID = "YOUR_MICROSOFT_CLIENT_ID"  # Replace with your Microsoft Client ID
-CLIENT_SECRET = "YOUR_MICROSOFT_CLIENT_SECRET"  # Replace with your Microsoft Client Secret
-REDIRECT_URI = "https://your-domain.com/redirect_handler"  # Replace with your redirect handler URL
-
-@app.route('/redirect_handler')
-def handle_redirect():
-    # Get the authorization code from the URL
-    code = request.args.get('code')
-    if not code:
-        return "Error: Authorization code not found!", 400
-
-    # Exchange the code for an access token
-    token_url = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
-    data = {
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
-        'code': code,
-        'redirect_uri': REDIRECT_URI,
-        'grant_type': 'authorization_code'
-    }
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-
-    token_response = requests.post(token_url, data=data, headers=headers)
-    if token_response.status_code != 200:
-        return f"Error: Could not get token. {token_response.json()}", 400
-
-    access_token = token_response.json().get('access_token')
-
-    # Redirect to loggedin.html with PlayFab params
-    return redirect(f"/loggedin.html?token={access_token}")
-
-if __name__ == '__main__':
-    app.run(debug=True)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayFab Login and Agora Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <script src="https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.6.10.min.js"></script>
+    <script defer src="./agora_chat.js"></script>
+    <style>
+        #chatContainer {
+            display: none;
+            margin-top: 20px;
+        }
+        #loginButton {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button id="loginButton">Login with PlayFab</button>
+    <div id="chatContainer">
+        <h3>Agora Real-Time Chat</h3>
+        <div id="chat"></div>
+    </div>
+</body>
+</html>
