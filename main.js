@@ -1,3 +1,5 @@
+// main.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // Audio files
     const buttonClickSound = new Audio('/assets/audio/button-click.mp3');
@@ -17,8 +19,101 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Sound playback failed:', e);
         });
     }
-	
-	
+
+    // Function to hash the password using SHA-256
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    }
+
+    // PlayFab Login Function
+    async function playFabLogin(customId) {
+        try {
+            const response = await fetch("https://templedice.vercel.app/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "custom_id": customId })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                return data; // { playfab_id, session_ticket }
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            console.error("PlayFab login failed:", error);
+            alert("PlayFab login failed: " + error.message);
+            throw error;
+        }
+    }
+
+    // Fetch Agora Token Function
+    async function getAgoraToken(channelName, uid) {
+        try {
+            const response = await fetch(`https://templedice.vercel.app/api/getToken?channel=${channelName}&uid=${uid}&role=publisher`);
+            const data = await response.json();
+
+            if (response.ok) {
+                return data.token;
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            console.error("Failed to fetch Agora token:", error);
+            alert("Failed to fetch Agora token: " + error.message);
+            throw error;
+        }
+    }
+
+    // Handle Login Button Click
+    const loginButton = document.getElementById("login-button");
+    loginButton.addEventListener("click", async () => {
+        try {
+            const username = prompt("Enter your username:");
+            const password = prompt("Enter your password:");
+
+            if (!username || !password) {
+                alert("Please enter both username and password.");
+                return;
+            }
+
+            // Hashing password
+            const hashedPassword = await sha256(password);
+            const customId = `${username}:${hashedPassword}`;
+
+            // Perform PlayFab login
+            const playFabData = await playFabLogin(customId);
+            const playfabId = playFabData.playfab_id;
+
+            // Fetch Agora token
+            const agoraToken = await getAgoraToken("TempleDiceChannel", playfabId);
+
+            // Store credentials in a global variable
+            window.agoraCredentials = {
+                userId: playfabId,
+                token: agoraToken
+            };
+
+            // Render the Agora Chat component
+            window.renderChatComponent('react-chat');
+
+            // Hide the login button and show the chat container
+            loginButton.style.display = "none";
+            document.getElementById("react-chat").style.display = "block";
+        } catch (error) {
+            // Handle errors
+            console.error("An error occurred during login:", error);
+        }
+    });
+
+    // Rest of your existing main.js code
 
     // Scroller functionality for bet amount
     const wheel = document.querySelector('.wheel');
@@ -771,9 +866,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2000); // Duration of the animation
     }
 
-    // Removed the existing scrolling animation
-    // Instead, rely on smooth scrolling when new bets are added
-
     // Alert text rotation
     const alertMessages = [
         '<span>Place your bets now, round </span><span style="color: #ff4444;">starting</span>',
@@ -809,7 +901,4 @@ document.addEventListener('DOMContentLoaded', function() {
             infoBlockDiv.style.display = 'none';
         }
     });
-
-    // Function to highlight big winners (if needed for non-top matches)
-    // Not implemented here as it's already covered by highlightAIWinners
 });

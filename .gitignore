@@ -1,2 +1,4 @@
 Vercel_git_working_ui_templedice
 .DS_Store
+# Dependencies
+/agora-chat-integration/node_modules
