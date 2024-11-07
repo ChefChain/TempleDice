@@ -86,10 +86,17 @@ function initializeAgoraChat() {
     }
     const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
     const appID = "32db6cb30a5541869bcb2774afd10fd4";  // Replace with your Agora App ID
-    const channelName = "TempleDice";  // Replace with your desired channel
-    const token = null;  // Replace with a valid token if required
+    let channelName = "TempleDice";  // Replace with your desired channel
 
-    client.join(appID, token, channelName, null).then((uid) => {
+    if (!channelName || typeof channelName !== 'string' || channelName.trim() === "") {
+        console.error("Invalid Channel Name: " + channelName);
+        alert("Invalid Channel Name. Please provide a valid channel name.");
+        return;
+    }
+
+    channelName = channelName.trim();
+
+    client.join(appID, channelName, null, null).then((uid) => {
         console.log("User " + uid + " join channel successfully");
         // After joining, you can start interacting with the chat here
         // Example: display a message in the chat container
@@ -97,5 +104,6 @@ function initializeAgoraChat() {
         chatDiv.innerHTML = "<p>Welcome to the Agora Chat, user " + uid + "!</p>";
     }).catch((err) => {
         console.error("Failed to join channel", err);
+        alert("Failed to join channel: " + err.message);
     });
 } 
