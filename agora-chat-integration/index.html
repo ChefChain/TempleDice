@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Website with Agora Chat</title>
+
+</head>
+<body>
+    <!-- Existing Website Content -->
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+    
+    <main>
+        <p>Some content here...</p>
+        
+        <!-- Container for the React Chat Component -->
+        <div id="react-chat"></div>
+        
+        <p>More content here...</p>
+    </main>
+    
+    <footer>
+        <p>© 2024 My Website</p>
+    </footer>
+    
+    <!-- React and ReactDOM via CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
+    <!-- Agora Chat UIKit CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/agora-chat-uikit/style.css">
+    
+    <!-- Your bundled React component -->
+    <script src="dist/bundle.js"></script>
+    
+    <!-- Initialize the React Chat Component -->
+    <script>
+        // Ensure this script runs after bundle.js is loaded
+        window.renderChatComponent('react-chat');
+    </script>
+    
+
+</body>
+</html>
