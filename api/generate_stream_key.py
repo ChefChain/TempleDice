@@ -3,7 +3,7 @@ from urllib.parse import parse_qs, urlparse
 import os
 import json
 import time
-from agora_token_builder import RtcTokenBuilder2
+from agora_token_builder import RtcTokenBuilder
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -38,16 +38,15 @@ class handler(BaseHTTPRequestHandler):
         current_timestamp = int(time.time())
         privilege_expired_ts = current_timestamp + expires_after
 
-        # Generate Agora RTC Token using RtcTokenBuilder2
+        # Generate Agora RTC Token using RtcTokenBuilder
         try:
-            stream_key = RtcTokenBuilder2.build_token_with_uid(
+            stream_key = RtcTokenBuilder.buildTokenWithUid(
                 app_id,
                 app_certificate,
                 channel_name,
                 int(uid),
-                RtcTokenBuilder2.Role.PUBLISHER,
-                privilege_expired_ts,
-                privilege_expired_ts  # For both join and publish permissions
+                RtcTokenBuilder.Role_PUBLISHER,
+                privilege_expired_ts
             )
         except Exception as e:
             self.send_error(500, f"Error generating token: {str(e)}")
