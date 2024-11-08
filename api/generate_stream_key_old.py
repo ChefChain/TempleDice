@@ -3,7 +3,7 @@ from urllib.parse import parse_qs, urlparse
 import os
 import json
 import time
-from agora_token_builder import RtcTokenBuilder
+from agora_token_builder import RtcTokenBuilder, Role_Publisher
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -21,15 +21,15 @@ class handler(BaseHTTPRequestHandler):
         if not app_id:
             self.send_error(400, "Missing AGORA_APP_ID environment variable")
             return
-        
+
         if not app_certificate:
             self.send_error(400, "Missing AGORA_APP_CERTIFICATE environment variable")
             return
-        
+
         if not channel_name:
             self.send_error(400, "Missing 'channel' parameter")
             return
-        
+
         if not uid:
             self.send_error(400, "Missing 'uid' parameter")
             return
@@ -38,14 +38,14 @@ class handler(BaseHTTPRequestHandler):
         current_timestamp = int(time.time())
         privilege_expired_ts = current_timestamp + expires_after
 
-        # Generate Agora RTC Token using RtcTokenBuilder with integer UID and role as 1 (Publisher)
+        # Generate Agora RTC Token using RtcTokenBuilder with integer UID and Role_Publisher
         try:
             stream_key = RtcTokenBuilder.buildTokenWithUid(
                 app_id,
                 app_certificate,
                 channel_name,
                 int(uid),
-                1,  # Role_Publisher is represented by integer 1
+                Role_Publisher,
                 privilege_expired_ts
             )
         except Exception as e:
@@ -59,9 +59,9 @@ class handler(BaseHTTPRequestHandler):
             "channel": channel_name,
             "uid": uid
         }
-        
+
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        
+
         self.wfile.write(json.dumps(response).encode())
