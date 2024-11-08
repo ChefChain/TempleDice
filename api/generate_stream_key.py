@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlparse
 import os
 import json
 import time
@@ -14,17 +14,26 @@ class handler(BaseHTTPRequestHandler):
         app_certificate = os.getenv('AGORA_APP_CERTIFICATE')
 
         # Parse query parameters
-        query = parse_qs(self.path.split('?')[-1])
+        query = parse_qs(urlparse(self.path).query)
         channel_name = query.get('channel', [None])[0]
         uid = query.get('uid', [None])[0]
         expires_after = int(query.get('expiresAfter', [86400])[0])  # Default to 24 hours
 
         # Validate inputs
-        if not app_id or not app_certificate or not channel_name or not uid:
-            self.send_response(400)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({"error": "Missing required parameters"}).encode())
+        if not app_id:
+            self.send_error(400, "Missing AGORA_APP_ID environment variable")
+            return
+        
+        if not app_certificate:
+            self.send_error(400, "Missing AGORA_APP_CERTIFICATE environment variable")
+            return
+        
+        if not channel_name:
+            self.send_error(400, "Missing 'channel' parameter")
+            return
+        
+        if not uid:
+            self.send_error(400, "Missing 'uid' parameter")
             return
 
         # Generate the expiration timestamp
@@ -40,19 +49,27 @@ class handler(BaseHTTPRequestHandler):
         # Encode the rtcInfo dictionary using msgpack
         data = msgpack.packb(rtc_info)
 
-        # Create an initialization vector and encryption key
-        iv = os.urandom(8)
+        # Create a 16-byte initialization vector (nonce) and encryption key
+        nonce = os.urandom(16)
         key = bytes.fromhex(app_certificate)
 
         # Encrypt the data using AES-128-CTR
-        cipher = AES.new(key, AES.MODE_CTR, nonce=iv)
+        cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
         encrypted_data = cipher.encrypt(data)
 
-        # Combine IV and encrypted data, then base64 encode
-        stream_key = base64.urlsafe_b64encode(iv + encrypted_data).decode().strip('=')
+        # Combine nonce and encrypted data, then base64 encode
+        stream_key = base64.urlsafe_b64encode(nonce + encrypted_data).decode().strip('=')
 
         # Send the response
+        response = {
+            "stream_key": stream_key,
+            "expires_at": expires_at,
+            "channel": channel_name,
+            "uid": uid
+        }
+        
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
-        self.wfile.write(json.dumps({"stream_key": stream_key}).encode())
+        
+        self.wfile.write(json.dumps(response).encode())
