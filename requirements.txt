@@ -1,3 +1,5 @@
 requests
 python-dotenv
 agora-token-builder
+msgpack
+pycryptodome
