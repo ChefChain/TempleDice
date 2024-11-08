@@ -1,66 +1,62 @@
+from http.server import BaseHTTPRequestHandler
+from urllib.parse import parse_qs, urlparse
 import os
-import base64
-import requests
 import json
+import requests
 
-def generate_base64_credentials(customer_id, customer_secret):
-    credentials = f'{customer_id}:{customer_secret}'
-    return base64.b64encode(credentials.encode()).decode()
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # Retrieve environment variables for Dolby.io
+        publish_token = os.getenv('DOLBYIO_PUBLISH_TOKEN')
+        default_stream_name = os.getenv('DOLBYIO_STREAM_NAME')  # Default stream name if not provided in query
 
-def handler(request):
-    # Retrieve credentials from environment variables
-    CUSTOMER_ID = os.environ.get('AGORA_API_CUSTOMER_ID')
-    CUSTOMER_SECRET = os.environ.get('AGORA_API_CUSTOMER_SECRET')
-    APP_ID = os.environ.get('AGORA_APP_ID')
-    APP_CERTIFICATE = os.environ.get('AGORA_APP_CERTIFICATE')
+        # Parse query parameters from the URL
+        query = parse_qs(urlparse(self.path).query)
+        stream_name = query.get('streamName', [default_stream_name])[0]
 
-    if not all([CUSTOMER_ID, CUSTOMER_SECRET, APP_ID, APP_CERTIFICATE]):
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": "Missing one or more required environment variables."}),
-            "headers": {"Content-Type": "application/json"}
-        }
+        # Validate inputs
+        if not publish_token:
+            self.send_error(400, "Missing DOLBYIO_PUBLISH_TOKEN environment variable")
+            return
 
-    # Get parameters from the URL query string
-    channel = request.args.get('channel', 'myChannel')
-    uid = request.args.get('uid', '5555')
-    expires_after = request.args.get('expiresAfter', '3600')  # Default to 1 hour
+        if not stream_name:
+            self.send_error(400, "Missing 'streamName' parameter and DOLBYIO_STREAM_NAME is not set")
+            return
 
-    # Build headers and body for the API request
-    headers = {
-        "Accept": "application/json",
-        "Authorization": f"Basic {generate_base64_credentials(CUSTOMER_ID, CUSTOMER_SECRET)}",
-        "Content-Type": "application/json",
-        "X-Request-ID": "unique-request-id"  # Optionally generate a unique ID
-    }
-
-    body = {
-        "settings": {
-            "channel": channel,
-            "uid": uid,
-            "expiresAfter": int(expires_after)
-        }
-    }
-
-    url = f"https://api.agora.io/v1/projects/{APP_ID}/rtls/ingress/streamkeys"
-
-    try:
-        response = requests.post(url, headers=headers, json=body)
-        if response.status_code in [200, 201]:
-            return {
-                "statusCode": response.status_code,
-                "body": json.dumps(response.json()),
-                "headers": {"Content-Type": "application/json"}
+        # Make the API call to the Dolby.io publish endpoint
+        try:
+            headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {publish_token}"
             }
-        else:
-            return {
-                "statusCode": response.status_code,
-                "body": json.dumps({"error": response.text}),
-                "headers": {"Content-Type": "application/json"}
+
+            data = {
+                "streamName": stream_name
             }
-    except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)}),
-            "headers": {"Content-Type": "application/json"}
-        }
+
+            response = requests.post(
+                "https://director.millicast.com/api/director/publish",
+                headers=headers,
+                json=data
+            )
+            response.raise_for_status()
+            publish_response = response.json()
+        except Exception as e:
+            self.send_error(500, f"Error generating publish details: {str(e)}")
+            return
+
+        # Construct the RTMP publish path and stream key
+        rtmp_publish_path = "rtmp://rtmp-auto.millicast.com:1935/v2/pub"
+        rtmp_publish_stream_key = f"{stream_name}?token={publish_token}"
+
+        # Include RTMP details in the response
+        publish_response['rtmp_publish_path'] = rtmp_publish_path
+        publish_response['rtmp_publish_stream_key'] = rtmp_publish_stream_key
+
+        # Send the response with the publish details
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+        self.wfile.write(json.dumps(publish_response).encode())
