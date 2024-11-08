@@ -38,14 +38,14 @@ class handler(BaseHTTPRequestHandler):
         current_timestamp = int(time.time())
         privilege_expired_ts = current_timestamp + expires_after
 
-        # Generate Agora RTC Token using RtcTokenBuilder
+        # Generate Agora RTC Token using RtcTokenBuilder with integer UID and role as 1 (Publisher)
         try:
             stream_key = RtcTokenBuilder.buildTokenWithUid(
                 app_id,
                 app_certificate,
                 channel_name,
                 int(uid),
-                RtcTokenBuilder.Role_PUBLISHER,
+                1,  # Role_Publisher is represented by integer 1
                 privilege_expired_ts
             )
         except Exception as e:
