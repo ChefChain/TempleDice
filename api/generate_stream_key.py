@@ -3,17 +3,15 @@ from urllib.parse import parse_qs, urlparse
 import os
 import json
 import time
-import base64
-import msgpack
-from Crypto.Cipher import AES
+from agora_token_builder import RtcTokenBuilder2
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # Retrieve environment variables
+        # Retrieve environment variables for App ID and Certificate
         app_id = os.getenv('AGORA_APP_ID')
         app_certificate = os.getenv('AGORA_APP_CERTIFICATE')
 
-        # Parse query parameters
+        # Parse query parameters from the URL
         query = parse_qs(urlparse(self.path).query)
         channel_name = query.get('channel', [None])[0]
         uid = query.get('uid', [None])[0]
@@ -36,34 +34,29 @@ class handler(BaseHTTPRequestHandler):
             self.send_error(400, "Missing 'uid' parameter")
             return
 
-        # Generate the expiration timestamp
-        expires_at = int(time.time()) + expires_after
+        # Generate the expiration timestamp for the token
+        current_timestamp = int(time.time())
+        privilege_expired_ts = current_timestamp + expires_after
 
-        # Create the rtcInfo dictionary for msgpack encoding
-        rtc_info = {
-            "C": channel_name,
-            "U": uid,
-            "E": expires_at,
-        }
+        # Generate Agora RTC Token using RtcTokenBuilder2
+        try:
+            stream_key = RtcTokenBuilder2.build_token_with_uid(
+                app_id,
+                app_certificate,
+                channel_name,
+                int(uid),
+                RtcTokenBuilder2.Role.PUBLISHER,
+                privilege_expired_ts,
+                privilege_expired_ts  # For both join and publish permissions
+            )
+        except Exception as e:
+            self.send_error(500, f"Error generating token: {str(e)}")
+            return
 
-        # Encode the rtcInfo dictionary using msgpack
-        data = msgpack.packb(rtc_info)
-
-        # Create an 8-byte initialization vector (nonce) and encryption key
-        nonce = os.urandom(8)  # Corrected to 8 bytes
-        key = bytes.fromhex(app_certificate)
-
-        # Encrypt the data using AES-128-CTR
-        cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
-        encrypted_data = cipher.encrypt(data)
-
-        # Combine nonce and encrypted data, then base64 encode
-        stream_key = base64.urlsafe_b64encode(nonce + encrypted_data).decode().strip('=')
-
-        # Send the response
+        # Send the response with the generated stream key (token)
         response = {
             "stream_key": stream_key,
-            "expires_at": expires_at,
+            "expires_at": privilege_expired_ts,
             "channel": channel_name,
             "uid": uid
         }
