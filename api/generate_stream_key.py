@@ -41,7 +41,7 @@ class handler(BaseHTTPRequestHandler):
         data = msgpack.packb(rtc_info)
 
         # Create an initialization vector and encryption key
-        iv = os.urandom(16)
+        iv = os.urandom(8)
         key = bytes.fromhex(app_certificate)
 
         # Encrypt the data using AES-128-CTR
