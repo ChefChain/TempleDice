@@ -49,8 +49,8 @@ class handler(BaseHTTPRequestHandler):
         # Encode the rtcInfo dictionary using msgpack
         data = msgpack.packb(rtc_info)
 
-        # Create a 16-byte initialization vector (nonce) and encryption key
-        nonce = os.urandom(16)
+        # Create an 8-byte initialization vector (nonce) and encryption key
+        nonce = os.urandom(8)  # Corrected to 8 bytes
         key = bytes.fromhex(app_certificate)
 
         # Encrypt the data using AES-128-CTR
