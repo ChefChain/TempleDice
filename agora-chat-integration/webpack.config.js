@@ -2,11 +2,11 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.js', // Your main React file
+    entry: './src/index.js', // Your main React entry file
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
-        library: 'AgoraChatIntegration',
+        library: 'AgoraChatIntegration', // Name of the global variable
         libraryTarget: 'window', // Exposes the library globally
     },
     module: {
@@ -33,5 +33,5 @@ module.exports = {
     resolve: {
         extensions: ['*', '.js', '.jsx'], // Resolve these extensions
     },
-    mode: 'production', // or 'development' for debugging
+    mode: 'production', // or 'development' for easier debugging
 };

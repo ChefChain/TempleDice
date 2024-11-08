@@ -1,0 +1,39 @@
+/* Footer.css */
+
+/* Include your existing CSS styles for footer here */
+
+.footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #171519;
+  color: white;
+}
+
+.footer .items {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  height: 60px;
+  width: 60px;
+  margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .footer .items {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.footer .items.active {
+  border: 1px solid white;
+}
+
+.wallet-toggle {
+  cursor: pointer;
+}

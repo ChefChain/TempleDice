@@ -1,0 +1,54 @@
+/* DiceContainer.css */
+
+/* Include your existing CSS styles for dice container here */
+
+.dice-main {
+  position: relative;
+}
+
+.dice-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+  margin: 12px;
+  padding: 0;
+  background-color: #131215;
+  border-radius: 10px;
+}
+
+.dice-container .dice {
+  font-size: 100px;
+  line-height: 1;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 1em;
+}
+
+.dice-container.disabled .dice {
+  cursor: default;
+}
+
+.dice-container .red-dice {
+  color: red;
+}
+
+.dice-container.greyed-out {
+  opacity: 0.5;
+}
+
+.refresh-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

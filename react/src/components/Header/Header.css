@@ -1,0 +1,63 @@
+/* Header.css */
+
+/* Include your existing CSS styles for the header here */
+/* Example styles based on your grid.css */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo img {
+  height: 30px;
+  width: 40px;
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.2rem;
+}
+
+.logo-text .bold {
+  font-weight: 700;
+}
+
+.logo-text .dot {
+  font-size: 1.5rem;
+  color: red;
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes blink-dot {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.header-icons {
+  border: 1px solid grey;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-icons .icon {
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+.balance-display {
+  margin: 0 10px;
+  font-weight: bold;
+}

@@ -18,8 +18,6 @@ const ChatApp = ({ sessionTicket, playFabId }) => {
   const client = useClient();
 
   useEffect(() => {
-    // Fetch Agora Chat Token from your server using sessionTicket and playFabId
-    // This step assumes you have a server-side endpoint that generates Agora tokens securely
     const fetchAgoraToken = async () => {
       try {
         const response = await fetch('YOUR_SERVER_ENDPOINT/getAgoraToken', { // *** IMPORTANT: Replace with your actual server endpoint ***
