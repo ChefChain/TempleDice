@@ -25,6 +25,7 @@
   ],
   "functions": {
     "api/*.py": {
+      "runtime": "python3.12",
       "excludeFiles": "**/{node_modules,.next,env,venv,__pycache__,*.pyc}/**"
     }
   },
