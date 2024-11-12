@@ -28,18 +28,41 @@ export default function Page() {
       }}
     >
       <Stack spacing={4}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
-          <Box sx={{ flex: '1 1 auto' }}>
-            <Typography variant="h4">Crypto</Typography>
+        {/* Added player at the top */}
+        <Box
+          sx={{
+            backgroundColor: 'background.paper',
+            borderRadius: 1,
+            boxShadow: 1,
+            p: 2,
+          }}
+        >
+          {/* The iframe container */}
+          <Box sx={{ width: '100%' }}>
+            <Box
+              sx={{
+                position: 'relative',
+                paddingTop: '56.25%', // 16:9 Aspect Ratio
+              }}
+            >
+              <iframe
+                src="https://viewer.millicast.com?streamId=eFxcvk/myStreamName"
+                allowFullScreen
+                style={{
+                  border: 'none',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                }}
+              ></iframe>
+            </Box>
           </Box>
-          <div>
-            <Button startIcon={<PlusIcon />} variant="contained">
-              Add wallet
-            </Button>
-          </div>
-        </Stack>
+        </Box>
+
         <Grid container spacing={4}>
-          <Grid size={12}>
+          <Grid xs={12}>
             <Box
               sx={{
                 display: 'grid',
@@ -60,69 +83,12 @@ export default function Page() {
                 value={16213.2}
               />
 
-              <DigitalWallet
-                amount={2.0435}
-                color="var(--mui-palette-primary-main)"
-                currency="ETH"
-                data={[
-                  65, 64, 70, 76, 82, 80, 85, 78, 82, 95, 93, 80, 112, 102, 105, 95, 98, 102, 104, 99, 101, 100, 109,
-                  106, 111, 105, 108, 102, 118, 129,
-                ]}
-                diff={14.2}
-                trend="up"
-                value={9626.8}
-              />
-              <DigitalWallet
-                amount={25.1602}
-                color="var(--mui-palette-primary-main)"
-                currency="BNB"
-                data={[
-                  99, 101, 104, 98, 99, 99, 102, 103, 100, 101, 99, 101, 101, 98, 95, 97, 98, 92, 94, 93, 95, 82, 78,
-                  75, 80, 78, 76, 54, 45, 32, 31, 27,
-                ]}
-                diff={18}
-                trend="down"
-                value={6640}
-              />
-              <CreditCard
-                card={{
-                  id: 'CRD-001',
-                  brand: 'mastercard',
-                  cardNumber: '5823 4492 2385 1102',
-                  expiryDate: '05/28',
-                  holderName: 'Sofia Rivers',
-                }}
-              />
+
             </Box>
           </Grid>
-          <Grid
-            size={{
-              md: 8,
-              xs: 12,
-            }}
-          >
-            <CurrentBalance
-              data={[
-                { name: 'USD', value: 10076.81, color: 'var(--mui-palette-success-main)' },
-                { name: 'BTC', value: 16213.2, color: 'var(--mui-palette-warning-main)' },
-                { name: 'ETH', value: 9626.8, color: 'var(--mui-palette-primary-main)' },
-              ]}
-            />
-          </Grid>
-          <Grid
-            size={{
-              md: 4,
-              xs: 12,
-            }}
-          >
-            <CurrencyConverter />
-          </Grid>
-          <Grid
-            size={{
-              md: 8,
-              xs: 12,
-            }}
-          >
+
+
+          <Grid xs={12} md={8}>
             <Transactions
               transactions={[
                 {
@@ -155,12 +121,7 @@ export default function Page() {
               ]}
             />
           </Grid>
-          <Grid
-            size={{
-              md: 4,
-              xs: 12,
-            }}
-          >
+          <Grid xs={12} md={4}>
             <AccountUpgrade />
           </Grid>
         </Grid>
