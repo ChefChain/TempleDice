@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "functions": {
+    "api/*.py": {
+      "runtime": "python3.9",
+      "excludeFiles": "**/{node_modules,__pycache__,*.pyc,env}/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.py"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": ".next"
+}

@@ -1,4 +1,51 @@
-Vercel_git_working_ui_templedice
+# Dependency directories
+node_modules/
+env/
+venv/
+__pycache__/
+
+# Next.js build output
+.next/
+out/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local environment variables
+.env
+.env.local
+.env.*.local
+
+# OS-specific files
 .DS_Store
-# Dependencies
-/agora-chat-integration/node_modules
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Python cache files
+*.py[cod]
+
+# MacOS specific files
+.AppleDouble
+.LSOverride
+
+# Test coverage
+coverage/
+
+# Miscellaneous
+*.log
+*.lock
+
+# Generated files
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.swp
