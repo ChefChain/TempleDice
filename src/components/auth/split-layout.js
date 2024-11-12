@@ -24,7 +24,7 @@ export function SplitLayout({ children }) {
       >
         <Stack spacing={4} sx={{ maxWidth: '700px' }}>
           <Stack spacing={1}>
-            <Typography variant="h4">Welcome to Devias Kit PRO</Typography>
+            <Typography variant="h4">Hello!</Typography>
             <Typography color="text.secondary">
               Welcome to the jungle with ready-to-use MUI components developed with one common goal in
               mind: help you build faster & beautiful applications.
