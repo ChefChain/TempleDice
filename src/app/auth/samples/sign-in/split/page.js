@@ -59,7 +59,7 @@ export default function Page() {
             </Button>
           </Stack>
           <div>
-            <Link variant="subtitle2">whore?</Link>
+            <Link variant="subtitle2">hello?</Link>
           </div>
         </Stack>
       </Stack>
