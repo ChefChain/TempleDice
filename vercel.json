@@ -1,23 +1,9 @@
 {
-  "version": 1,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/next"
-    },
-    {
-      "src": "api/*.py",
-      "use": "@now/python"
+  "version": 2,
+  "functions": {
+    "api/*.py": {
+      "excludeFiles": "**/{node_modules,.next,env,venv,__pycache__,*.pyc}/**"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
+  },
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build"
 }

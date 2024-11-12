@@ -1,7 +1,7 @@
 {
-  "name": "@devias-kit-pro/nextjs-template",
-  "author": "Devias IO",
-  "version": "7.2.1",
+  "name": "TempleDice",
+  "author": "TempleDice",
+  "version": "11.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
