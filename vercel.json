@@ -22,3 +22,4 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": ".next"
 }
+
