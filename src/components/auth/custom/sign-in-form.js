@@ -15,15 +15,14 @@ import Link from '@mui/material/Link';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
-import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
+import { Eye as EyeIcon } from '@phosphor-icons/react';
+import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/custom/client';
 import { useUser } from '@/hooks/use-user';
-import { DynamicLogo } from '@/components/core/logo';
 import { toast } from '@/components/core/toaster';
 
 const oAuthProviders = [
@@ -40,11 +39,8 @@ const defaultValues = { email: '', password: '' };
 
 export function SignInForm() {
   const router = useRouter();
-
   const { checkSession } = useUser();
-
-  const [showPassword, setShowPassword] = React.useState();
-
+  const [showPassword, setShowPassword] = React.useState(false);
   const [isPending, setIsPending] = React.useState(false);
 
   const {
@@ -54,21 +50,24 @@ export function SignInForm() {
     formState: { errors },
   } = useForm({ defaultValues, resolver: zodResolver(schema) });
 
-  const onAuth = React.useCallback(async (providerId) => {
-    setIsPending(true);
+  const onAuth = React.useCallback(
+    async (providerId) => {
+      setIsPending(true);
 
-    const { error } = await authClient.signInWithOAuth({ provider: providerId });
+      const { error } = await authClient.signInWithOAuth({ provider: providerId });
 
-    if (error) {
+      if (error) {
+        setIsPending(false);
+        toast.error(error);
+        return;
+      }
+
       setIsPending(false);
-      toast.error(error);
-      return;
-    }
 
-    setIsPending(false);
-
-    // Redirect to OAuth provider
-  }, []);
+      // Redirect to OAuth provider
+    },
+    []
+  );
 
   const onSubmit = React.useCallback(
     async (values) => {
@@ -96,7 +95,13 @@ export function SignInForm() {
     <Stack spacing={4}>
       <div>
         <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-block', fontSize: 0 }}>
-          <DynamicLogo colorDark="light" colorLight="dark" height={32} width={122} />
+          <a href="/">
+            <img
+              alt="LiveWager Logo"
+              src="/assets/livewager.svg"
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </a>
         </Box>
       </div>
       <Stack spacing={1}>
@@ -154,7 +159,7 @@ export function SignInForm() {
                         showPassword ? (
                           <EyeIcon
                             cursor="pointer"
-                            fontSize="var(--icon-fontSize-md)"
+                            size={24}
                             onClick={() => {
                               setShowPassword(false);
                             }}
@@ -162,7 +167,7 @@ export function SignInForm() {
                         ) : (
                           <EyeSlashIcon
                             cursor="pointer"
-                            fontSize="var(--icon-fontSize-md)"
+                            size={24}
                             onClick={() => {
                               setShowPassword(true);
                             }}
