@@ -145,3 +145,4 @@ export const paths = {
   docs: 'https://material-kit-pro-react-docs.devias.io',
   purchase: 'https://mui.com/store/items/devias-kit-pro',
 };
+
