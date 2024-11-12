@@ -25,6 +25,7 @@
   ],
   "functions": {
     "api/*.py": {
+      "runtime": "@vercel/python",
       "excludeFiles": "**/{node_modules,.next,env,venv,__pycache__,*.pyc}/**"
     }
   },
