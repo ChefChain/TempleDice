@@ -1,15 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    },
-    {
-      "src": "api/*.py",
-      "use": "@vercel/python"
+  "functions": {
+    "api/*.py": {
+      "runtime": "python3.9",
+      "excludeFiles": "**/{node_modules,.next,env,venv,__pycache__,*.pyc}/**"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -23,13 +19,5 @@
       "dest": "/$1"
     }
   ],
-  "functions": {
-    "api/*.py": {
-      "runtime": "@vercel/python",
-      "excludeFiles": "**/{node_modules,.next,env,venv,__pycache__,*.pyc}/**"
-    }
-  },
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm run build",
-  "outputDirectory": ".next"
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build"
 }
