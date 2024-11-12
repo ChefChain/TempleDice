@@ -26,7 +26,7 @@ export function SplitLayout({ children }) {
           <Stack spacing={1}>
             <Typography variant="h4">Welcome to Devias Kit PRO</Typography>
             <Typography color="text.secondary">
-              A professional template that comes with ready-to-use MUI components developed with one common goal in
+              Welcome to the jungle with ready-to-use MUI components developed with one common goal in
               mind: help you build faster & beautiful applications.
             </Typography>
           </Stack>
