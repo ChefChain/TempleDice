@@ -2,7 +2,7 @@
   "version": 2,
   "functions": {
     "api/*.py": {
-      "excludeFiles": "**/{node_modules,__pycache__,*.pyc,env}/**"
+      "excludeFiles": "**/{node_modules,.next,env,venv,__pycache__,*.pyc}/**"
     }
   },
   "routes": [
