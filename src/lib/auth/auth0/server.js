@@ -1,12 +1,12 @@
-// @/lib/auth/auth0/server.js
+// 'lib/auth/auth0/server.js'
 import { handleAuth, handleLogin, handleLogout, handleCallback, getSession } from '@auth0/nextjs-auth0';
 
 const auth0Config = {
-  secret: 'iWVcQiCUqBxoMF4S8h4oVvmbdT64X5GTCl_ixVm6YVFfy_hykJyHQIesx8vcCBoW',
+  secret: '_EjKvpXupLfuaS4f22rJM16ksAi4lrh0m7h7IfM-SS7xLUSv2f5CANIj61pxrH6G',
   baseURL: 'http://localhost:3000', // Replace with your app's base URL
-  clientID: 'aOmcXx5lzxNObSVUESCA5c661fRViwSk',
+  clientID: 'iX2Fz8Yib9kQaX4wIAcQb8aIaYahRPTd',
   issuerBaseURL: 'https://dev-5hdfg43tzzl6p3rk.us.auth0.com',
-  clientSecret: 'iWVcQiCUqBxoMF4S8h4oVvmbdT64X5GTCl_ixVm6YVFfy_hykJyHQIesx8vcCBoW',
+  clientSecret: '_EjKvpXupLfuaS4f22rJM16ksAi4lrh0m7h7IfM-SS7xLUSv2f5CANIj61pxrH6G',
   routes: {
     callback: '/auth/auth0/callback',
     postLogoutRedirect: '/',
