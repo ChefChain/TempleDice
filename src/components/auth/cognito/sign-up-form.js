@@ -88,7 +88,7 @@ export function SignUpForm() {
       <Stack spacing={1}>
         <Typography variant="h5">Sign up</Typography>
         <Typography color="text.secondary" variant="body2">
-          Already have an account?{' '}
+          STOP! have an account?{' '}
           <Link component={RouterLink} href={paths.auth.cognito.signIn} variant="subtitle2">
             Sign in
           </Link>
