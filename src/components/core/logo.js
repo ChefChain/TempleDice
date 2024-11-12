@@ -12,10 +12,11 @@ const WIDTH = 60;
 export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH }) {
   let url;
 
+  // Use the new `livewager.svg` for the main logo
   if (emblem) {
-    url = color === 'light' ? '/assets/logo-emblem.svg' : '/assets/logo-emblem--dark.svg';
+    url = color === 'light' ? '/assets/livewager-emblem.svg' : '/assets/livewager-emblem--dark.svg';
   } else {
-    url = color === 'light' ? '/assets/logo.svg' : '/assets/logo--dark.svg';
+    url = color === 'light' ? '/assets/livewager.svg' : '/assets/livewager--dark.svg';
   }
 
   return <Box alt="logo" component="img" height={height} src={url} width={width} />;
