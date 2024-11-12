@@ -68,7 +68,7 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
   const data = dataRaw.map((item, index) => ({ name: index, value: item }));
 
   return (
-    <Card>
+    <Card sx={{ width: '100%', height: '100%' }}>
       {/* Wallet Info */}
       <Stack direction='row' spacing={3} sx={{ alignItems: 'flex-start', pt: 2, px: 2 }}>
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
