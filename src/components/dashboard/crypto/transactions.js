@@ -18,7 +18,7 @@ import dayjs from 'dayjs'; // Corrected import statement
 
 export function Transactions({ transactions }) {
   return (
-    <Card sx={{ width: '100%', boxSizing: 'border-box' }}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar>

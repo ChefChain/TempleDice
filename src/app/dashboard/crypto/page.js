@@ -62,13 +62,13 @@ export default function Page() {
         </Box>
 
         <Grid container spacing={4}>
-          <Grid xs={12}>
+          <Grid size={{sm:12, md:5}}>
             <Box
               sx={{
                 display: 'grid',
                 gap: 3,
                 gridTemplateColumns: '1fr', // Make all components 100% width
-                minHeight: '300px', // Set a minimum height for flexibility
+                height: '375px', // Set a minimum height for flexibility
               }}
             >
               <DigitalWallet
@@ -86,54 +86,46 @@ export default function Page() {
             </Box>
           </Grid>
 
-          <Grid xs={12}>
-            <Box
-              sx={{
-                display: 'grid',
-                gap: 3,
-                gridTemplateColumns: '1fr', // Make all components 100% width
-              }}
-            >
-              <Transactions
-                transactions={[
-                  {
-                    id: 'TX-003',
-                    description: 'Buy BTC',
-                    type: 'add',
-                    balance: 643,
-                    currency: 'BTC',
-                    amount: 0.2105,
-                    createdAt: dayjs().subtract(2, 'day').subtract(1, 'hour').subtract(32, 'minute').toDate(),
-                  },
-                  {
-                    id: 'TX-002',
-                    description: 'Buy BTC',
-                    type: 'add',
-                    balance: 2344,
-                    currency: 'BTC',
-                    amount: 0.1337,
-                    createdAt: dayjs().subtract(3, 'day').subtract(1, 'hour').subtract(43, 'minute').toDate(),
-                  },
-                  {
-                    id: 'TX-001',
-                    description: 'Sell BTC',
-                    type: 'sub',
-                    balance: 4805,
-                    currency: 'BTC',
-                    amount: 0.2105,
-                    createdAt: dayjs().subtract(6, 'day').subtract(1, 'hour').subtract(32, 'minute').toDate(),
-                  },
-                ]}
-              />
-            </Box>
+          <Grid size={{xs:12, sm:12, md:7}}>
+            <Transactions
+              transactions={[
+                {
+                  id: 'TX-003',
+                  description: 'Buy BTC',
+                  type: 'add',
+                  balance: 643,
+                  currency: 'BTC',
+                  amount: 0.2105,
+                  createdAt: dayjs().subtract(2, 'day').subtract(1, 'hour').subtract(32, 'minute').toDate(),
+                },
+                {
+                  id: 'TX-002',
+                  description: 'Buy BTC',
+                  type: 'add',
+                  balance: 2344,
+                  currency: 'BTC',
+                  amount: 0.1337,
+                  createdAt: dayjs().subtract(3, 'day').subtract(1, 'hour').subtract(43, 'minute').toDate(),
+                },
+                {
+                  id: 'TX-001',
+                  description: 'Sell BTC',
+                  type: 'sub',
+                  balance: 4805,
+                  currency: 'BTC',
+                  amount: 0.2105,
+                  createdAt: dayjs().subtract(6, 'day').subtract(1, 'hour').subtract(32, 'minute').toDate(),
+                },
+              ]}
+            />
           </Grid>
-          <Grid xs={12}>
+          <Grid size={12}>
             <Box
               sx={{
                 display: 'grid',
                 gap: 3,
                 gridTemplateColumns: '1fr', // Make all components 100% width
-                minHeight: '300px', // Set a minimum height for flexibility
+                height: '350px', // Set a minimum height for flexibility
               }}
             >
               <AccountUpgrade />
