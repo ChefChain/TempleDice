@@ -34,7 +34,6 @@ export default function Page() {
             backgroundColor: 'background.paper',
             borderRadius: 1,
             boxShadow: 1,
-            p: 2,
           }}
         >
           {/* The iframe container */}
@@ -51,6 +50,7 @@ export default function Page() {
                 style={{
                   border: 'none',
                   position: 'absolute',
+                  borderRadius: '10px',
                   top: 0,
                   left: 0,
                   width: '100%',
