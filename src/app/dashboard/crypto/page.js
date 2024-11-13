@@ -62,7 +62,7 @@ export default function Page() {
         </Box>
 
         <Grid container spacing={4}>
-          <Grid size={{sm:12, md:5}}>
+          <Grid size={{xs:12, sm:12, md:5}}>
             <Box
               sx={{
                 display: 'grid',
