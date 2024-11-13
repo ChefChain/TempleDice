@@ -141,7 +141,8 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
           >
             <Box
               sx={{
-                width: '100%',
+                width: '50px',
+                height: '50px',
                 aspectRatio: '1', // Maintain square aspect ratio for dice icons
                 color: index === 3 ? 'red' : '#f0f0f0', // Make the fourth dice red
               }}
