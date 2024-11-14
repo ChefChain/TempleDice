@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
@@ -16,6 +16,36 @@ import { DigitalWallet } from '@/components/dashboard/crypto/digital-wallet';
 import { Transactions } from '@/components/dashboard/crypto/transactions';
 
 export const metadata = { title: `Crypto | Dashboard | ${config.site.name}` };
+
+// Dice Component
+function Dice() {
+  const [value, setValue] = useState(1);
+
+  const handleClick = () => {
+    const newValue = Math.floor(Math.random() * 6) + 1;
+    setValue(newValue);
+  };
+
+  return (
+    <Box
+      onClick={handleClick}
+      sx={{
+        width: '100px',
+        height: '100px',
+        backgroundColor: 'grey.300',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '2rem',
+        cursor: 'pointer',
+        borderRadius: '10px',
+        userSelect: 'none',
+      }}
+    >
+      <Typography variant="h3">{value}</Typography>
+    </Box>
+  );
+}
 
 export default function Page() {
   return (
@@ -62,7 +92,7 @@ export default function Page() {
         </Box>
 
         <Grid container spacing={4}>
-          <Grid size={{xs:12, sm:12, md:5}}>
+          <Grid item xs={12} sm={12} md={5}>
             <Box
               sx={{
                 display: 'grid',
@@ -86,7 +116,7 @@ export default function Page() {
             </Box>
           </Grid>
 
-          <Grid size={{xs:12, sm:12, md:7}}>
+          <Grid item xs={12} sm={12} md={7}>
             <Transactions
               transactions={[
                 {
@@ -96,7 +126,11 @@ export default function Page() {
                   balance: 643,
                   currency: 'BTC',
                   amount: 0.2105,
-                  createdAt: dayjs().subtract(2, 'day').subtract(1, 'hour').subtract(32, 'minute').toDate(),
+                  createdAt: dayjs()
+                    .subtract(2, 'day')
+                    .subtract(1, 'hour')
+                    .subtract(32, 'minute')
+                    .toDate(),
                 },
                 {
                   id: 'TX-002',
@@ -105,7 +139,11 @@ export default function Page() {
                   balance: 2344,
                   currency: 'BTC',
                   amount: 0.1337,
-                  createdAt: dayjs().subtract(3, 'day').subtract(1, 'hour').subtract(43, 'minute').toDate(),
+                  createdAt: dayjs()
+                    .subtract(3, 'day')
+                    .subtract(1, 'hour')
+                    .subtract(43, 'minute')
+                    .toDate(),
                 },
                 {
                   id: 'TX-001',
@@ -114,12 +152,16 @@ export default function Page() {
                   balance: 4805,
                   currency: 'BTC',
                   amount: 0.2105,
-                  createdAt: dayjs().subtract(6, 'day').subtract(1, 'hour').subtract(32, 'minute').toDate(),
+                  createdAt: dayjs()
+                    .subtract(6, 'day')
+                    .subtract(1, 'hour')
+                    .subtract(32, 'minute')
+                    .toDate(),
                 },
               ]}
             />
           </Grid>
-          <Grid size={12}>
+          <Grid item xs={12}>
             <Box
               sx={{
                 display: 'grid',
@@ -130,6 +172,22 @@ export default function Page() {
             >
               <AccountUpgrade />
             </Box>
+          </Grid>
+        </Grid>
+
+        {/* Dice components */}
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
+          <Grid item>
+            <Dice />
+          </Grid>
+          <Grid item>
+            <Dice />
+          </Grid>
+          <Grid item>
+            <Dice />
+          </Grid>
+          <Grid item>
+            <Dice />
           </Grid>
         </Grid>
       </Stack>
