@@ -15,7 +15,7 @@ import { CurrentBalance } from '@/components/dashboard/crypto/current-balance';
 import { DigitalWallet } from '@/components/dashboard/crypto/digital-wallet';
 import { Transactions } from '@/components/dashboard/crypto/transactions';
 
-export const metadata = { title: `Crypto | Dashboard | ${config.site.name}` };
+export const metadata = { title: Crypto | Dashboard | ${config.site.name} };
 
 export default function Page() {
   return (
