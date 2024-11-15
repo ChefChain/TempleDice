@@ -1,5 +1,6 @@
 import * as React from 'react';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { header, headers } from 'next/headers';
 
 import '@/styles/global.css';
 
@@ -14,6 +15,7 @@ import { LocalizationProvider } from '@/components/core/localization-provider';
 import { SettingsButton } from '@/components/core/settings/settings-button';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 import { Toaster } from '@/components/core/toaster';
+import ContextProvider from '@/context';
 
 export const metadata = { title: config.site.name };
 
@@ -25,6 +27,7 @@ export const viewport = {
 
 export default async function Layout({ children }) {
   const settings = applyDefaultSettings(await getPersistedSettings());
+  const cookies = headers().get('cookie');
 
   return (
     <html lang={settings.language} suppressHydrationWarning>
@@ -36,7 +39,9 @@ export default async function Layout({ children }) {
               <SettingsProvider settings={settings}>
                 <I18nProvider lng={settings.language}>
                   <ThemeProvider>
-                    {children}
+                    <ContextProvider cookies={cookies}>
+                     {children}
+                    </ContextProvider>
                     <SettingsButton />
                     <Toaster position="bottom-right" />
                   </ThemeProvider>
