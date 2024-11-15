@@ -287,7 +287,7 @@ export function TasksProvider({ children, columns: initialColumns = [], tasks: i
       // Create the new task
       const task = {
         id: `TSK-${Date.now()}`,
-        author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: '/assets/avatar.png' },
+        author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: 'avatar' },
         title: 'Untitled',
         columnId,
         createdAt: new Date(),
@@ -391,7 +391,7 @@ export function TasksProvider({ children, columns: initialColumns = [], tasks: i
       // Create the comment and add it to the task
       const comment = {
         id: `MSG-${Date.now()}`,
-        author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: '/assets/avatar.png' },
+        author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: 'avatar' },
         content,
         createdAt: new Date(),
       };

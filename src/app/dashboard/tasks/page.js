@@ -16,7 +16,7 @@ const columns = [
 const tasks = [
   {
     id: 'TSK-001',
-    author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: '/assets/avatar.png' },
+    author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: 'avatar' },
     title: 'Update the customer API for payments',
     description: 'Stripe has a new API version, we need to update it to the latest version',
     columnId: 'COL-001',
@@ -50,7 +50,7 @@ const tasks = [
         comments: [
           {
             id: 'MSG-002',
-            author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: '/assets/avatar.png' },
+            author: { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: 'avatar' },
             createdAt: dayjs().subtract(4, 'day').toDate(),
             content: 'Great! Thanks for the update.',
           },
@@ -83,7 +83,7 @@ const tasks = [
     createdAt: dayjs().subtract(3, 'day').toDate(),
     assignees: [
       { id: 'USR-003', name: 'Carson Darrin', username: 'carson.darrin', avatar: '/assets/avatar-3.png' },
-      { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: '/assets/avatar.png' },
+      { id: 'USR-000', name: 'Sofia Rivers', username: 'sofia.rivers', avatar: 'avatar' },
     ],
     attachments: [],
     subtasks: [

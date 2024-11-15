@@ -71,7 +71,7 @@ const threads = [
     id: 'TRD-004',
     type: 'direct',
     participants: [
-      { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+      { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
       { id: 'USR-003', name: 'Carson Darrin', avatar: '/assets/avatar-3.png' },
     ],
     unreadCount: 0,
@@ -80,7 +80,7 @@ const threads = [
     id: 'TRD-003',
     type: 'direct',
     participants: [
-      { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+      { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
       { id: 'USR-005', name: 'Fran Perez', avatar: '/assets/avatar-5.png' },
     ],
     unreadCount: 1,
@@ -89,7 +89,7 @@ const threads = [
     id: 'TRD-002',
     type: 'group',
     participants: [
-      { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+      { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
       { id: 'USR-007', name: 'Nasimiyu Danai', avatar: '/assets/avatar-7.png' },
       { id: 'USR-001', name: 'Miron Vitold', avatar: '/assets/avatar-1.png' },
     ],
@@ -99,7 +99,7 @@ const threads = [
     id: 'TRD-001',
     type: 'direct',
     participants: [
-      { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+      { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
       { id: 'USR-010', name: 'Alcides Antonio', avatar: '/assets/avatar-10.png' },
     ],
     unreadCount: 2,
@@ -112,7 +112,7 @@ const messages = [
     threadId: 'TRD-004',
     type: 'text',
     content: 'Hi, how are you?',
-    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
     createdAt: dayjs().subtract(10, 'minute').toDate(),
   },
   {
@@ -136,7 +136,7 @@ const messages = [
     threadId: 'TRD-002',
     type: 'text',
     content: 'Hi!',
-    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
     createdAt: dayjs().subtract(51, 'minute').subtract(3, 'hour').toDate(),
   },
   {
@@ -168,7 +168,7 @@ const messages = [
     threadId: 'TRD-001',
     type: 'text',
     content: "I'm sorry, I can't go lower than $45.",
-    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
     createdAt: dayjs().subtract(3, 'hour').subtract(3, 'day').toDate(),
   },
   {
@@ -184,7 +184,7 @@ const messages = [
     threadId: 'TRD-001',
     type: 'text',
     content: 'Sure, it is $50 per hour.',
-    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
     createdAt: dayjs().subtract(2, 'hour').subtract(4, 'day').toDate(),
   },
   {

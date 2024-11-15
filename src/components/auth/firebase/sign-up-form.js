@@ -16,7 +16,7 @@ import Link from '@mui/material/Link';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
@@ -78,11 +78,11 @@ export function SignUpForm() {
   const onSubmit = React.useCallback(
     async (values) => {
       setIsPending(true);
-
+      const name = `${values.firstName} ${values.lastName}`
       try {
-        await createUserWithEmailAndPassword(firebaseAuth, values.email, values.password);
-        // UserProvider will handle Router refresh
-        // After refresh, GuestGuard will handle the redirect
+        const userCredential = await createUserWithEmailAndPassword(firebaseAuth, values.email, values.password);
+        const user = userCredential.user; 
+        await updateProfile(user, {displayName:name});
       } catch (err) {
         setError('root', { type: 'server', message: err.message });
         setIsPending(false);

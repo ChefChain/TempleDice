@@ -16,7 +16,7 @@ const reviews = [
     comment:
       'I have been working with this company full-time. Great for the work life balance. Cons, decentralized decision making process across the organization.',
     rating: 3.8,
-    author: { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { name: 'Sofia Rivers', avatar: 'avatar' },
     createdAt: dayjs().subtract(4, 'minute').subtract(4, 'hour').subtract(2, 'day').toDate(),
   },
   {

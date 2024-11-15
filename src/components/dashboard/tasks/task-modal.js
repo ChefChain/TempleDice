@@ -413,7 +413,7 @@ function CommentAdd({ onAdd }) {
       placeholder="Add a comment..."
       startAdornment={
         <InputAdornment position="start">
-          <Avatar src="/assets/avatar.png" />
+          <Avatar src="avatar" />
         </InputAdornment>
       }
       sx={{ '--Input-paddingBlock': '12px' }}

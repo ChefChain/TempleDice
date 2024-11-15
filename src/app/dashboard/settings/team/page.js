@@ -18,7 +18,7 @@ export default function Page() {
           {
             id: 'USR-000',
             name: 'Sofia Rivers',
-            avatar: '/assets/avatar.png',
+            avatar: 'avatar',
             email: 'sofia@devias.io',
             role: 'Owner',
           },

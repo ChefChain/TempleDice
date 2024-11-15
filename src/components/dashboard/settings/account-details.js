@@ -22,7 +22,47 @@ import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
 
 import { Option } from '@/components/core/option';
 
+import { getAuth, updateProfile } from "firebase/auth";
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 export function AccountDetails() {
+
+  const auth = getAuth();
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        setName(user.displayName || '');
+        setEmail(user.email || '');
+      } else {
+        setUser(null);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  // const[newName, setNewDisplayName] = useState("");
+  const handleUpdateProfile = async() => {
+    try {
+      if (user) {
+        await updateProfile(user, {
+          displayName: name,
+        });
+
+        setUser({ ...user, name});
+        alert('Profile updated successfully!');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
   return (
     <Card>
       <CardHeader
@@ -71,7 +111,7 @@ export function AccountDetails() {
                     </Typography>
                   </Stack>
                 </Box>
-                <Avatar src="/assets/avatar.png" sx={{ '--Avatar-size': '100px' }} />
+                <Avatar src="" sx={{ '--Avatar-size': '100px' }} />
               </Box>
             </Box>
             <Button color="secondary" size="small">
@@ -81,40 +121,40 @@ export function AccountDetails() {
           <Stack spacing={2}>
             <FormControl>
               <InputLabel>Full name</InputLabel>
-              <OutlinedInput defaultValue="Sofia Rivers" name="fullName" />
+              <OutlinedInput defaultValue={name} name="fullName" onChange={(e) => setName(e.target.value)} />
             </FormControl>
             <FormControl disabled>
               <InputLabel>Email address</InputLabel>
-              <OutlinedInput name="email" type="email" value="sofia@devias.io" />
+              <OutlinedInput name="email" type="email" value={email} />
               <FormHelperText>
                 Please <Link variant="inherit">contact us</Link> to change your email
               </FormHelperText>
             </FormControl>
             <Stack direction="row" spacing={2}>
-              <FormControl sx={{ width: '160px' }}>
+              {/* <FormControl sx={{ width: '160px' }}>
                 <InputLabel>Dial code</InputLabel>
                 <Select
                   name="countryCode"
                   startAdornment={
                     <InputAdornment position="start">
                       <Box
-                        alt="Spain"
-                        component="img"
-                        src="/assets/flag-es.svg"
+                        alt=""
+                        component=""
+                        src=""
                         sx={{ display: 'block', height: '20px', width: 'auto' }}
                       />
                     </InputAdornment>
                   }
-                  value="+34"
+                  value=""
                 >
                   <Option value="+1">United States</Option>
                   <Option value="+49">Germany</Option>
                   <Option value="+34">Spain</Option>
                 </Select>
-              </FormControl>
+              </FormControl> */}
               <FormControl sx={{ flex: '1 1 auto' }}>
                 <InputLabel>Phone number</InputLabel>
-                <OutlinedInput defaultValue="965 245 7623" name="phone" />
+                <OutlinedInput defaultValue="" name="phone" onChange={(e)=>setPhonenumber(e.target.value)} />
               </FormControl>
             </Stack>
             <FormControl>
@@ -131,7 +171,7 @@ export function AccountDetails() {
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button color="secondary">Cancel</Button>
-        <Button variant="contained">Save changes</Button>
+        <Button variant="contained" onClick={handleUpdateProfile}>Save changes</Button>
       </CardActions>
     </Card>
   );

@@ -15,7 +15,7 @@ import { PostCard } from '@/components/dashboard/social/post-card';
 const posts = [
   {
     id: 'POST-003',
-    author: { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { name: 'Sofia Rivers', avatar: 'avatar' },
     content: "Hey! What's your favorite framework?",
     comments: [
       {
@@ -31,7 +31,7 @@ const posts = [
   },
   {
     id: 'POST-001',
-    author: { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { name: 'Sofia Rivers', avatar: 'avatar' },
     content: 'Staying focused on the goal is key to success',
     media: '/assets/image-business-2.png',
     comments: [

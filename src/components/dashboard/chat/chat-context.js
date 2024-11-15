@@ -89,7 +89,7 @@ export function ChatProvider({
 
       // Create a new thread
 
-      const participants = [{ id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' }];
+      const participants = [{ id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' }];
 
       if (params.type === 'direct') {
         const contact = contacts.find((contact) => contact.id === params.recipientId);
@@ -153,7 +153,7 @@ export function ChatProvider({
         id: `MSG-${Date.now()}`,
         threadId: params.threadId,
         type: params.type,
-        author: { id: 'USR-000', name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+        author: { id: 'USR-000', name: 'Sofia Rivers', avatar: 'avatar' },
         content: params.content,
         createdAt: new Date(),
       };

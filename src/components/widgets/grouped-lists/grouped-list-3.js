@@ -32,7 +32,7 @@ const tasks = [
     dueDate: dayjs().add(1, 'hour').add(2, 'day').toDate(),
     members: [
       { name: 'Penjani Inyene', avatar: '/assets/avatar-4.png' },
-      { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+      { name: 'Sofia Rivers', avatar: 'avatar' },
       { name: 'Nasimiyu Danai', avatar: '/assets/avatar-7.png' },
     ],
   },
@@ -56,7 +56,7 @@ const tasks = [
     members: [
       { name: 'Jie Yan', avatar: '/assets/avatar-8.png' },
       { name: 'Marcus Finn', avatar: '/assets/avatar-9.png' },
-      { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+      { name: 'Sofia Rivers', avatar: 'avatar' },
     ],
   },
   {

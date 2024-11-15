@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 const user = {
   id: 'USR-000',
   name: 'Sofia Rivers',
-  avatar: '/assets/avatar.png',
+  avatar: 'avatar',
   email: 'sofia@devias.io',
 };
 

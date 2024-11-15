@@ -15,7 +15,7 @@ import { Smiley as SmileyIcon } from '@phosphor-icons/react/dist/ssr/Smiley';
 const user = {
   id: 'USR-000',
   name: 'Sofia Rivers',
-  avatar: '/assets/avatar.png',
+  avatar: 'avatar',
   email: 'sofia@devias.io',
 };
 

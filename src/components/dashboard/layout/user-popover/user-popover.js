@@ -22,15 +22,25 @@ import { CognitoSignOut } from './cognito-sign-out';
 import { CustomSignOut } from './custom-sign-out';
 import { FirebaseSignOut } from './firebase-sign-out';
 import { SupabaseSignOut } from './supabase-sign-out';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useState } from 'react';
 
-const user = {
-  id: 'USR-000',
-  name: 'Sofia Rivers',
-  avatar: '/assets/avatar.png',
-  email: 'sofia@devias.io',
-};
 
 export function UserPopover({ anchorEl, onClose, open }) {
+
+  const auth = getAuth();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+ onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+    setEmail(user.email);
+    setName(user.displayName);
+
+  } else {
+  }
+});
   return (
     <Popover
       anchorEl={anchorEl}
@@ -41,9 +51,9 @@ export function UserPopover({ anchorEl, onClose, open }) {
       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
     >
       <Box sx={{ p: 2 }}>
-        <Typography>{user.name}</Typography>
+        <Typography>{name}</Typography>
         <Typography color="text.secondary" variant="body2">
-          {user.email}
+          {email}
         </Typography>
       </Box>
       <Divider />

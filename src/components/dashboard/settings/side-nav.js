@@ -16,6 +16,8 @@ import { UsersThree as UsersThreeIcon } from '@phosphor-icons/react/dist/ssr/Use
 
 import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useState } from 'react';
 
 // NOTE: First level elements are groups.
 
@@ -57,6 +59,24 @@ const icons = {
 export function SideNav() {
   const pathname = usePathname();
 
+  const auth = getAuth();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+ onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+    setEmail(user.email);
+    setName(user.displayName);
+    console.log(user);
+    
+
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
   return (
     <div>
       <Stack
@@ -88,11 +108,11 @@ export function SideNav() {
           ))}
         </Stack>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <Avatar src="/assets/avatar.png">AV</Avatar>
+          <Avatar src="">AV</Avatar>
           <div>
-            <Typography variant="subtitle1">Sofia Rivers</Typography>
+            <Typography variant="subtitle1">{name}</Typography>
             <Typography color="text.secondary" variant="caption">
-              sofia@devias.io
+              {email}
             </Typography>
           </div>
         </Stack>

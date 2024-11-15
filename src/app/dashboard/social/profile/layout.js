@@ -61,7 +61,7 @@ export default function Layout({ children }) {
           </Box>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-              <Avatar src="/assets/avatar.png" sx={{ '--Avatar-size': '64px' }} />
+              <Avatar src="avatar" sx={{ '--Avatar-size': '64px' }} />
               <div>
                 <Typography variant="h6">Sofia Rivers</Typography>
                 <Typography color="text.secondary" variant="overline">

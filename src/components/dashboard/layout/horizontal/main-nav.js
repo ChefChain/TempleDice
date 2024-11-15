@@ -214,7 +214,7 @@ function LanguageSwitch() {
 const user = {
   id: 'USR-000',
   name: 'Sofia Rivers',
-  avatar: '/assets/avatar.png',
+  avatar: 'avatar',
   email: 'sofia@devias.io',
 };
 

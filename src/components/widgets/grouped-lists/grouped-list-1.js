@@ -48,7 +48,7 @@ const events = [
     id: 'EV-001',
     type: 'payment',
     description: 'Purchased subscription',
-    customer: { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    customer: { name: 'Sofia Rivers', avatar: 'avatar' },
     createdAt: dayjs().subtract(5, 'minute').toDate(),
   },
 ];

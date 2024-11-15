@@ -22,7 +22,7 @@ const applicants = [
   {
     id: 'USR-000',
     name: 'Sofia Rivers',
-    avatar: '/assets/avatar.png',
+    avatar: 'avatar',
     cover: '/assets/image-abstract-1.png',
     skills: ['Backend development', 'Firebase', 'MongoDB', 'ExpressJS'],
     commonContacts: 17,

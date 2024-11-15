@@ -28,7 +28,7 @@ const posts = [
   },
   {
     id: 'POST-001',
-    author: { name: 'Sofia Rivers', avatar: '/assets/avatar.png' },
+    author: { name: 'Sofia Rivers', avatar: 'avatar' },
     content: 'Staying focused on the goal is key to success',
     media: '/assets/image-business-2.png',
     createdAt: dayjs().subtract(4, 'hour').toDate(),

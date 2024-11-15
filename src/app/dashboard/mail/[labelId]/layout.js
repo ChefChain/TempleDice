@@ -43,7 +43,7 @@ const threads = [
   {
     id: 'TRD-004',
     from: { avatar: '/assets/avatar-9.png', email: 'marcus.finn@domain.com', name: 'Marcus Finn' },
-    to: [{ avatar: '/assets/avatar.png', email: 'sofia@devias.io', name: 'Sofia Rivers' }],
+    to: [{ avatar: 'avatar', email: 'sofia@devias.io', name: 'Sofia Rivers' }],
     subject: 'Website redesign. Interested in collaboration',
     message: `Hey there,
 
@@ -82,7 +82,7 @@ Marcus Finn`,
   },
   {
     id: 'TRD-003',
-    to: [{ name: 'Sofia Rivers', avatar: '/assets/avatar.png', email: 'sofia@devias.io' }],
+    to: [{ name: 'Sofia Rivers', avatar: 'avatar', email: 'sofia@devias.io' }],
     from: { name: 'Miron Vitold', avatar: '/assets/avatar-1.png', email: 'miron.vitold@domain.com' },
     subject: 'Amazing work',
     message: `Hey, nice projects! I really liked the one in react. What's your quote on kinda similar project?`,
@@ -96,7 +96,7 @@ Marcus Finn`,
   {
     id: 'TRD-002',
     from: { name: 'Penjani Inyene', avatar: '/assets/avatar-4.png', email: 'penjani.inyene@domain.com' },
-    to: [{ name: 'Sofia Rivers', avatar: '/assets/avatar.png', email: 'sofia@devias.io' }],
+    to: [{ name: 'Sofia Rivers', avatar: 'avatar', email: 'sofia@devias.io' }],
     subject: 'Flight reminder',
     message: `Dear Sofia,
 
@@ -111,7 +111,7 @@ Your flight is coming up soon. Please don't forget to check in for your schedule
   {
     id: 'TRD-001',
     from: { name: 'Carson Darrin', avatar: '/assets/avatar-3.png', email: 'carson.darrin@domain.com' },
-    to: [{ name: 'Sofia Rivers', avatar: '/assets/avatar.png', email: 'sofia@devias.io' }],
+    to: [{ name: 'Sofia Rivers', avatar: 'avatar', email: 'sofia@devias.io' }],
     subject: 'Possible candidates for the position',
     message: `My market leading client has another fantastic opportunity for an experienced Software Developer to join them on a heavily remote basis`,
     folder: 'trash',
