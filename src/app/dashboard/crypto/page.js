@@ -68,7 +68,7 @@ export default function Page() {
                 display: 'grid',
                 gap: 3,
                 gridTemplateColumns: '1fr', // Make all components 100% width
-                height: '375px', // Set a minimum height for flexibility
+                height: 'auto', // Set a minimum height for flexibility 
               }}
             >
               <DigitalWallet
@@ -119,6 +119,7 @@ export default function Page() {
               ]}
             />
           </Grid>
+          
           <Grid size={12}>
             <Box
               sx={{

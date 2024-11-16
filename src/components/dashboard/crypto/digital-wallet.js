@@ -1,6 +1,8 @@
 'use client';
 
 import * as React from 'react';
+import { keyframes } from '@emotion/react';
+import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
@@ -21,94 +23,219 @@ const currencyIcons = {
 
 // SVG paths for dice faces 1 to 4 with rounded corners and thicker lines
 const dicePaths = {
-  1: (
-    <circle cx="10" cy="10" r="2" fill="currentColor" />
-  ),
+  1: <circle cx="10" cy="10" r="1.5" fill="currentColor" />,
   2: (
     <>
-      <circle cx="6" cy="6" r="2" fill="currentColor" />
-      <circle cx="14" cy="14" r="2" fill="currentColor" />
+      <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="14" r="1.5" fill="currentColor" />
     </>
   ),
   3: (
     <>
-      <circle cx="5" cy="5" r="2" fill="currentColor" />
-      <circle cx="10" cy="10" r="2" fill="currentColor" />
-      <circle cx="15" cy="15" r="2" fill="currentColor" />
+      <circle cx="5" cy="5" r="1.5" fill="currentColor" />
+      <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+      <circle cx="15" cy="15" r="1.5" fill="currentColor" />
     </>
   ),
   4: (
     <>
-      <circle cx="6" cy="6" r="2" fill="currentColor" />
-      <circle cx="14" cy="6" r="2" fill="currentColor" />
-      <circle cx="6" cy="14" r="2" fill="currentColor" />
-      <circle cx="14" cy="14" r="2" fill="currentColor" />
+      <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="6" cy="14" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="14" r="1.5" fill="currentColor" />
+    </>
+  ),
+  5: (
+    <>
+      <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+      <circle cx="6" cy="14" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="14" r="1.5" fill="currentColor" />
+    </>
+  ),
+  6: (
+    <>
+      <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="6" r="1.5" fill="currentColor" />
+      <circle cx="6" cy="10" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="10" r="1.5" fill="currentColor" />
+      <circle cx="6" cy="14" r="1.5" fill="currentColor" />
+      <circle cx="14" cy="14" r="1.5" fill="currentColor" />
     </>
   ),
 };
 
 // DiceIcon component that accepts a value prop
-const DiceIcon = ({ value, color = 'currentColor' }) => (
-  <svg
-    width='100%'
-    height='100%'
-    viewBox='0 0 20 20'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    {/* Dice background with rounded corners and thicker stroke */}
-    <rect x='1' y='1' width='18' height='18' rx='4' ry='4' fill='none' stroke={color} strokeWidth='2' />
-    {/* Dots based on value */}
-    {dicePaths[value]}
-  </svg>
-);
+function DiceIcon({ value, color = 'currentColor' }) {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      {/* Dice background with rounded corners and thicker stroke */}
+      <rect x="1" y="1" width="18" height="18" rx="4" ry="4" fill="none" stroke={color} strokeWidth="2" />
+      {/* Dots based on value */}
+      {dicePaths[value]}
+    </svg>
+  );
+}
+
+const buttonState = [
+  { state: 1, text: 'Place Bet', color: 'rgba(221 231 238 / 0.08)' },
+  { state: 2, text: 'Confirm Bet', color: '#0f1012' },
+  { state: 3, text: 'Bet Confirmed', color: 'var(--mui-palette-success-main)' },
+  { state: 4, text: 'No More Bets', color: 'var(--mui-palette-error-main)' },
+];
 
 export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, trend, value }) {
   const chartHeight = 100;
 
   const data = dataRaw.map((item, index) => ({ name: index, value: item }));
+  const [diceNumber, setDiceNumber] = React.useState([1, 2, 3, 6]);
+  const [activeButton, setActiveButton] = React.useState({
+    state: 1,
+    text: 'Place Bet',
+    color: 'rgba(221 231 238 / 0.08)',
+  });
+
+  const handleDiceClick = (index) => {
+    const newDiceNumber = [...diceNumber];
+    newDiceNumber[index] = newDiceNumber[index] >= 6 ? 1 : newDiceNumber[index] + 1;
+    setDiceNumber(newDiceNumber);
+  };
+
+  const handleButtonState = (index) => {
+    setActiveButton(buttonState[index >= 4 ? 0 : index]);
+  };
+
+  const blinkBorder = keyframes`
+  0% { border-color: transparent; }
+  50% { border-color: ${activeButton.color}; }
+  100% { border-color: transparent; }
+`;
+
+  const blinkButton = keyframes`
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+`;
 
   return (
     <Card sx={{ width: '100%', height: '100%' }}>
       {/* Wallet Info */}
-      <Stack direction='row' spacing={3} sx={{ alignItems: 'flex-start', pt: 2, px: 2 }}>
-        <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-          <Typography color='text.secondary' variant='h6'>
-            <Typography color='text.primary' component='span' variant='inherit'>
-              {amount}
-            </Typography>{' '}
-            {currency}
-          </Typography>
-          <Typography color='text.secondary' variant='body2'>
-            {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)}
-          </Typography>
+      <Stack direction="row" spacing={3} sx={{ alignItems: 'flex-start', pt: 2, px: 2 }}>
+        <Stack spacing={1} direction="row" sx={{ flex: '1 1 auto' }}>
+          <Card
+            rounded="lg"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              borderColor: 'var(--mui-palette-success-main)',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              py: 1,
+              px: '2px',
+            }}
+          >
+            <Stack
+              spacing={1}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ flex: '1 1 auto' }}
+            >
+              <Typography sx={{ color: 'var(--mui-palette-success-main)', fontSize: '0.75rem', pl: 1 }}>
+                ROOM:{' '}
+              </Typography>
+              <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, pr: 1 }}>$10</Typography>
+            </Stack>
+          </Card>
+          <Card
+            rounded="lg"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              borderColor: 'var(--mui-palette-success-main)',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              py: 1,
+              px: '2px',
+            }}
+          >
+            <Stack
+              spacing={1}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ flex: '1 1 auto' }}
+            >
+              <Typography sx={{ color: 'var(--mui-palette-success-main)', fontSize: '0.75rem', pl: 1 }}>
+                ACTIVE POT:{' '}
+              </Typography>
+              <Typography sx={{ fontSize: '0.75rem' }}>777$</Typography>
+              <Box
+                component="img"
+                src={currencyIcons[currency]}
+                sx={{ height: 'auto', flex: '0 0 auto', width: '25px' }}
+              />
+            </Stack>
+          </Card>
+          <Card
+            rounded="lg"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              borderColor: 'var(--mui-palette-success-main)',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              py: 1,
+              px: '2px',
+            }}
+          >
+            <Stack
+              spacing={1}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ flex: '1 1 auto' }}
+            >
+              <Typography sx={{ color: 'var(--mui-palette-success-main)', fontSize: '0.75rem', pl: 1 }}>
+                PROGRESSIVE:{' '}
+              </Typography>
+              <Typography sx={{ fontSize: '0.75rem' }}>12,777$</Typography>
+              <Box
+                component="img"
+                src={currencyIcons[currency]}
+                sx={{ height: 'auto', flex: '0 0 auto', width: '25px' }}
+              />
+            </Stack>
+          </Card>
         </Stack>
         <IconButton>
-          <DotsThreeIcon weight='bold' />
+          <DotsThreeIcon weight="bold" />
         </IconButton>
       </Stack>
 
       {/* Chart */}
       <Box sx={{ pt: 3 }}>
         <NoSsr fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
-          <ResponsiveContainer height={chartHeight} width='100%'>
+          <ResponsiveContainer height={chartHeight} width="100%">
             <AreaChart data={data} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
               <defs>
-                <linearGradient id={`area-wallet-${currency}`} x1='0' x2='0' y1='0' y2='1'>
-                  <stop offset='0' stopColor={color} stopOpacity={0.1} />
-                  <stop offset='100%' stopColor={color} stopOpacity={0} />
+                <linearGradient id={`area-wallet-${currency}`} x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stopColor={color} stopOpacity={0.1} />
+                  <stop offset="100%" stopColor={color} stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis axisLine={false} dataKey='name' hide type='category' />
-              <YAxis axisLine={false} hide type='number' />
+              <XAxis axisLine={false} dataKey="name" hide type="category" />
+              <YAxis axisLine={false} hide type="number" />
               <Area
                 animationDuration={300}
-                dataKey='value'
+                dataKey="value"
                 fill={`url(#area-wallet-${currency})`}
                 fillOpacity={1}
-                name='Income'
+                name="Income"
                 stroke={color}
                 strokeWidth={2}
-                type='monotone'
+                type="monotone"
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -121,61 +248,75 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
           m: 2,
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          gap: '8px', // Reduced gap between dice boxes (50% smaller)
+          justifyContent: 'center',
+          height: { xs: '70px', sm: '100px', md: '80px', lg: '100px' },
         }}
       >
-        {[1, 2, 3, 4].map((value, index) => (
-          <Card
-            key={value}
-            sx={{
-              backgroundColor: 'transparent', // Transparent background
-              boxShadow: 'none', // Remove any shadow
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '8px', // Reduced padding (50% smaller)
-              flexBasis: 'calc(25% - 8px)', // Ensure four cards fit in one row with spacing
-            }}
-          >
-            <Box
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: { xs: '8px', sm: '20px', lg: '10px' },
+            height: '100%',
+            width: '100%',
+            maxWidth: '100%',
+          }}
+        >
+          {[1, 2, 3, 4].map((value, index) => (
+            <Card
+              key={value}
               sx={{
-                width: '50px',
-                height: '50px',
-                aspectRatio: '1', // Maintain square aspect ratio for dice icons
-                color: index === 3 ? 'red' : '#f0f0f0', // Make the fourth dice red
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: { xs: '6px', sm: '10px' },
+                userSelect: 'none',
+                width: { xs: '70px', sm: '100px', md: '80px', lg: '100px', xl: '100px' },
+                minWidth: { xs: '70px', sm: '100px', md: '80px', lg: '100px', xl: '100px' },
+                height: { xs: '70px', sm: '100px', md: '80px', lg: '100px', xl: '100px' },
               }}
             >
-              <DiceIcon value={value} color={index === 3 ? 'red' : undefined} />
-            </Box>
-          </Card>
-        ))}
+              <Box
+                sx={{
+                  width: { xs: '80%', sm: '90%' },
+                  height: { xs: '80%', sm: '90%' },
+                  aspectRatio: '1',
+                  color: index === 3 ? 'var(--mui-palette-error-main)' : '#f0f0f0',
+                  cursor: 'pointer',
+                }}
+                onClick={() => handleDiceClick(index)}
+              >
+                <DiceIcon value={diceNumber[index]} color={index === 3 ? 'var(--mui-palette-error-main)' : undefined} />
+              </Box>
+            </Card>
+          ))}
+        </Box>
       </Box>
 
       {/* Currency and Trend Info */}
-      <Box sx={{ pb: 2, px: 2 }}>
-        <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
-          <Box component='img' src={currencyIcons[currency]} sx={{ height: 'auto', flex: '0 0 auto', width: '40px' }} />
+      <Stack direction="row" spacing={4} m={2} mt={4} sx={{ alignItems: 'center' }}>
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+          <Box component="img" src="/assets/dice.svg" sx={{ height: 'auto', flex: '0 0 auto', width: '50px' }} />
           <div>
-            <Typography variant='subtitle2'>{currency}/USD</Typography>
+            <Typography variant="subtitle2">WIN/LOSS</Typography>
             <Stack
-              direction='row'
+              direction="row"
               spacing={0.5}
               sx={{
                 alignItems: 'center',
-                color:
-                  trend === 'up'
-                    ? 'var(--mui-palette-success-main)'
-                    : 'var(--mui-palette-error-main)',
+                color: trend === 'up' ? 'var(--mui-palette-success-main)' : 'var(--mui-palette-error-main)',
               }}
             >
               {trend === 'up' ? (
-                <TrendUpIcon fontSize='var(--icon-fontSize-md)' />
+                <TrendUpIcon fontSize="var(--icon-fontSize-md)" />
               ) : (
-                <TrendDownIcon fontSize='var(--icon-fontSize-md)' />
+                <TrendDownIcon fontSize="var(--icon-fontSize-md)" />
               )}
-              <Typography color='inherit' variant='body2'>
+              <Typography color="inherit" variant="body2">
                 {new Intl.NumberFormat('en-US', {
                   style: 'percent',
                   maximumFractionDigits: 2,
@@ -184,7 +325,57 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
             </Stack>
           </div>
         </Stack>
-      </Box>
+        <Card
+          sx={{
+            p: '4px',
+            flex: 1,
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            borderRadius: '8px',
+            border: activeButton.state >= 3 ? `1px solid ${activeButton.color}` : '',
+            animation: activeButton.state >= 3 ? `${blinkBorder} 1.5s infinite` : 'none',
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Stack direction="row" sx={{ justifyContent: 'center', alignItems: 'center', flex: 1, gap: '2px' }}>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  color: activeButton.state === 4 ? activeButton.color : 'var(--mui-palette-success-main)',
+                  fontWeight: 300,
+                }}
+              >
+                $
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '1.5rem',
+                  color: activeButton.state === 4 ? activeButton.color : 'var(--mui-palette-success-main)',
+                  fontWeight: 800,
+                }}
+              >
+                10
+              </Typography>
+            </Stack>
+            <Button
+              disbaled
+              sx={{
+                p: 1,
+                flex: 1,
+                fontSize: '16px',
+                textTransform: 'uppercase',
+                backgroundColor: activeButton.color,
+                '&:hover': { backgroundColor: activeButton.color },
+                animation: activeButton.state >= 3 ? `${blinkButton} 1.5s infinite` : 'none',
+              }}
+              color="secondary"
+              onClick={() => handleButtonState(activeButton.state)}
+            >
+              {activeButton.text}
+            </Button>
+          </Box>
+        </Card>
+      </Stack>
     </Card>
   );
 }
