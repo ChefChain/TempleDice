@@ -50,3 +50,6 @@ build/
 *.tmp
 *.swp
 .vercel
+
+package-lock.json
+pnpm-lock.yaml
