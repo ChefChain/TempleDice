@@ -77,11 +77,6 @@ export function MainNav({ items }) {
               sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', lg: 'block' } }}
             />
             <LanguageSwitch />
-<<<<<<< HEAD
-=======
-            {/* <appkit-button /> */}
-            {/* <MetaMaskButton /> */}
->>>>>>> 626d8be3b5404aa6848750827f69eadc9c7d0952
             <UserButton />
           </Stack>
         </Box>
