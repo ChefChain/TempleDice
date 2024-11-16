@@ -57,6 +57,7 @@
     "dayjs": "1.11.13",
     "embla-carousel": "8.3.0",
     "embla-carousel-react": "8.3.0",
+    "ethers": "^6.13.4",
     "firebase": "10.14.1",
     "i18next": "23.16.2",
     "mapbox-gl": "3.7.0",
