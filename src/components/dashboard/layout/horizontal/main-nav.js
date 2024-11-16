@@ -48,7 +48,6 @@ const logoColors = {
 
 export function MainNav({ color = 'evident', items = [] }) {
   const pathname = usePathname();
-
   const [openNav, setOpenNav] = React.useState(false);
 
   const { colorScheme = 'light' } = useColorScheme();
@@ -109,7 +108,6 @@ export function MainNav({ color = 'evident', items = [] }) {
               orientation="vertical"
               sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', md: 'block' } }}
             />
-            <appkit-button />
             <LanguageSwitch />
             <UserButton />
           </Stack>

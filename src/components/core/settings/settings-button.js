@@ -11,11 +11,16 @@ import { setSettings as setPersistedSettings } from '@/lib/settings/set-settings
 import { useSettings } from '@/hooks/use-settings';
 
 import { SettingsDrawer } from './settings-drawer';
+import { useAppKit } from '@reown/appkit/react';
+import { Wallet } from '@phosphor-icons/react/dist/ssr';
+import Image from 'next/image';
+
 
 export function SettingsButton() {
   const { settings } = useSettings();
   const { mode, setMode } = useColorScheme();
   const router = useRouter();
+  const { open, close } = useAppKit();
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
@@ -45,33 +50,26 @@ export function SettingsButton() {
 
   return (
     <React.Fragment>
-      <Tooltip title="Settings">
+      <Tooltip title="Wallet Connection">
         <Box
           component="button"
           onClick={() => {
-            setOpenDrawer(true);
+            open();
           }}
           sx={{
-            animation: 'spin 4s linear infinite',
-            background: 'var(--mui-palette-neutral-900)',
             border: 'none',
             borderRadius: '50%',
             bottom: 0,
-            color: 'var(--mui-palette-common-white)',
             cursor: 'pointer',
             display: 'inline-flex',
-            height: '40px',
             m: 4,
             p: '10px',
             position: 'fixed',
             right: 0,
-            width: '40px',
             zIndex: 'var(--mui-zIndex-speedDial)',
-            '&:hover': { bgcolor: 'var(--mui-palette-neutral-700)' },
-            '@keyframes spin': { '0%': { rotate: '0' }, '100%': { rotate: '360deg' } },
           }}
         >
-          <GearSixIcon fontSize="var(--icon-fontSize-md)" />
+          <Image src="/wallet.png" width={40} height={40} alt="wallet" />
         </Box>
       </Tooltip>
       <SettingsDrawer
