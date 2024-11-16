@@ -1,6 +1,7 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
 'use client';
 
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -11,21 +12,30 @@ import Tooltip from '@mui/material/Tooltip';
 import { Bell as BellIcon } from '@phosphor-icons/react/dist/ssr/Bell';
 import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
-import { Users as UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useDialog } from '@/hooks/use-dialog';
 import { usePopover } from '@/hooks/use-popover';
 
-import { ContactsPopover } from '../contacts-popover';
 import { languageFlags, LanguagePopover } from '../language-popover';
 import { MobileNav } from '../mobile-nav';
 import { NotificationsPopover } from '../notifications-popover';
 import { SearchDialog } from '../search-dialog';
 import { UserPopover } from '../user-popover/user-popover';
 
+// Add these imports
+import { connectMetaMask, deposit, withdraw } from '@/utils/metamask';
+import { Button, Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+
 export function MainNav({ items }) {
   const [openNav, setOpenNav] = React.useState(false);
+
+
+
+  
 
   return (
     <React.Fragment>
@@ -45,7 +55,7 @@ export function MainNav({ items }) {
       >
         <Box
           sx={{
-            borderBottom: '1px solid var(--MainNav-divider)',
+            borderBottom: '1px solid #17191c',
             display: 'flex',
             flex: '1 1 auto',
             minHeight: 'var(--MainNav-height)',
@@ -70,14 +80,14 @@ export function MainNav({ items }) {
             sx={{ alignItems: 'center', flex: '1 1 auto', justifyContent: 'flex-end' }}
           >
             <NotificationsButton />
-            <ContactsButton />
             <Divider
               flexItem
               orientation="vertical"
               sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', lg: 'block' } }}
             />
             <LanguageSwitch />
-            <appkit-button />
+            {/* <appkit-button /> */}
+            {/* <MetaMaskButton /> */}
             <UserButton />
           </Stack>
         </Box>
@@ -108,21 +118,6 @@ function SearchButton() {
   );
 }
 
-function ContactsButton() {
-  const popover = usePopover();
-
-  return (
-    <React.Fragment>
-      <Tooltip title="Contacts">
-        <IconButton onClick={popover.handleOpen} ref={popover.anchorRef}>
-          <UsersIcon />
-        </IconButton>
-      </Tooltip>
-      <ContactsPopover anchorEl={popover.anchorRef.current} onClose={popover.handleClose} open={popover.open} />
-    </React.Fragment>
-  );
-}
-
 function NotificationsButton() {
   const popover = usePopover();
 
@@ -142,6 +137,113 @@ function NotificationsButton() {
       <NotificationsPopover anchorEl={popover.anchorRef.current} onClose={popover.handleClose} open={popover.open} />
     </React.Fragment>
   );
+}
+
+function MetaMaskButton() {
+  const [walletAddress, setWalletAddress] = useState('');
+  const [depositAmount, setDepositAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [transactionHash, setTransactionHash] = useState('');
+  const [connected, setConnected] = useState(false);
+
+  // Recipient address (your wallet or contract)
+  const recipientAddress = '0xYourRecipientAddress'; // Replace with your address
+  const contractAddress = '0xYourContractAddress'; // Replace with your contract address
+  const contractAbi = [
+    // Replace with your contract's ABI
+    'function withdraw(address payable _to, uint256 _amount) public',
+  ];
+
+  const handleConnect = async () => {
+    console.log('Connecting MetaMask...');
+    const address = await connectMetaMask();
+    if (address) {
+      setWalletAddress(address);
+      setConnected(true);
+    }
+  };
+
+  const handleDeposit = async () => {
+    if (!depositAmount) {
+      alert('Please enter an amount to deposit.');
+      return;
+    }
+    const txHash = await deposit(recipientAddress, depositAmount);
+    if (txHash) {
+      setTransactionHash(txHash);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    if (!withdrawAmount) {
+      alert('Please enter an amount to withdraw.');
+      return;
+    }
+    const txHash = await withdraw(contractAddress, contractAbi, withdrawAmount);
+    if (txHash) {
+      setTransactionHash(txHash);
+    }
+  };
+
+  return (
+    <Box
+        sx={{
+          backgroundColor: 'background.paper',
+          borderRadius: 1,
+          boxShadow: 1,
+          p: 3,
+        }}
+      >
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          Wallet Integration
+        </Typography>
+
+        {!connected ? (
+          <Button variant="contained" onClick={handleConnect}>
+            Connect MetaMask
+          </Button>
+        ) : (
+          <Typography variant="body1">Connected Wallet: {walletAddress}</Typography>
+        )}
+
+        {/* Deposit Section */}
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6">Deposit</Typography>
+          <TextField
+            label="Amount in ETH"
+            variant="outlined"
+            value={depositAmount}
+            onChange={(e) => setDepositAmount(e.target.value)}
+            sx={{ mt: 1 }}
+          />
+          <Button variant="contained" onClick={handleDeposit} sx={{ mt: 1 }}>
+            Deposit
+          </Button>
+        </Box>
+
+        {/* Withdraw Section */}
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6">Withdraw</Typography>
+          <TextField
+            label="Amount in ETH"
+            variant="outlined"
+            value={withdrawAmount}
+            onChange={(e) => setWithdrawAmount(e.target.value)}
+            sx={{ mt: 1 }}
+          />
+          <Button variant="contained" onClick={handleWithdraw} sx={{ mt: 1 }}>
+            Withdraw
+          </Button>
+        </Box>
+
+        {/* Transaction Hash */}
+        {transactionHash && (
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            Transaction Hash: {transactionHash}
+          </Typography>
+        )}
+      </Box>
+  )
 }
 
 function LanguageSwitch() {
