@@ -23,7 +23,7 @@ export default function Page() {
       sx={{
         maxWidth: 'var(--Content-maxWidth)',
         m: 'var(--Content-margin)',
-        p: 'var(--Content-padding)',
+        p: {sm:'var(--Content-padding)'},
         width: 'var(--Content-width)',
       }}
     >
@@ -50,7 +50,6 @@ export default function Page() {
                 style={{
                   border: 'none',
                   position: 'absolute',
-                  borderRadius: '10px',
                   top: 0,
                   left: 0,
                   width: '100%',
@@ -67,8 +66,8 @@ export default function Page() {
               sx={{
                 display: 'grid',
                 gap: 3,
-                gridTemplateColumns: '1fr', // Make all components 100% width
-                height: 'auto', // Set a minimum height for flexibility 
+                gridTemplateColumns: '1fr',
+                height: 'auto',
               }}
             >
               <DigitalWallet
@@ -125,8 +124,8 @@ export default function Page() {
               sx={{
                 display: 'grid',
                 gap: 3,
-                gridTemplateColumns: '1fr', // Make all components 100% width
-                height: '350px', // Set a minimum height for flexibility
+                gridTemplateColumns: '1fr',
+                height: '350px',
               }}
             >
               <AccountUpgrade />

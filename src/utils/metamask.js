@@ -1,5 +1,5 @@
-import { ethers } from 'ethers';
-
+//
+import { etherlinkTestnet } from "viem/chains";
 let provider;
 let signer;
 
@@ -10,7 +10,7 @@ export async function connectMetaMask() {
       // Request account access
       await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-      provider = new ethers.providers.Web3Provider(window.ethereum);
+      provider = new etherlinkTestnet.providers.Web3Provider(window.ethereum);
       signer = provider.getSigner();
 
       const address = await signer.getAddress();
@@ -43,7 +43,7 @@ export async function deposit(recipientAddress, amountInEth) {
   try {
     const tx = await signer.sendTransaction({
       to: recipientAddress,
-      value: ethers.utils.parseEther(amountInEth),
+      value: etherlinkTestnet.utils.parseEther(amountInEth),
     });
 
     console.log('Transaction Hash:', tx.hash);
@@ -62,10 +62,10 @@ export async function withdraw(contractAddress, abi, amountInEth) {
     return;
   }
 
-  const contract = new ethers.Contract(contractAddress, abi, signer);
+  const contract = new etherlinkTestnet.Contract(contractAddress, abi, signer);
 
   try {
-    const tx = await contract.withdraw(await signer.getAddress(), ethers.utils.parseEther(amountInEth));
+    const tx = await contract.withdraw(await signer.getAddress(), etherlinkTestnet.utils.parseEther(amountInEth));
 
     console.log('Transaction Hash:', tx.hash);
     await tx.wait();

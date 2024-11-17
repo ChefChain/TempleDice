@@ -143,32 +143,7 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
               sx={{ flex: '1 1 auto' }}
             >
               <Typography sx={{ color: 'var(--mui-palette-success-main)', fontSize: '0.75rem', pl: 1 }}>
-                ROOM:{' '}
-              </Typography>
-              <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, pr: 1 }}>$10</Typography>
-            </Stack>
-          </Card>
-          <Card
-            rounded="lg"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              borderColor: 'var(--mui-palette-success-main)',
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              py: 1,
-              px: '2px',
-            }}
-          >
-            <Stack
-              spacing={1}
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ flex: '1 1 auto' }}
-            >
-              <Typography sx={{ color: 'var(--mui-palette-success-main)', fontSize: '0.75rem', pl: 1 }}>
-                ACTIVE POT:{' '}
+                POT:{' '}
               </Typography>
               <Typography sx={{ fontSize: '0.75rem' }}>777$</Typography>
               <Box
@@ -299,32 +274,6 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
 
       {/* Currency and Trend Info */}
       <Stack direction="row" spacing={4} m={2} mt={4} sx={{ alignItems: 'center' }}>
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <Box component="img" src="/assets/dice.svg" sx={{ height: 'auto', flex: '0 0 auto', width: '50px' }} />
-          <div>
-            <Typography variant="subtitle2">WIN/LOSS</Typography>
-            <Stack
-              direction="row"
-              spacing={0.5}
-              sx={{
-                alignItems: 'center',
-                color: trend === 'up' ? 'var(--mui-palette-success-main)' : 'var(--mui-palette-error-main)',
-              }}
-            >
-              {trend === 'up' ? (
-                <TrendUpIcon fontSize="var(--icon-fontSize-md)" />
-              ) : (
-                <TrendDownIcon fontSize="var(--icon-fontSize-md)" />
-              )}
-              <Typography color="inherit" variant="body2">
-                {new Intl.NumberFormat('en-US', {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                }).format(diff / 100)}
-              </Typography>
-            </Stack>
-          </div>
-        </Stack>
         <Card
           sx={{
             p: '4px',
