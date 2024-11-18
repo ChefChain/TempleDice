@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { headers } from 'next/headers';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { header, headers } from 'next/headers';
 
 import '@/styles/global.css';
+
+import ContextProvider from '@/context';
 
 import { config } from '@/config';
 import { applyDefaultSettings } from '@/lib/settings/apply-default-settings';
@@ -15,7 +17,6 @@ import { LocalizationProvider } from '@/components/core/localization-provider';
 import { SettingsButton } from '@/components/core/settings/settings-button';
 import { ThemeProvider } from '@/components/core/theme-provider/theme-provider';
 import { Toaster } from '@/components/core/toaster';
-import ContextProvider from '@/context';
 
 export const metadata = { title: config.site.name };
 
@@ -39,9 +40,7 @@ export default async function Layout({ children }) {
               <SettingsProvider settings={settings}>
                 <I18nProvider lng={settings.language}>
                   <ThemeProvider>
-                    <ContextProvider cookies={cookies}>
-                     {children}
-                    </ContextProvider>
+                    <ContextProvider cookies={cookies}>{children}</ContextProvider>
                     <SettingsButton />
                     <Toaster position="bottom-right" />
                   </ThemeProvider>

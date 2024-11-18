@@ -9,11 +9,11 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { DotsThree as DotsThreeIcon } from '@phosphor-icons/react/dist/ssr/DotsThree';
-import { TrendDown as TrendDownIcon } from '@phosphor-icons/react/dist/ssr/TrendDown';
-import { TrendUp as TrendUpIcon } from '@phosphor-icons/react/dist/ssr/TrendUp';
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 import { NoSsr } from '@/components/core/no-ssr';
+import { CustomSwitch } from '@/components/Custom/CustomSwitch';
+import ScrollingBar from '@/components/Custom/Scroller';
 
 const currencyIcons = {
   BTC: '/assets/logo-btc.svg',
@@ -120,6 +120,11 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
 
   return (
     <Card sx={{ width: '100%', height: '100%' }}>
+      {/* Winners Scroll bar */}
+      <Stack direction="row" spacing={3}>
+        <ScrollingBar />
+      </Stack>
+
       {/* Wallet Info */}
       <Stack direction="row" spacing={3} sx={{ alignItems: 'flex-start', pt: 2, px: 2 }}>
         <Stack spacing={1} direction="row" sx={{ flex: '1 1 auto' }}>
@@ -238,9 +243,9 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
             maxWidth: '100%',
           }}
         >
-          {[1, 2, 3, 4].map((value, index) => (
+          {[1, 2, 3, 4].map((key, index) => (
             <Card
-              key={value}
+              key={key}
               sx={{
                 backgroundColor: 'transparent',
                 boxShadow: 'none',
@@ -273,10 +278,54 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
       </Box>
 
       {/* Currency and Trend Info */}
-      <Stack direction="row" spacing={4} m={2} mt={4} sx={{ alignItems: 'center' }}>
+      <Stack direction="row" spacing={1} m={2} mt={4} sx={{ alignItems: 'center' }}>
         <Card
           sx={{
-            p: '4px',
+            p: 0.5,
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            borderRadius: '8px',
+          }}
+        >
+          <Stack
+            direction="column"
+            spacing={0.25}
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              flex: 1,
+              backgroundColor: 'rgba(221 231 238 / 0.08)',
+              px: 2.5,
+              py: 0.5,
+              borderRadius: '6px',
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                fontSize: '1.5rem',
+                fontWeight: 300,
+                lineHeight: 1,
+                letterSpacing: '1px',
+              }}
+            >
+              43
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: '0.6rem',
+                letterSpacing: '1px',
+                fontWeight: 100,
+                lineHeight: 1,
+              }}
+            >
+              PLAYERS
+            </Typography>
+          </Stack>
+        </Card>
+        <Card
+          sx={{
+            p: 0.5,
             flex: 1,
             backgroundColor: 'transparent',
             boxShadow: 'none',
@@ -324,6 +373,44 @@ export function DigitalWallet({ amount, color, data: dataRaw, currency, diff, tr
             </Button>
           </Box>
         </Card>
+      </Stack>
+
+      <Stack direction="row" spacing={4} m={2} mt={4} sx={{ alignItems: 'center', display: 'flex', pr: 2 }}>
+        <Stack direction="row" spacing={3} sx={{ justifyContent: 'start', alignItems: 'center', flex: 1 }}>
+          <Typography variant="caption" sx={{ fontWeight: 200, letterSpacing: '1px' }}>
+            Progressive
+          </Typography>
+          <Card
+            sx={{
+              py: 0.5,
+              pl: 1,
+              pr: 1.5,
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              borderRadius: '9999px',
+              border: '1px solid var(--mui-palette-success-main)',
+            }}
+          >
+            <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+              <Card
+                sx={{
+                  height: '1.25rem',
+                  width: '1.25rem',
+                  backgroundColor: 'var(--mui-palette-success-main)',
+                  boxShadow: 'none',
+                  borderRadius: '1rem',
+                }}
+              />
+              <Typography variant="body1">+.25</Typography>
+            </Stack>
+          </Card>
+        </Stack>
+        <Stack direction="row" flex={1} spacing={4} sx={{ alignItems: 'center', flex: 1, justifyContent: 'flex-end' }}>
+          <Typography variant="caption" sx={{ fontWeight: 200, letterSpacing: '1px' }}>
+            Auto Bet
+          </Typography>
+          <CustomSwitch />
+        </Stack>
       </Stack>
     </Card>
   );

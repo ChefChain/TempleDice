@@ -1,21 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 
-import { config } from '@/config';
 import { dayjs } from '@/lib/dayjs';
 import { AccountUpgrade } from '@/components/dashboard/crypto/account-upgrade';
-import { CreditCard } from '@/components/dashboard/crypto/credit-card';
-import { CurrencyConverter } from '@/components/dashboard/crypto/currency-converter';
-import { CurrentBalance } from '@/components/dashboard/crypto/current-balance';
 import { DigitalWallet } from '@/components/dashboard/crypto/digital-wallet';
 import { Transactions } from '@/components/dashboard/crypto/transactions';
 
-export const metadata = { title: Crypto};
+export const metadata = { title: Crypto };
 
 export default function Page() {
   return (
@@ -23,7 +16,7 @@ export default function Page() {
       sx={{
         maxWidth: 'var(--Content-maxWidth)',
         m: 'var(--Content-margin)',
-        p: {sm:'var(--Content-padding)'},
+        p: { sm: 'var(--Content-padding)' },
         width: 'var(--Content-width)',
       }}
     >
@@ -45,6 +38,7 @@ export default function Page() {
               }}
             >
               <iframe
+                title="dice values"
                 src="https://viewer.millicast.com?streamId=eFxcvk/myStreamName"
                 allowFullScreen
                 style={{
@@ -55,13 +49,13 @@ export default function Page() {
                   width: '100%',
                   height: '100%',
                 }}
-              ></iframe>
+              />
             </Box>
           </Box>
         </Box>
 
         <Grid container spacing={4}>
-          <Grid size={{xs:12, sm:12, md:5}}>
+          <Grid size={{ xs: 12, sm: 12, md: 5 }}>
             <Box
               sx={{
                 display: 'grid',
@@ -85,7 +79,7 @@ export default function Page() {
             </Box>
           </Grid>
 
-          <Grid size={{xs:12, sm:12, md:7}}>
+          <Grid size={{ xs: 12, sm: 12, md: 7 }}>
             <Transactions
               transactions={[
                 {
@@ -118,7 +112,7 @@ export default function Page() {
               ]}
             />
           </Grid>
-          
+
           <Grid size={12}>
             <Box
               sx={{

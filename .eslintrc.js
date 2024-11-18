@@ -78,5 +78,6 @@ module.exports = {
     'react/jsx-fragments': 'off', // personal style
     'react/prop-types': 'off', // TypeScript is used for type checking
     '@next/next/no-img-element': 'off', // temporary disabled
+    'no-console': 'off', // temporary disabled no console
   },
 };

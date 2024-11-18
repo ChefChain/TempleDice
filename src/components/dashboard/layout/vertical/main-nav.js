@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { connectMetaMask, deposit, withdraw } from '@/utils/metamask';
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, Card, TextField, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -70,6 +70,7 @@ export function MainNav({ items }) {
             spacing={2}
             sx={{ alignItems: 'center', flex: '1 1 auto', justifyContent: 'flex-end' }}
           >
+            <WalletInfo />
             <NotificationsButton />
             <Divider
               flexItem
@@ -125,6 +126,31 @@ function NotificationsButton() {
       </Tooltip>
       <NotificationsPopover anchorEl={popover.anchorRef.current} onClose={popover.handleClose} open={popover.open} />
     </React.Fragment>
+  );
+}
+
+function WalletInfo() {
+  return (
+    <Card
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        borderColor: 'var(--mui-palette-success-main)',
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderRadius: 1,
+        py: 1.5,
+        px: 2,
+      }}
+    >
+      <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between" sx={{ flex: '1 1 auto' }}>
+        <Box component="img" src="/assets/secure_icon.svg" sx={{ height: 'auto', flex: '0 0 auto', width: '12px' }} />
+        <Typography sx={{ color: 'var(--mui-palette-success-main)', fontSize: '0.8rem', fontWeight: 600 }}>
+          Wallet:{' '}
+        </Typography>
+        <Typography sx={{ fontSize: '0.8rem' }}>$354.88</Typography>
+      </Stack>
+    </Card>
   );
 }
 
